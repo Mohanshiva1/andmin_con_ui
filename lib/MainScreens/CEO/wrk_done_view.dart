@@ -37,42 +37,23 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
     if (newDate == null) return;
     setState(() {
       selectedDate = formatterDate.format(newDate);
+      if (selectedDate != null) {
+        loadData();
+      }
       print(selectedDate);
     });
   }
 
-  _read() {
-    database.once().then((value) {
-      for (var element in value.snapshot.children) {
-        for (var element1 in element.children) {
-          // print(element1.key);
-          for (var element2 in element1.children) {
-            // print(element2.value);
-            for (var element3 in element2.children) {
-              for (var element4 in element3.children) {
-                fbData = element4.value;
-                print(fbData);
-                setState(() {
-                  name.add(fbData['name']);
-                  to.add(fbData['To']);
-                  from.add(fbData['From']);
-                  workDone.add(fbData['WrkDone']);
-                  workPercentage.add(fbData['Percentage']);
-                });
-              }
-            }
-          }
-        }
-      }
-    });
-  }
+
+
   loadData() {
     print(".........................");
-    // name.clear();
-    // from.clear();
-    // to.clear();
-    // workDone.clear();
-    // workPercentage.clear();
+    name.clear();
+    from.clear();
+    to.clear();
+    workDone.clear();
+    workPercentage.clear();
+
     database.once().then((value) {
       for (var element in value.snapshot.children) {
         // print(element.key);
@@ -88,11 +69,14 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                   // print(fbData);
                   setState(() {
                     name.add(fbData['name']);
-                    to.add(fbData['to']);
-                    from.add(fbData['from']);
-                    workDone.add(fbData['workDone']);
-                    workPercentage.add(fbData['workPercentage']);
+                    to.add(fbData['To']);
+                    from.add(fbData['From']);
+                    workDone.add(fbData['WrkDone']);
+                    workPercentage.add(fbData['Percentage']);
                     print(name);
+                    print(from);
+                    print(to);
+
                   });
                 }
               }
@@ -179,7 +163,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                             DatePicker();
+                              DatePicker();
                             });
                           },
                           child: Icon(Icons.calendar_month,
@@ -188,10 +172,6 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                       ],
                     ),
                   ),
-                  ElevatedButton(onPressed: (){setState(() {
-                    // _read();
-                    loadData();
-                  });}, child: Text("get")),
                   SizedBox(
                     height: height * 0.01,
                   ),
@@ -215,107 +195,108 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                    padding: EdgeInsets.only(
-                      top: height * 0.01,
-                      left: width * 0.01,
-                      right: width * 0.01,
-                    ),
-                    height: height * 0.80,
-                    decoration: BoxDecoration(
-                      // color: Colors.white,
-                      borderRadius: BorderRadius.circular(40),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black12,
-                            offset: Offset(2.0, 4.0),
-                            spreadRadius: 9,
-                            blurRadius: 3),
-                      ],
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          GridView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 1,
-                                      childAspectRatio: 3 / 2,
-                                      crossAxisSpacing: 20,
-                                      mainAxisSpacing: 20),
-                              itemCount: 1,
-                              itemBuilder: (BuildContext ctx, index) {
-                                return Container(
-                                  height: height * 0.04,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      // color: Colors.amber,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            // color: Colors.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        width: width * 0.5,
-                                        height: height * 0.3,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            WrkDetails("Name", "09:00 AM"),
-                                            WrkDetails("From", "09:00 AM"),
-                                            WrkDetails("To", "02:00 PM"),
-                                            WrkDetails("Per", "100"),
-                                          ],
-                                        ),
-                                      ),
-                                      VerticalDivider(
-                                        width: 1,
-                                        color: Color(0xffFBF8FF),
-                                        indent: 25,
-                                        endIndent: 25,
-                                        thickness: 3,
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            // color: Colors.blue,
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        width: width * 0.43,
-                                        child: Column(
-                                          children: [
-                                            // WrkDetails("wrk", "12dffgdfgdfgdgdgdgdgdffdffgjhghjghjghghjgjghjghjghj"),
-                                            Text(
-                                              'Works',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 15,
-                                                  fontFamily: "nexa",
-                                                  color: Colors.white),
-                                            )
-                                          ],
-                                        ),
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: height * 0.03,
-                                            horizontal: width * 0.02),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }),
-                        ],
-                      ),
-                    ))
+                  padding: EdgeInsets.only(
+                    top: height * 0.01,
+                    left: width * 0.01,
+                    right: width * 0.01,
+                  ),
+                  height: height * 0.80,
+                  width: width * 0.99,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(40),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.white10,
+                          offset: Offset(0.0, 0.0),
+                          spreadRadius: 0,
+                          blurRadius: 3),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      selectedDate != null
+                          ? buildGridView(height, width)
+                          : Text("Select Date",
+                              style: TextStyle(
+                                  fontFamily: 'Nexa',
+                                  fontSize: 20,
+                                  color: Color(0xffFBF8FF)))
+                    ],
+                  ),
+                ),
               ],
             ),
           )
         ],
       ),
     );
+  }
+
+  GridView buildGridView(double height, double width) {
+    return GridView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 1,
+            childAspectRatio: 3 / 2,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20),
+        itemCount: 1,
+        itemBuilder: (BuildContext ctx, index) {
+          return Container(
+            height: height * 0.04,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+            child: Row(
+              children: [
+                Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                  width: width * 0.5,
+                  height: height * 0.3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      WrkDetails("Name", "${name[index]}"),
+                      WrkDetails("From", "${from[index]}"),
+                      WrkDetails("To", "${to[index]}"),
+                      WrkDetails("Percent", "${workPercentage[index]}"),
+                    ],
+                  ),
+                ),
+                VerticalDivider(
+                  width: 1,
+                  color: Color(0xffFBF8FF),
+                  indent: 25,
+                  endIndent: 25,
+                  thickness: 3,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+// color: Colors.blue,
+                      borderRadius: BorderRadius.circular(30)),
+                  width: width * 0.43,
+                  child: Column(
+                    children: [
+                      Text(
+                        '${workDone[index]}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                            fontFamily: "nexa",
+                            color: Colors.white),
+                      )
+                    ],
+                  ),
+                  padding: EdgeInsets.symmetric(
+                      vertical: height * 0.03, horizontal: width * 0.02),
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   WrkDetails(String title, String details) {

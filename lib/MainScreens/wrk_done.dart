@@ -18,19 +18,64 @@ class _WRkDONEState extends State<WRkDONE> {
   final _auth = FirebaseDatabase.instance.reference().child("Staff");
   final user = FirebaseAuth.instance.currentUser;
 
-  TimeOfDay time = TimeOfDay.now();
+
+  var fbData;
+
+  List name = [];
+  List from = [];
+  List to = [];
+  List workDone = [];
+  List workPercentage = [];
 
   var formattedDate;
-  var fbData;
-  List fbName = [];
-  String? from;
-  String? to;
-  String? totalTime;
+
 
   TextEditingController fromfield = TextEditingController();
   TextEditingController tofield = TextEditingController();
   TextEditingController wrkdonefield = TextEditingController();
   TextEditingController percentfield = TextEditingController();
+
+
+  loadData() {
+    print(".........................");
+    name.clear();
+    from.clear();
+    to.clear();
+    workDone.clear();
+    workPercentage.clear();
+
+    _auth.once().then((value) {
+      for (var element in value.snapshot.children) {
+        print(element.key);
+        for (var element1 in element.children) {
+          for (var element2 in element1.children) {
+            for (var element3 in element2.children) {
+              // print(element3.key);
+              // if (element3.key == selectedDate) {
+              //   // print(element3.key);
+              //   for (var element4 in element3.children) {
+              //     // print(element4.key);
+              //     fbData = element4.value;
+              //     // print(fbData);
+              //     setState(() {
+              //       name.add(fbData['name']);
+              //       to.add(fbData['To']);
+              //       from.add(fbData['From']);
+              //       workDone.add(fbData['WrkDone']);
+              //       workPercentage.add(fbData['Percentage']);
+              //       print(name);
+              //       print(from);
+              //       print(to);
+              //
+              //     });
+              //   }
+              // }
+            }
+          }
+        }
+      }
+    });
+  }
 
   todayDate() {
     var now = DateTime.now();
@@ -195,35 +240,8 @@ class _WRkDONEState extends State<WRkDONE> {
                                     ),
                                     readOnly: true,
                                     onTap: () async {
-                                      TimeOfDay? pickedTime =
-                                          await showTimePicker(
-                                        initialTime: TimeOfDay.now(),
-                                        context: context,
-                                      );
-
-                                      if (pickedTime != null) {
-                                        print(pickedTime
-                                            .format(context)); //output 10:51 PM
-                                        DateTime parsedTime = DateFormat.jm()
-                                            .parse(pickedTime
-                                                .format(context)
-                                                .toString());
-                                        //converting to DateTime so that we can further format on different pattern.
-                                        // print(parsedTime); //output 1970-01-01 22:53:00.000
-                                        String formattedTime =
-                                            DateFormat('HH:mm a')
-                                                .format(parsedTime);
-                                        // print(formattedTime); //output 14:59:00
-                                        //DateFormat() is from intl package, you can format the time on any pattern you need.
-
-                                        setState(() {
-                                          tofield.text =
-                                              formattedTime; //set the value of text field.
-                                        });
-                                      } else {
-                                        print("Time is not selected");
-                                      }
-                                    }),
+                                      await datePicker();}
+                                ),
                               ],
                             ),
                           ),
@@ -399,73 +417,72 @@ class _WRkDONEState extends State<WRkDONE> {
               ),
               child: SingleChildScrollView(
                 child: Column(
-                  children: [
-                    GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 1,
-                            childAspectRatio: 3 / 2,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20),
-                        itemCount: 3,
-                        itemBuilder: (BuildContext ctx, index) {
-                          return Container(
-                            height: height * 0.04,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                // color: Colors.amber,
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      // color: Colors.grey,
-                                      borderRadius: BorderRadius.circular(30)),
-                                  width: width * 0.3,
-                                  height: height * 0.3,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      WrkDetails("From", "12"),
-                                      WrkDetails("To", "12"),
-                                      WrkDetails("Per", "121"),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: width * 0.03,
-                                ),
-                                VerticalDivider(
-                                  width: 1,
-                                  color: Color(0xffFBF8FF),
-                                  indent: 25,
-                                  endIndent: 25,
-                                  thickness: 3,
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      // color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(30)),
-                                  width: width * 0.65,
-                                  child: Column(
-                                    children: [
-                                      WrkDetails("wrk", "12"),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
-                  ],
-                ),
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                   child:
+
+                        Text(
+                          "Works History",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontFamily: "Nexa",
+                              fontSize: height * 0.02,
+                              color: Color(0xffFBF8FF)),
+                        ),
+
+
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Divider(
+                    thickness: 3,
+                    indent: 30,
+                    endIndent: 30,
+                    height: 4,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
               ))
         ],
       ),
     );
+  }
+
+  Widget datePicker(){
+    return GestureDetector(onTap: ()async{
+      TimeOfDay? pickedTime =
+          await showTimePicker(
+        initialTime: TimeOfDay.now(),
+        context: context,
+      );
+
+      if (pickedTime != null) {
+        print(pickedTime
+            .format(context)); //output 10:51 PM
+        DateTime parsedTime = DateFormat.jm()
+            .parse(pickedTime
+            .format(context)
+            .toString());
+        //converting to DateTime so that we can further format on different pattern.
+        // print(parsedTime); //output 1970-01-01 22:53:00.000
+        String formattedTime =
+        DateFormat('HH:mm a')
+            .format(parsedTime);
+        // print(formattedTime); //output 14:59:00
+        //DateFormat() is from intl package, you can format the time on any pattern you need.
+
+        setState(() {
+          tofield.text =
+              formattedTime; //set the value of text field.
+        });
+      } else {
+        print("Time is not selected");
+      }
+    },);
   }
 
   Text titleName(String name) {
