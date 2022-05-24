@@ -18,8 +18,9 @@ class _WRkDONEState extends State<WRkDONE> {
   final _auth = FirebaseDatabase.instance.reference().child("Staff");
   final user = FirebaseAuth.instance.currentUser;
 
-
+  String? CurrerntUser;
   var fbData;
+  var wrkdone;
 
   List name = [];
   List from = [];
@@ -38,58 +39,72 @@ class _WRkDONEState extends State<WRkDONE> {
 
   loadData() {
     print(".........................");
-    name.clear();
-    from.clear();
-    to.clear();
-    workDone.clear();
-    workPercentage.clear();
+    // name.clear();
+    // from.clear();
+    // to.clear();
+    // workDone.clear();
+    // workPercentage.clear();
 
-    _auth.once().then((value) {
+    _auth.once().then((value)=> {
       for (var element in value.snapshot.children) {
-        print(element.key);
-        for (var element1 in element.children) {
-          for (var element2 in element1.children) {
-            for (var element3 in element2.children) {
-              // print(element3.key);
-              // if (element3.key == selectedDate) {
-              //   // print(element3.key);
-              //   for (var element4 in element3.children) {
-              //     // print(element4.key);
-              //     fbData = element4.value;
-              //     // print(fbData);
-              //     setState(() {
-              //       name.add(fbData['name']);
-              //       to.add(fbData['To']);
-              //       from.add(fbData['From']);
-              //       workDone.add(fbData['WrkDone']);
-              //       workPercentage.add(fbData['Percentage']);
-              //       print(name);
-              //       print(from);
-              //       print(to);
-              //
-              //     });
-              //   }
-              // }
-            }
-          }
-        }
+        // print(element.value);
+        fbData = element.value,
+        if (fbData["email"] == CurrerntUser) {
+         for(var element1 in element.children){
+           // print(element1.key),
+           for(var element2 in element1.children){
+             // print(element2.value),
+             for(var element3 in element2.children){
+               // print(element3.value),
+               for(var element4 in element3.children){
+                 // print(element4.value),
+                 fbData = element4.value,
+                 setState(() {
+                   name.add(fbData['name']);
+                   to.add(fbData['To']);
+                   from.add(fbData['From']);
+                   workDone.add(fbData['WrkDone']);
+                   workPercentage.add(fbData['Percentage']);
+                   print(name);
+                   print(from);
+                   print(to);
+                 }),
+               },
+             },
+           },
+         },
+
+
+      // print(';;;;;;;;;;;;;;;;;;;');
+
+
       }
-    });
+
+      }
+      });
   }
 
-  todayDate() {
-    var now = DateTime.now();
-    var formatter = DateFormat('yyy-MM-dd');
-    // String formattedTime = DateFormat('kk:mm:a').format(now);
-    formattedDate = formatter.format(now);
-    // print(formattedTime);
-    // print(formattedDate);
+
+  @override
+  void initState() {
+    setState(() {
+      CurrerntUser = user?.email;
+    });
+
+    super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
     return Scaffold(
       backgroundColor: Colors.black38,
       body: Stack(
@@ -121,7 +136,7 @@ class _WRkDONEState extends State<WRkDONE> {
               padding: EdgeInsets.only(top: 20),
               height: height * 0.8,
               decoration: BoxDecoration(
-                  // color: Colors.white.withOpacity(0.3),
+                // color: Colors.white.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(30)),
               child: SingleChildScrollView(
                 child: BackdropFilter(
@@ -169,7 +184,7 @@ class _WRkDONEState extends State<WRkDONE> {
                                     readOnly: true,
                                     onTap: () async {
                                       TimeOfDay? pickedTime =
-                                          await showTimePicker(
+                                      await showTimePicker(
                                         initialTime: TimeOfDay.now(),
                                         context: context,
                                       );
@@ -178,13 +193,13 @@ class _WRkDONEState extends State<WRkDONE> {
                                         // print(pickedTime.format(context)); //output 10:51 PM
                                         DateTime parsedTime = DateFormat.jm()
                                             .parse(pickedTime
-                                                .format(context)
-                                                .toString());
+                                            .format(context)
+                                            .toString());
                                         //converting to DateTime so that we can further format on different pattern.
                                         // print(parsedTime); //output 1970-01-01 22:53:00.000
                                         String formattedTime =
-                                            DateFormat('HH:mm a')
-                                                .format(parsedTime);
+                                        DateFormat('HH:mm a')
+                                            .format(parsedTime);
                                         // print(formattedTime); //output 14:59:00
                                         //DateFormat() is from intl package, you can format the time on any pattern you need.
 
@@ -240,7 +255,34 @@ class _WRkDONEState extends State<WRkDONE> {
                                     ),
                                     readOnly: true,
                                     onTap: () async {
-                                      await datePicker();}
+                                      TimeOfDay? pickedTime =
+                                      await showTimePicker(
+                                        initialTime: TimeOfDay.now(),
+                                        context: context,
+                                      );
+
+                                      if (pickedTime != null) {
+                                        // print(pickedTime.format(context)); //output 10:51 PM
+                                        DateTime parsedTime = DateFormat.jm()
+                                            .parse(pickedTime
+                                            .format(context)
+                                            .toString());
+                                        //converting to DateTime so that we can further format on different pattern.
+                                        // print(parsedTime); //output 1970-01-01 22:53:00.000
+                                        String formattedTime =
+                                        DateFormat('HH:mm a')
+                                            .format(parsedTime);
+                                        // print(formattedTime); //output 14:59:00
+                                        //DateFormat() is from intl package, you can format the time on any pattern you need.
+
+                                        setState(() {
+                                          fromfield.text =
+                                              formattedTime; //set the value of text field.
+                                        });
+                                      } else {
+                                        print("Time is not selected");
+                                      }
+                                    }
                                 ),
                               ],
                             ),
@@ -332,11 +374,11 @@ class _WRkDONEState extends State<WRkDONE> {
                                     fontWeight: FontWeight.w900,
                                     fontSize: 16,
                                     color: Color(0xffFBF8FF)
-                                    // (0xffFBF8FF)
-                                    ),
+                                  // (0xffFBF8FF)
+                                ),
                                 contentPadding: const EdgeInsets.all(20),
                                 hintText:
-                                    '                           Enter your Work',
+                                '                           Enter your Work',
                                 filled: true,
                                 // fillColor: Colors.white24,
                                 // Color(0xffFBF8FF),
@@ -364,7 +406,11 @@ class _WRkDONEState extends State<WRkDONE> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          setState(() {});
+                          setState(() {
+                            loadData();
+                            // CurrerntUser = user?.email.toString().trim();
+
+                          });
                         },
                         child: Container(
                           height: height * 0.05,
@@ -415,22 +461,21 @@ class _WRkDONEState extends State<WRkDONE> {
                       blurRadius: 9),
                 ],
               ),
-              child: SingleChildScrollView(
-                child: Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Center(
-                   child:
+                    child:
 
-                        Text(
-                          "Works History",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Nexa",
-                              fontSize: height * 0.02,
-                              color: Color(0xffFBF8FF)),
-                        ),
+                    Text(
+                      "Works History",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontFamily: "Nexa",
+                          fontSize: height * 0.02,
+                          color: Color(0xffFBF8FF)),
+                    ),
 
 
                   ),
@@ -444,50 +489,98 @@ class _WRkDONEState extends State<WRkDONE> {
                     height: 4,
                     color: Colors.white,
                   ),
+                  SizedBox(
+                    height: height*0.3,
+                    // color: Colors.grey,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          buildGridView(height, width),
+                        ],
+                      ),
+                    ),
+                  )
                 ],
-              ),
               ))
         ],
       ),
     );
   }
-
-  Widget datePicker(){
-    return GestureDetector(onTap: ()async{
-      TimeOfDay? pickedTime =
-          await showTimePicker(
-        initialTime: TimeOfDay.now(),
-        context: context,
-      );
-
-      if (pickedTime != null) {
-        print(pickedTime
-            .format(context)); //output 10:51 PM
-        DateTime parsedTime = DateFormat.jm()
-            .parse(pickedTime
-            .format(context)
-            .toString());
-        //converting to DateTime so that we can further format on different pattern.
-        // print(parsedTime); //output 1970-01-01 22:53:00.000
-        String formattedTime =
-        DateFormat('HH:mm a')
-            .format(parsedTime);
-        // print(formattedTime); //output 14:59:00
-        //DateFormat() is from intl package, you can format the time on any pattern you need.
-
-        setState(() {
-          tofield.text =
-              formattedTime; //set the value of text field.
+  GridView buildGridView(double height, double width) {
+    return GridView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 1,
+            childAspectRatio: 3 / 2,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20),
+        itemCount: 1,
+        itemBuilder: (BuildContext ctx, index) {
+          return Container(
+            height: height * 0.0,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+            child: Row(
+              children: [
+                Container(
+                  decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                  width: width * 0.5,
+                  height: height * 0.3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      WrkDetails("Name", "${name[index]}"),
+                      WrkDetails("From", "${from[index]}"),
+                      WrkDetails("To", "${to[index]}"),
+                      WrkDetails("Percent", "${workPercentage[index]}"),
+                    ],
+                  ),
+                ),
+                VerticalDivider(
+                  width: 1,
+                  color: Color(0xffFBF8FF),
+                  indent: 25,
+                  endIndent: 25,
+                  thickness: 3,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+// color: Colors.blue,
+                      borderRadius: BorderRadius.circular(30)),
+                  width: width * 0.43,
+                  child: Column(
+                    children: [
+                      Text(
+                        '${workDone[index]}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                            fontFamily: "nexa",
+                            color: Colors.white),
+                      )
+                    ],
+                  ),
+                  padding: EdgeInsets.symmetric(
+                      vertical: height * 0.03, horizontal: width * 0.02),
+                ),
+              ],
+            ),
+          );
         });
-      } else {
-        print("Time is not selected");
-      }
-    },);
   }
 
   Text titleName(String name) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
     return Text(
       name,
       style: TextStyle(fontSize: height * 0.02),

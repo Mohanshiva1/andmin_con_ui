@@ -147,7 +147,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                     child: Row(
                       children: [
                         SizedBox(
-                          width: width * 0.30,
+                          width: width * 0.25,
                         ),
                         Text(
                           "Works History",
@@ -158,7 +158,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                               color: Color(0xffFBF8FF)),
                         ),
                         SizedBox(
-                          width: width * 0.15,
+                          width: width * 0.06,
                         ),
                         GestureDetector(
                           onTap: () {

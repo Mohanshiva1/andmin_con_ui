@@ -103,7 +103,7 @@ class _PRScreenState extends State<PRScreen> {
                   children: [
                     Container(
                       child: Buttons(
-                          "Create New Leads",
+                          "New Leads",
                           CreateLeeds(),
                           Icon(
                             Icons.create_rounded,
