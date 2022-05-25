@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:andmin_con_ui/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,163 +35,87 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          Positioned(
-            top: height * 0.01,
-            bottom: height * 0.01,
-            right: width * 0.01,
-            left: width * 0.01,
-            child: Container(
-              height: height * 1.0,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  //     gradient: LinearGradient(
-                  //   colors: [Color(0xff00004d), Color(0xff00004d),],
-                  //   end: Alignment.bottomLeft,
-                  //   begin: Alignment.topRight,
-                  // )
-                  ),
-              child: Lottie.asset(
-                "assets/93539-background.json",
-                fit: BoxFit.fill,
+      backgroundColor: Color(0xff34455B),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(
+                  vertical: height * 0.15, horizontal: width * 0.09),
+              padding: EdgeInsets.symmetric(
+                vertical: height * 0.09,
               ),
-            ),
-            //
-          ),
-          Positioned(
-            top: height * 0.15,
-            left: 1,
-            right: 1,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
+              height: height * 0.45,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Colors.black.withOpacity(0.1),
+              ),
               child: Column(
                 children: [
-                  Center(
-                    child: Text(
-                      "LogIn",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontFamily: "Nexa",
-                          fontSize: height * 0.03,
-                          color: Color(0xffFBF8FF)),
-                    ),
-                  ),
-                  const Divider(
-                    thickness: 3,
-                    indent: 30,
-                    endIndent: 30,
-                    height: 4,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    height: height * 0.04,
-                  ),
                   Container(
-                    height: height * 0.45,
-                    width: width * 0.8,
-                    padding: EdgeInsets.symmetric(
-                        vertical: height * 0.07, horizontal: width * 0.04),
+                    margin: EdgeInsets.only(
+                        left: width * 0.11, right: width * 0.11),
+                    width: width * 0.65,
+                    height: height * 0.05,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          offset: Offset(8, 9),
-                          blurRadius: 20,
-                          spreadRadius: 7,
-                        )
-                      ],
-                      color: Colors.white.withOpacity(0.3),
-                    ),
-                    child: Column(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xff7AF3FC),
+                            Color(0xff3865FA),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color(0xff233045),
+                              offset: Offset(20, 21),
+                              blurRadius: 9,
+                              spreadRadius: 1)
+                        ]),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        TextField(
-                          controller: email,
-                          keyboardType: TextInputType.emailAddress,
-                          style: TextStyle(
-                              color: Color(0xffFBF8FF), fontFamily: ""),
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  width: 1, color: Colors.blue.shade100),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            hintText: "E-mail",
-                            prefixIcon: Icon(
-                              Icons.mail_rounded,
-                              size: height * 0.03,
-                              color: Color(0xffFBF8FF),
-                            ),
-                            hintStyle: TextStyle(
-                                color: Color(0xffFBF8FF),
-                                fontFamily: 'Nexa',
-                                fontSize: 13),
-                          ),
-                        ),
                         SizedBox(
-                          height: height * 0.04,
+                          width: width * 0.03,
                         ),
-                        TextField(
-                          controller: password,
-                          obscureText: true,
-                          keyboardType: TextInputType.visiblePassword,
-                          style: TextStyle(
-                              color: Color(0xffFBF8FF), fontFamily: ""),
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.lock,
-                              size: height * 0.03,
-                              color: Color(0xffFBF8FF),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  width: 1, color: Colors.blue.shade100),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            hintText: "Password",
-                            hintStyle: TextStyle(
-                                color: Color(0xffFBF8FF),
-                                fontFamily: 'Nexa',
-                                fontSize: 13),
-                          ),
-                        ),
+                        Icon(Icons.account_circle),
                         SizedBox(
-                          height: height * 0.06,
+                          width: width * 0.03,
                         ),
-                        GestureDetector(
-                          onTap: (){
-                            setState(() {
-                              login();
-                            });
-                          },
-                          child: Container(
-                            width: width * 0.4,
-                            height: height * 0.05,
-                            decoration: BoxDecoration(
-                                color: Color(0xffFBF8FF),
-                                borderRadius: BorderRadius.circular(30),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.5),
-                                    offset: Offset(9, 10),
-                                    blurRadius: 20,
-                                    spreadRadius: 1,
-                                  )
-                                ]),
-                            child: Center(
-                              child: Text(
-                                "LogIn",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w900,
-                                    fontFamily: "Nexa",
-                                    fontSize: height * 0.02,
-                                    color: Colors.black.withOpacity(0.2)),
+                        Container(
+                          height: height * 0.05,
+                          width: width * 0.51,
+                          padding: EdgeInsets.only(left: width * 0.02),
+                          decoration: BoxDecoration(
+                              color: Color(0xff202B3E),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20),
+                                  topRight: Radius.circular(10),
+                                  bottomRight: Radius.circular(10))),
+                          child: Center(
+                            child: TextField(
+                              controller: email,
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.next,
+                              style: TextStyle(
+                                  color: Color(0xffFBF8FF), fontFamily: ""),
+                              decoration: InputDecoration.collapsed(
+                                hintText: "   Email",
+                                hintStyle: TextStyle(
+                                    color: Color(0xffFBF8FF),
+                                    fontFamily: 'Nexa',
+                                    fontSize: 13),
                               ),
                             ),
                           ),
@@ -198,11 +123,131 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ),
+                  Container(
+                    margin: EdgeInsets.only(
+                        top: height * 0.05,
+                        left: width * 0.11,
+                        right: width * 0.11),
+                    width: width * 0.65,
+                    height: height * 0.05,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xff7AF3FC),
+                            Color(0xff3865FA),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color(0xff233045),
+                              offset: Offset(20, 21),
+                              blurRadius: 9,
+                              spreadRadius: 1)
+                        ]),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: width * 0.03,
+                        ),
+                        Icon(Icons.password),
+                        SizedBox(
+                          width: width * 0.03,
+                        ),
+                        Container(
+                          height: height * 0.05,
+                          width: width * 0.51,
+                          padding: EdgeInsets.only(left: width * 0.02),
+                          decoration: BoxDecoration(
+                            color: Color(0xff202B3E),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              bottomLeft: Radius.circular(20),
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
+                          ),
+                          child: Center(
+                            child: TextField(
+                              controller: password,
+                              keyboardType: TextInputType.visiblePassword,
+                              textInputAction: TextInputAction.done,
+                              obscureText: true,
+                              style: TextStyle(
+                                  color: Color(0xffFBF8FF), fontFamily: ""),
+                              decoration: InputDecoration.collapsed(
+                                hintText: "   Password",
+                                hintStyle: TextStyle(
+                                    color: Color(0xffFBF8FF),
+                                    fontFamily: 'Nexa',
+                                    fontSize: 13),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        // Navigator.push(
+                        //     context,
+                        //     PageRouteBuilder(
+                        //         transitionDuration: Duration(seconds: 1),
+                        //         transitionsBuilder: (context, animation,animationTIme,
+                        //             child) {
+                        //           animation = CurvedAnimation(
+                        //               parent: animation, curve: Curves.fastOutSlowIn);
+                        //           return ScaleTransition(scale: animation,child: child,alignment: Alignment.centerLeft,);
+                        //         },
+                        //         pageBuilder:
+                        //             (context, animation, secondaryAnimation) =>
+                        //             HomePage()));
+                      });
+                    },
+                    child: Container(
+                      height: height * 0.05,
+                      width: width * 0.3,
+                      margin: EdgeInsets.only(
+                          top: height * 0.05,
+                          left: width * 0.20,
+                          right: width * 0.20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            colors: [
+                              Color(0xff7AF3FC),
+                              Color(0xff3865FA),
+                            ],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Color(0xff233045),
+                                offset: Offset(15, 16),
+                                blurRadius: 9,
+                                spreadRadius: 1)
+                          ]),
+                      child: Center(
+                        child: Text(
+                          "LogIn",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontFamily: "Nexa",
+                              fontSize: height * 0.02,
+                              color: Color(0xffFBF8FF)),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
