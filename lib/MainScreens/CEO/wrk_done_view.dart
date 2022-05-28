@@ -47,7 +47,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
 
 
   loadData() {
-    print(".........................");
+    // print(".........................");
     name.clear();
     from.clear();
     to.clear();
@@ -60,7 +60,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
         for (var element1 in element.children) {
           for (var element2 in element1.children) {
             for (var element3 in element2.children) {
-              // print(element3.key);
+              print(element3.key);
               if (element3.key == selectedDate) {
                 // print(element3.key);
                 for (var element4 in element3.children) {
@@ -73,9 +73,9 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                     from.add(fbData['From']);
                     workDone.add(fbData['WrkDone']);
                     workPercentage.add(fbData['Percentage']);
-                    print(name);
-                    print(from);
-                    print(to);
+                    // print(name);
+                    // print(from);
+                    // print(to);
 
                   });
                 }
@@ -138,7 +138,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
             left: 1,
             right: 1,
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
+              filter: ImageFilter.blur(sigmaY: 50, sigmaX: 50),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -215,13 +215,13 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                   ),
                   child: Column(
                     children: [
-                      selectedDate != null
-                          ? buildGridView(height, width)
-                          : Text("Select Date",
-                              style: TextStyle(
-                                  fontFamily: 'Nexa',
-                                  fontSize: 20,
-                                  color: Color(0xffFBF8FF)))
+                      selectedDate == null
+                          ? Text("Select Date",
+                      style: TextStyle(
+                          fontFamily: 'Nexa',
+                          fontSize: 20,
+                          color: Color(0xffFBF8FF)))
+                          : buildGridView(height, width)
                     ],
                   ),
                 ),

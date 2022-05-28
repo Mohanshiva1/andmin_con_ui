@@ -40,6 +40,8 @@ dependencies:
   lottie:
   flutter_inset_box_shadow:
   intl:
+  animated_splash_screen:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:

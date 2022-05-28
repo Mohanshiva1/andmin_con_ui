@@ -59,7 +59,7 @@ class _PRScreenState extends State<PRScreen> {
             left: 1,
             right: 1,
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
+              filter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
               child: Column(
                 children: [
                   Center(

@@ -20,7 +20,7 @@ class _TaskScreenState extends State<TaskScreen> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(30),
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaY: 10,sigmaX: 10),
+            filter: ImageFilter.blur(sigmaY: 20,sigmaX: 20),
             child: Container(
               height: 300,
               width: 300,
