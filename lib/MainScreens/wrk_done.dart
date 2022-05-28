@@ -18,6 +18,8 @@ class _WRkDONEState extends State<WRkDONE> {
   final _auth = FirebaseDatabase.instance.reference().child("Staff");
   final user = FirebaseAuth.instance.currentUser;
 
+  bool isloading = true;
+
   TextEditingController fromfield = TextEditingController();
   TextEditingController tofield = TextEditingController();
   TextEditingController wrkdonefield = TextEditingController();
@@ -87,9 +89,9 @@ class _WRkDONEState extends State<WRkDONE> {
                                         workDoneView.add(fbData['WrkDone']);
                                         workPercentageView
                                             .add(fbData['Percentage']);
-                                        // print(nameView);
-                                        // print(fromView);
-                                        // print(toView);
+                                        print(nameView);
+                                        print(fromView);
+                                        print(toView);
                                       }),
                                     },
                                 }
@@ -503,9 +505,9 @@ class _WRkDONEState extends State<WRkDONE> {
                                 final isValid =
                                     formKey.currentState?.validate();
                                 if (isValid!) {
-                                  // CreateWrkDone();
-                                  // loadDatas();
-                                  print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+                                  CreateWrkDone();
+                                  loadDatas();
+                                  print('llllllllllllllllllllllll');
                                 }
                                 from = fromfield.text
                                     .trim()
@@ -525,17 +527,15 @@ class _WRkDONEState extends State<WRkDONE> {
 
                                 List<String> val = [];
                                 val.add(result.toString());
-                                // print(val);
+
                                 totalTime = val[0][0];
-                                // print(totalTime);
 
-                                // print(st);
-                                // print(so);
+                                isloading = false;
 
-                                fromfield.clear();
-                                tofield.clear();
-                                percentfield.clear();
-                                wrkdonefield.clear();
+                                // fromfield.clear();
+                                // tofield.clear();
+                                // percentfield.clear();
+                                // wrkdonefield.clear();
                               });
                             },
                             child: Container(
@@ -617,7 +617,9 @@ class _WRkDONEState extends State<WRkDONE> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              // buildGridView(height, width),
+                              isloading
+                                  ? Text("Enter Your Works")
+                                  : buildGridView(height, width),
                             ],
                           ),
                         ),
@@ -662,12 +664,14 @@ class _WRkDONEState extends State<WRkDONE> {
                       // WrkDetails("To", "to"),
                       // WrkDetails("Percent", "percent",
 
-                      WrkDetails("Name", "${nameView[index]}"),
-                      WrkDetails("From", "${fromView[index]}"),
-                      WrkDetails("To", "${toView[index]}"),
+                      WrkDetails(
+                          "Name", "${nameView[index].toString().trim()}"),
+                      WrkDetails(
+                          "From", "${fromView[index].toString().trim()}"),
+                      WrkDetails("To", "${toView[index].toString().trim()}"),
                       WrkDetails(
                         "Percent",
-                        "${workPercentageView[index]}",
+                        "${workPercentageView[index].toString().trim()}",
                       ),
                     ],
                   ),
@@ -687,7 +691,7 @@ class _WRkDONEState extends State<WRkDONE> {
                   child: Column(
                     children: [
                       Text(
-                        '${workDoneView[index]}',
+                        '${workDoneView[index].toString().trim()}',
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 15,
