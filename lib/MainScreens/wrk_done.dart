@@ -19,7 +19,7 @@ class _WRkDONEState extends State<WRkDONE> {
   final user = FirebaseAuth.instance.currentUser;
 
   bool isloading = true;
-
+  int Count = 0;
   TextEditingController fromfield = TextEditingController();
   TextEditingController tofield = TextEditingController();
   TextEditingController wrkdonefield = TextEditingController();
@@ -49,7 +49,7 @@ class _WRkDONEState extends State<WRkDONE> {
 
   var cutomData;
 
-  loadDatas() {
+  loadData() {
     // print(".........................");
     // name.clear();
     // from.clear();
@@ -61,7 +61,9 @@ class _WRkDONEState extends State<WRkDONE> {
           for (var element in value.snapshot.children)
             {
               // print(element.value),
+
               fbData = element.value,
+
               // print(fbData),
               if (fbData["email"] == CurrerntUser)
                 {
@@ -75,12 +77,13 @@ class _WRkDONEState extends State<WRkDONE> {
                           for (var element3 in element2.children)
                             {
                               // print(element3.key),
-                              if (element3.key == formattedDate)
+                              // print(formattedDate),
+                              if (element3.key == "$formattedDate")
                                 {
-                                  // print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk'),
+                                  print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk'),
                                   for (var element4 in element3.children)
                                     {
-                                      print(element4.value),
+                                      // print(element4.value),
                                       fbData = element4.value,
                                       setState(() {
                                         nameView.add(fbData['name']);
@@ -118,7 +121,7 @@ class _WRkDONEState extends State<WRkDONE> {
     // String formattedTime = DateFormat('kk:mm:a').format(now);
     formattedDate = formatter.format(now);
     // print(formattedTime);
-    print(formattedDate);
+    // print(formattedDate);
   }
 
   CreateWrkDone() {
@@ -143,7 +146,7 @@ class _WRkDONEState extends State<WRkDONE> {
                   _auth
                       .child(wrkdone)
                       .child(
-                          "WorkDone/timesheet/ $formattedDate/'${fromfield.text.trim()} to ${tofield.text.trim()}'/")
+                          "WorkDone/timesheet/$formattedDate/'${fromfield.text.trim()} to ${tofield.text.trim()}'/")
                       .set({
                     "From": from,
                     "To": to,
@@ -201,7 +204,7 @@ class _WRkDONEState extends State<WRkDONE> {
                       borderRadius: BorderRadius.circular(30)),
                   child: SingleChildScrollView(
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
+                      filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
                       child: Column(
                         children: [
                           Row(
@@ -259,17 +262,20 @@ class _WRkDONEState extends State<WRkDONE> {
                                           );
 
                                           if (pickedTime != null) {
-                                            // print(pickedTime.format(context)); //output 10:51 PM
+                                            print(pickedTime.format(
+                                                context)); //output 10:51 PM
                                             DateTime parsedTime =
                                                 DateFormat.jm().parse(pickedTime
                                                     .format(context)
                                                     .toString());
                                             //converting to DateTime so that we can further format on different pattern.
-                                            // print(parsedTime); //output 1970-01-01 22:53:00.000
+                                            print(
+                                                parsedTime); //output 1970-01-01 22:53:00.000
                                             String formattedTime =
                                                 DateFormat('HH:mm a')
                                                     .format(parsedTime);
-                                            // print(formattedTime); //output 14:59:00
+                                            print(
+                                                formattedTime); //output 14:59:00
                                             //DateFormat() is from intl package, you can format the time on any pattern you need.
 
                                             setState(() {
@@ -502,19 +508,22 @@ class _WRkDONEState extends State<WRkDONE> {
                           GestureDetector(
                             onTap: () {
                               setState(() {
+                                buildGridView(height, width);
+                                isloading = false;
                                 final isValid =
                                     formKey.currentState?.validate();
                                 if (isValid!) {
                                   CreateWrkDone();
-                                  loadDatas();
-                                  print('llllllllllllllllllllllll');
+                                  loadData();
                                 }
+
+
                                 from = fromfield.text
                                     .trim()
-                                    .replaceAll(RegExp(r'[^0-9^:]'), ' ');
+                                    .replaceAll(RegExp(r'[^0-9^:]'), '');
                                 to = tofield.text
                                     .trim()
-                                    .replaceAll(RegExp(r'[^0-9^:]'), ' ');
+                                    .replaceAll(RegExp(r'[^0-9^:]'), '');
 
                                 String st = fromfield.text
                                     .trim()
@@ -529,8 +538,7 @@ class _WRkDONEState extends State<WRkDONE> {
                                 val.add(result.toString());
 
                                 totalTime = val[0][0];
-
-                                isloading = false;
+                                Count++;
 
                                 // fromfield.clear();
                                 // tofield.clear();
@@ -633,80 +641,89 @@ class _WRkDONEState extends State<WRkDONE> {
     );
   }
 
-  GridView buildGridView(double height, double width) {
-    return GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 1,
-            childAspectRatio: 3 / 2,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20),
-        itemCount: nameView.length,
-        itemBuilder: (BuildContext ctx, index) {
-          return Container(
-            height: height * 0.0,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-            child: Row(
-              children: [
-                Container(
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(30)),
-                  width: width * 0.5,
-                  height: height * 0.3,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // WrkDetails("Name", "${}"),
-                      // WrkDetails("From", "from"),
-                      // WrkDetails("To", "to"),
-                      // WrkDetails("Percent", "percent",
+  Widget buildGridView(double height, double width) {
+    return SingleChildScrollView(
+      child: SizedBox(
+        child: GridView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 1,
+                childAspectRatio: 3 / 2,
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 20),
+            itemCount: Count,
+            itemBuilder: (BuildContext ctx, index) {
+              return Container(
+                height: height * 0.0,
+                alignment: Alignment.center,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30)),
+                      width: width * 0.5,
+                      height: height * 0.3,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // WrkDetails("Name", "${}"),
+                          WrkDetails("From", "${fromfield.text}"),
+                          WrkDetails("To", "${tofield.text}"),
+                          WrkDetails(
+                            "Percent",
+                            "${percentfield.text}",
+                          )
 
-                      WrkDetails(
-                          "Name", "${nameView[index].toString().trim()}"),
-                      WrkDetails(
-                          "From", "${fromView[index].toString().trim()}"),
-                      WrkDetails("To", "${toView[index].toString().trim()}"),
-                      WrkDetails(
-                        "Percent",
-                        "${workPercentageView[index].toString().trim()}",
+                          // WrkDetails(
+                          //     "Name", "${nameView[index].toString().trim()}"),
+                          // WrkDetails(
+                          //     "From", "${fromView[index].toString().trim()}"),
+                          // WrkDetails("To", "${toView[index].toString().trim()}"),
+                          // WrkDetails(
+                          //   "Percent",
+                          //   "${workPercentageView[index].toString().trim()}",
+                          // ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                VerticalDivider(
-                  width: 1,
-                  color: Color(0xffFBF8FF),
-                  indent: 25,
-                  endIndent: 25,
-                  thickness: 3,
-                ),
-                Container(
-                  decoration: BoxDecoration(
+                    ),
+                    VerticalDivider(
+                      width: 1,
+                      color: Color(0xffFBF8FF),
+                      indent: 25,
+                      endIndent: 25,
+                      thickness: 3,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
 // color: Colors.blue,
-                      borderRadius: BorderRadius.circular(30)),
-                  width: width * 0.43,
-                  child: Column(
-                    children: [
-                      Text(
-                        '${workDoneView[index].toString().trim()}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                            fontFamily: "nexa",
-                            color: Colors.white),
-                      )
-                    ],
-                  ),
-                  padding: EdgeInsets.symmetric(
-                      vertical: height * 0.03, horizontal: width * 0.02),
+                          borderRadius: BorderRadius.circular(30)),
+                      width: width * 0.43,
+                      child: Column(
+                        children: [
+                          Text(
+                            "${wrkdonefield.text}",
+                            // '${workDoneView[index].toString().trim()}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 15,
+                                fontFamily: "nexa",
+                                color: Colors.white),
+                          )
+                        ],
+                      ),
+                      padding: EdgeInsets.symmetric(
+                          vertical: height * 0.03, horizontal: width * 0.02),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        });
+              );
+            }),
+      ),
+    );
   }
 
   Text titleName(String name) {

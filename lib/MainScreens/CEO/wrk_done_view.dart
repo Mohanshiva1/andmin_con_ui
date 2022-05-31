@@ -20,6 +20,8 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
   String? selectedDate;
   var fbData;
 
+  bool isLoading = true;
+
   List name = [];
   List from = [];
   List to = [];
@@ -43,8 +45,6 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
       print(selectedDate);
     });
   }
-
-
 
   loadData() {
     // print(".........................");
@@ -76,7 +76,6 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                     // print(name);
                     // print(from);
                     // print(to);
-
                   });
                 }
               }
@@ -164,6 +163,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                           onTap: () {
                             setState(() {
                               DatePicker();
+                              isLoading = false;
                             });
                           },
                           child: Icon(Icons.calendar_month,
@@ -213,16 +213,18 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                           blurRadius: 3),
                     ],
                   ),
-                  child: Column(
-                    children: [
-                      selectedDate == null
-                          ? Text("Select Date",
-                      style: TextStyle(
-                          fontFamily: 'Nexa',
-                          fontSize: 20,
-                          color: Color(0xffFBF8FF)))
-                          : buildGridView(height, width)
-                    ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        isLoading
+                            ? Text("Select Date",
+                                style: TextStyle(
+                                    fontFamily: 'Nexa',
+                                    fontSize: 20,
+                                    color: Color(0xffFBF8FF)))
+                            : buildGridView(height, width)
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -243,7 +245,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
             childAspectRatio: 3 / 2,
             crossAxisSpacing: 20,
             mainAxisSpacing: 20),
-        itemCount: 1,
+        itemCount: name.length,
         itemBuilder: (BuildContext ctx, index) {
           return Container(
             height: height * 0.04,
@@ -310,11 +312,14 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
               // color: Colors.black
               ),
           child: SingleChildScrollView(
-            child: Text(details,
-                style: TextStyle(
-                    fontFamily: 'Nexa',
-                    fontSize: 13,
-                    color: Color(0xffFBF8FF))),
+            child: Text(
+              details,
+              style: TextStyle(
+                fontFamily: 'Nexa',
+                fontSize: 13,
+                color: Color(0xffFBF8FF),
+              ),
+            ),
           ),
         ),
       ),

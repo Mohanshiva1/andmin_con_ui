@@ -63,7 +63,7 @@ class _ITScreenState extends State<ITScreen> {
             left: 1,
             right: 1,
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
+              filter: ImageFilter.blur(sigmaY: 50, sigmaX: 50),
               child: Column(
                 children: [
                   Center(
