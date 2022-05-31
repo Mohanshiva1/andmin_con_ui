@@ -30,7 +30,7 @@ class _WRkDONEState extends State<WRkDONE> {
   //....view Works...........
   String? CurrerntUser;
   var fbData;
-
+var totaltime;
   List nameView = [];
   List fromView = [];
   List toView = [];
@@ -111,7 +111,7 @@ class _WRkDONEState extends State<WRkDONE> {
   //..........Create Work don........
   String? from;
   String? to;
-  String? totalTime;
+
   var formattedDate;
   var wrkdone;
 
@@ -153,7 +153,7 @@ class _WRkDONEState extends State<WRkDONE> {
                     "WrkDone": wrkdonefield.text.trim(),
                     "Percentage": '${percentfield.text.trim()}%',
                     'name': fbData['name'],
-                    'Total Working': "${totalTime}:00"
+                    'Total Working': "${}:00"
                   }),
                 }
             }
@@ -531,14 +531,33 @@ class _WRkDONEState extends State<WRkDONE> {
                                 String so = tofield.text
                                     .trim()
                                     .replaceAll(RegExp(r'[^0-9]'), '');
-                                int result = int.parse(so) - int.parse(st);
-                                // print(result);
 
-                                List<String> val = [];
-                                val.add(result.toString());
-
-                                totalTime = val[0][0];
                                 Count++;
+
+                                String start_time = st.toString(); // or if '24:00'
+                                String end_time = so.toString(); // or if '12:00
+
+                                var format = DateFormat("HH:mm");
+                                var start = format.parse(start_time);
+                                var end = format.parse(end_time);
+
+
+                                // if (start.isAfter(end)) {
+                                //   print('start is big');
+                                //   print('difference 1= ${start.difference(end)}');
+                                //
+                                // }
+                                // else if(start.isBefore(end)){
+                                //   print('end is big');
+                                //   print('difference2 = ${end.difference(start)}');
+                                // }
+                                if (end.isAfter(start)){
+                                  // print('difference 3= ${end.difference(start)}');
+                                   totaltime = end.difference(start);
+                                  // print('difference 3= ${totaltime.toString().substring(0,4)}');
+                                  totaltime = '${totaltime.toString().substring(0,4)}';
+
+                                }
 
                                 // fromfield.clear();
                                 // tofield.clear();
