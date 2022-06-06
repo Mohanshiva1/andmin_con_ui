@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -26,18 +25,15 @@ class _ViewLeedsState extends State<ViewLeeds> {
             right: width * 0.01,
             left: width * 0.01,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   gradient: LinearGradient(
                 colors: [Colors.black, Colors.black],
                 end: Alignment.bottomLeft,
                 begin: Alignment.topRight,
               )),
-              child: Lottie.asset(
-                "assets/85600-email-marketing.json",
-                fit: BoxFit.scaleDown,
-              ),
+
             ),
-            //
+
           ),
           Positioned(
               top: height * 0.01,
@@ -59,10 +55,10 @@ class _ViewLeedsState extends State<ViewLeeds> {
               child: Column(
 
                 children: [
-                  Text("Lead Information",style: TextStyle(
+                  const Text("Lead Information",style: TextStyle(
                     fontWeight: FontWeight.w900,
                       fontFamily: 'Nexa', fontSize: 35, color: Color(0xffFBF8FF))),
-                Divider(
+                const Divider(
                   height: 1,
                   color: Color(0xffFBF8FF),
                   indent: 30,
@@ -79,11 +75,11 @@ class _ViewLeedsState extends State<ViewLeeds> {
                       child: Column(
                         children: [
                           GridView.builder(
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 1,
                                       childAspectRatio: 3 / 2,
                                       crossAxisSpacing: 20,
@@ -133,14 +129,14 @@ class _ViewLeedsState extends State<ViewLeeds> {
       height: height * 0.04,
       child: ListTile(
         title: Text(title,
-            style: TextStyle(
+            style: const TextStyle(
                 fontFamily: 'Nexa', fontSize: 18, color: Color(0xffFBF8FF))),
         trailing: SizedBox(
           // width: 180,
           // height: 80,
           child: SingleChildScrollView(
             child: Text(address,
-                style: TextStyle(
+                style: const TextStyle(
                     fontFamily: 'Nexa',
                     fontSize: 18,
                     color: Color(0xffFBF8FF))),

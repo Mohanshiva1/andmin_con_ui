@@ -2,11 +2,11 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:andmin_con_ui/MainScreens/IT/task.dart';
+import 'package:andmin_con_ui/MainScreens/login_screen.dart';
 import 'package:andmin_con_ui/MainScreens/wrk_done.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-
 
 class ITScreen extends StatefulWidget {
   const ITScreen({Key? key}) : super(key: key);
@@ -16,9 +16,7 @@ class ITScreen extends StatefulWidget {
 }
 
 class _ITScreenState extends State<ITScreen> {
-
-
-
+  final user = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +33,12 @@ class _ITScreenState extends State<ITScreen> {
             right: width * 0.01,
             left: width * 0.01,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.black, Colors.black],
-                    end: Alignment.bottomLeft,
-                    begin: Alignment.topRight,
-                  )),
-              child: Lottie.asset(
-                "assets/88132-management-1.json",
-                fit: BoxFit.scaleDown,
-              ),
+                colors: [Colors.black, Colors.black],
+                end: Alignment.bottomLeft,
+                begin: Alignment.topRight,
+              )),
             ),
             //
           ),
@@ -63,20 +57,39 @@ class _ITScreenState extends State<ITScreen> {
             left: 1,
             right: 1,
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 50, sigmaX: 50),
+              filter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
               child: Column(
                 children: [
                   Center(
-                    child: Text(
-                      "Choose Your Destination",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontFamily: "Nexa",
-                          fontSize: height * 0.03,
-                          color: Color(0xffFBF8FF)),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Choose your Destination",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontFamily: "Nexa",
+                              fontSize: height * 0.03,
+                              color: const Color(0xffFBF8FF)),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              FirebaseAuth.instance.signOut();
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginScreen()),
+                                  (Route<dynamic> route) => false);
+                            });
+                          },
+                          icon: const Icon(Icons.logout),
+                          iconSize: 35,
+                        )
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     thickness: 3,
                     indent: 30,
                     endIndent: 30,
@@ -96,31 +109,29 @@ class _ITScreenState extends State<ITScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GridView(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 3 / 2,
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20),
                   children: [
                     Container(
-
                       child: Buttons(
                           "New Task",
-                          TaskScreen(),
+                          const TaskScreen(),
                           Icon(
                             Icons.add_task_sharp,
                             size: height * 0.05,
                             color: Colors.amber,
                           )),
                     ),
-
                     Container(
                       child: Buttons(
                           "Work Manager",
-                          WRkDONE(),
+                          const WRkDONE(),
                           Icon(
                             Icons.work_outline_rounded,
                             size: height * 0.05,
@@ -137,64 +148,45 @@ class _ITScreenState extends State<ITScreen> {
     );
   }
 
-  GestureDetector Buttons(String name, Widget pageName,Icon icon) {
+  GestureDetector Buttons(String name, Widget pageName, Icon icon) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return GestureDetector(
-        onTap: () {
-          setState(() {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => pageName));
-          });
-        },
-
-
-          child: AnimatedContainer(
-            height: height * 0.15,
-            width: width * 0.4,
-            duration: Duration(milliseconds: 100),
-            decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(30),
-            //     boxShadow: [
-            //   BoxShadow(
-            //   blurRadius: 5.0,
-            //   offset: Offset(8, 8),
-            //   color: Colors.black12,
-            //
-            // ),
-            //   BoxShadow(
-            //       blurRadius: 5.0,
-            //       offset: Offset(8, 9),
-            //       color: Color(0xff1a1a1a)
-            //     // Color(0xffA7A9AF),
-            //     // inset: isPressed,
-            //     // inset: true,
-            //   ),
-            //   ]
-            ),
-
-            child:
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      icon,
-                      SizedBox(height: height*0.02,),
-                      Text(name,style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontFamily: 'Nexa',
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),)
-                    ],
-                  ),
+      onTap: () {
+        setState(() {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => pageName));
+        });
+      },
+      child: AnimatedContainer(
+        height: height * 0.15,
+        width: width * 0.4,
+        duration: const Duration(milliseconds: 100),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon,
+              SizedBox(
+                height: height * 0.02,
+              ),
+              Text(
+                name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontFamily: 'Nexa',
+                  fontSize: 18,
+                  color: Colors.black,
                 ),
-
-
-
-
+              )
+            ],
           ),
-        );
+        ),
+      ),
+    );
   }
 }

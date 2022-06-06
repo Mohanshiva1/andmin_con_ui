@@ -42,12 +42,10 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
       if (selectedDate != null) {
         loadData();
       }
-      print(selectedDate);
     });
   }
 
   loadData() {
-    // print(".........................");
     name.clear();
     from.clear();
     to.clear();
@@ -56,26 +54,18 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
 
     database.once().then((value) {
       for (var element in value.snapshot.children) {
-        // print(element.key);
         for (var element1 in element.children) {
           for (var element2 in element1.children) {
             for (var element3 in element2.children) {
-              print(element3.key);
               if (element3.key == selectedDate) {
-                // print(element3.key);
                 for (var element4 in element3.children) {
-                  // print(element4.key);
                   fbData = element4.value;
-                  // print(fbData);
                   setState(() {
                     name.add(fbData['name']);
                     to.add(fbData['To']);
                     from.add(fbData['From']);
                     workDone.add(fbData['WrkDone']);
                     workPercentage.add(fbData['Percentage']);
-                    // print(name);
-                    // print(from);
-                    // print(to);
                   });
                 }
               }
@@ -89,8 +79,6 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
   @override
   void initState() {
     // TODO: implement initState
-    // loadData();
-    // print(formatterDate);
     super.initState();
   }
 
@@ -109,18 +97,13 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
             right: width * 0.01,
             left: width * 0.01,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   gradient: LinearGradient(
                 colors: [Colors.black, Colors.black],
                 end: Alignment.bottomLeft,
                 begin: Alignment.topRight,
               )),
-              child: Lottie.asset(
-                "assets/88132-management-1.json",
-                fit: BoxFit.scaleDown,
-              ),
             ),
-            //
           ),
           Positioned(
               top: height * 0.01,
@@ -154,7 +137,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                               fontWeight: FontWeight.w900,
                               fontFamily: "Nexa",
                               fontSize: height * 0.03,
-                              color: Color(0xffFBF8FF)),
+                              color: const Color(0xffFBF8FF)),
                         ),
                         SizedBox(
                           width: width * 0.06,
@@ -175,7 +158,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                   SizedBox(
                     height: height * 0.01,
                   ),
-                  Divider(
+                  const Divider(
                     thickness: 3,
                     indent: 30,
                     endIndent: 30,
@@ -188,7 +171,6 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
           ),
           Positioned(
             top: height * 0.15,
-            // bottom: height * 0.30,
             left: width * 0.02,
             right: width * 0.02,
             child: Column(
@@ -205,7 +187,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(40),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                           color: Colors.white10,
                           offset: Offset(0.0, 0.0),
@@ -217,7 +199,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                     child: Column(
                       children: [
                         isLoading
-                            ? Text("Select Date",
+                            ? const Text("Select Date",
                                 style: TextStyle(
                                     fontFamily: 'Nexa',
                                     fontSize: 20,
@@ -237,10 +219,10 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
 
   GridView buildGridView(double height, double width) {
     return GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 1,
             childAspectRatio: 3 / 2,
             crossAxisSpacing: 20,
@@ -268,7 +250,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                     ],
                   ),
                 ),
-                VerticalDivider(
+                const VerticalDivider(
                   width: 1,
                   color: Color(0xffFBF8FF),
                   indent: 25,
@@ -276,15 +258,14 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                   thickness: 3,
                 ),
                 Container(
-                  decoration: BoxDecoration(
-// color: Colors.blue,
-                      borderRadius: BorderRadius.circular(30)),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(30)),
                   width: width * 0.43,
                   child: Column(
                     children: [
                       Text(
                         '${workDone[index]}',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 15,
                             fontFamily: "nexa",
@@ -305,20 +286,15 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
     return SizedBox(
       child: ListTile(
         title: Text(title,
-            style: TextStyle(
+            style: const TextStyle(
                 fontFamily: 'Nexa', fontSize: 13, color: Color(0xffFBF8FF))),
-        trailing: Container(
-          decoration: BoxDecoration(
-              // color: Colors.black
-              ),
-          child: SingleChildScrollView(
-            child: Text(
-              details,
-              style: TextStyle(
-                fontFamily: 'Nexa',
-                fontSize: 13,
-                color: Color(0xffFBF8FF),
-              ),
+        trailing: SingleChildScrollView(
+          child: Text(
+            details,
+            style: const TextStyle(
+              fontFamily: 'Nexa',
+              fontSize: 13,
+              color: Color(0xffFBF8FF),
             ),
           ),
         ),

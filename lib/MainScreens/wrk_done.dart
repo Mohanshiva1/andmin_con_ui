@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
@@ -27,10 +27,10 @@ class _WRkDONEState extends State<WRkDONE> {
 
   final formKey = GlobalKey<FormState>();
 
-  //....view Works...........
+  //....view Works.............................
   String? CurrerntUser;
   var fbData;
-var totaltime;
+  var totaltime;
   List nameView = [];
   List fromView = [];
   List toView = [];
@@ -50,40 +50,22 @@ var totaltime;
   var cutomData;
 
   loadData() {
-    // print(".........................");
-    // name.clear();
-    // from.clear();
-    // to.clear();
-    // workDone.clear();
-    // workPercentage.clear();
-
     _auth.once().then((value) => {
           for (var element in value.snapshot.children)
             {
-              // print(element.value),
-
               fbData = element.value,
-
-              // print(fbData),
               if (fbData["email"] == CurrerntUser)
                 {
                   for (var element1 in element.children)
                     {
-                      // print(element1.value),
                       for (var element2 in element1.children)
                         {
-                          // print(element2.key),
-
                           for (var element3 in element2.children)
                             {
-                              // print(element3.key),
-                              // print(formattedDate),
                               if (element3.key == "$formattedDate")
                                 {
-                                  print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk'),
                                   for (var element4 in element3.children)
                                     {
-                                      // print(element4.value),
                                       fbData = element4.value,
                                       setState(() {
                                         nameView.add(fbData['name']);
@@ -92,23 +74,18 @@ var totaltime;
                                         workDoneView.add(fbData['WrkDone']);
                                         workPercentageView
                                             .add(fbData['Percentage']);
-                                        print(nameView);
-                                        print(fromView);
-                                        print(toView);
                                       }),
                                     },
                                 }
                             },
                         },
                     },
-
-                  // print(';;;;;;;;;;;;;;;;;;;');
                 }
             }
         });
   }
 
-  //..........Create Work don........
+  //..........Create Work don.........................
   String? from;
   String? to;
 
@@ -120,29 +97,16 @@ var totaltime;
     var formatter = DateFormat('yyy-MM-dd');
     // String formattedTime = DateFormat('kk:mm:a').format(now);
     formattedDate = formatter.format(now);
-    // print(formattedTime);
-    // print(formattedDate);
   }
 
   CreateWrkDone() {
     _auth.once().then((value) => {
           for (var element in value.snapshot.children)
             {
-              // print(element.key),
-              // print(element.value),
               fbData = element.value,
-
-              // print(fbData["email"]),
-              // print(fbData["name"]),
-
-              // print(
-              //   User?.email,
-              // ),
-              // print(Email["email"] == User?.email),
               if (fbData["email"] == user?.email)
                 {
                   wrkdone = element.key,
-                  // print(wrkdone),
                   _auth
                       .child(wrkdone)
                       .child(
@@ -153,7 +117,7 @@ var totaltime;
                     "WrkDone": wrkdonefield.text.trim(),
                     "Percentage": '${percentfield.text.trim()}%',
                     'name': fbData['name'],
-                    'Total Working': "${}:00"
+                    'Total Working': totaltime.toString().trim()
                   }),
                 }
             }
@@ -197,7 +161,7 @@ var totaltime;
                 right: width * 0.03,
                 left: width * 0.03,
                 child: Container(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 20),
                   height: height * 0.8,
                   decoration: BoxDecoration(
                       // color: Colors.white.withOpacity(0.3),
@@ -211,7 +175,7 @@ var totaltime;
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Container(
-                                margin: EdgeInsets.only(top: 1),
+                                margin: const EdgeInsets.only(top: 1),
                                 width: width * 0.3,
                                 height: height * 0.08,
                                 decoration: BoxDecoration(
@@ -227,7 +191,7 @@ var totaltime;
                                 child: Column(
                                   children: [
                                     TextFormField(
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Colors.black,
                                             fontFamily: "Nexa"),
                                         controller: fromfield,
@@ -262,44 +226,29 @@ var totaltime;
                                           );
 
                                           if (pickedTime != null) {
-                                            print(pickedTime.format(
-                                                context)); //output 10:51 PM
                                             DateTime parsedTime =
                                                 DateFormat.jm().parse(pickedTime
                                                     .format(context)
                                                     .toString());
-                                            //converting to DateTime so that we can further format on different pattern.
-                                            print(
-                                                parsedTime); //output 1970-01-01 22:53:00.000
                                             String formattedTime =
                                                 DateFormat('HH:mm a')
                                                     .format(parsedTime);
-                                            print(
-                                                formattedTime); //output 14:59:00
-                                            //DateFormat() is from intl package, you can format the time on any pattern you need.
 
                                             setState(() {
-                                              fromfield.text =
-                                                  formattedTime; //set the value of text field.
+                                              fromfield.text = formattedTime;
                                             });
-                                          } else {
-                                            print("Time is not selected");
                                           }
                                         }),
                                   ],
                                 ),
                               ),
-                              // SizedBox(
-                              //   width: width * 0.1,
-                              // ),
                               Container(
-                                margin: EdgeInsets.only(top: 1),
+                                margin: const EdgeInsets.only(top: 1),
                                 width: width * 0.3,
                                 height: height * 0.08,
-                                // margin: EdgeInsets.symmetric(horizontal: 15),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(40),
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                         color: Colors.black12,
                                         offset: Offset(5.9, -5.9),
@@ -310,12 +259,11 @@ var totaltime;
                                 child: Column(
                                   children: [
                                     TextFormField(
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Colors.black,
                                             fontFamily: "Nexa"),
                                         controller: tofield,
                                         textInputAction: TextInputAction.next,
-                                        // keyboardType: TextInputType.n,
                                         decoration: InputDecoration(
                                           hintStyle: const TextStyle(
                                               fontFamily: 'Nexa', fontSize: 15),
@@ -346,35 +294,26 @@ var totaltime;
                                           );
 
                                           if (pickedTime != null) {
-                                            // print(pickedTime.format(context)); //output 10:51 PM
                                             DateTime parsedTime =
                                                 DateFormat.jm().parse(pickedTime
                                                     .format(context)
                                                     .toString());
-                                            //converting to DateTime so that we can further format on different pattern.
-                                            // print(parsedTime); //output 1970-01-01 22:53:00.000
                                             String formattedTime =
                                                 DateFormat('HH:mm a')
                                                     .format(parsedTime);
-                                            // print(formattedTime); //output 14:59:00
-                                            //DateFormat() is from intl package, you can format the time on any pattern you need.
 
                                             setState(() {
-                                              tofield.text =
-                                                  formattedTime; //set the value of text field.
+                                              tofield.text = formattedTime;
                                             });
-                                          } else {
-                                            print("Time is not selected");
                                           }
                                         }),
                                   ],
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.only(top: 1),
+                                margin: const EdgeInsets.only(top: 1),
                                 width: width * 0.3,
                                 height: height * 0.08,
-                                // margin: EdgeInsets.symmetric(horizontal: 15),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(40),
                                   boxShadow: const [
@@ -388,19 +327,23 @@ var totaltime;
                                 child: Column(
                                   children: [
                                     TextFormField(
-                                      style: TextStyle(
+                                      inputFormatters: [
+                                        LengthLimitingTextInputFormatter(3),
+                                      ],
+                                      style: const TextStyle(
                                           color: Colors.black,
                                           fontFamily: "Nexa"),
                                       controller: percentfield,
                                       textInputAction: TextInputAction.next,
                                       keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
-                                        hintStyle: TextStyle(
+                                        hintStyle: const TextStyle(
                                             fontFamily: 'Nexa', fontSize: 15),
-                                        contentPadding: EdgeInsets.all(20),
+                                        contentPadding:
+                                            const EdgeInsets.all(20),
                                         hintText: '   Percent',
                                         filled: true,
-                                        fillColor: Color(0xffFBF8FF),
+                                        fillColor: const Color(0xffFBF8FF),
                                         border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(40),
@@ -423,7 +366,7 @@ var totaltime;
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          Divider(
+                          const Divider(
                             height: 1,
                             color: Color(0xffFBF8FF),
                             indent: 30,
@@ -434,14 +377,10 @@ var totaltime;
                             height: height * 0.01,
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 1),
-                            // width: width * 0.8,
+                            margin: const EdgeInsets.only(top: 1),
                             height: height * 0.3,
-                            // margin: EdgeInsets.symmetric(horizontal: 15),
                             decoration: BoxDecoration(
                               color: Colors.white24,
-                              // Color(0xffFBF8FF),
-
                               borderRadius: BorderRadius.circular(40),
                               boxShadow: const [
                                 BoxShadow(
@@ -454,7 +393,7 @@ var totaltime;
                             child: Column(
                               children: [
                                 TextFormField(
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Color(0xffFBF8FF),
                                       fontFamily: "Nexa"),
                                   controller: wrkdonefield,
@@ -462,7 +401,7 @@ var totaltime;
                                   maxLines: 5,
                                   textInputAction: TextInputAction.done,
                                   decoration: InputDecoration(
-                                    hintStyle: TextStyle(
+                                    hintStyle: const TextStyle(
                                         fontFamily: 'Nexa',
                                         fontWeight: FontWeight.w900,
                                         fontSize: 16,
@@ -472,10 +411,7 @@ var totaltime;
                                     contentPadding: const EdgeInsets.all(20),
                                     hintText:
                                         '                           Enter your Work',
-
                                     filled: true,
-                                    // fillColor: Colors.white24,
-                                    // Color(0xffFBF8FF),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(40),
                                       borderSide: BorderSide.none,
@@ -495,7 +431,7 @@ var totaltime;
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          Divider(
+                          const Divider(
                             height: 1,
                             color: Color(0xffFBF8FF),
                             indent: 30,
@@ -517,60 +453,43 @@ var totaltime;
                                   loadData();
                                 }
 
-
                                 from = fromfield.text
                                     .trim()
-                                    .replaceAll(RegExp(r'[^0-9^:]'), '');
+                                    .replaceAll(RegExp(r'[^0-9^:]'), ' ');
                                 to = tofield.text
                                     .trim()
-                                    .replaceAll(RegExp(r'[^0-9^:]'), '');
+                                    .replaceAll(RegExp(r'[^0-9^:]'), ' ');
 
                                 String st = fromfield.text
                                     .trim()
-                                    .replaceAll(RegExp(r'[^0-9]'), '');
+                                    .replaceAll(RegExp(r'[^0-9]'), ':');
                                 String so = tofield.text
                                     .trim()
-                                    .replaceAll(RegExp(r'[^0-9]'), '');
+                                    .replaceAll(RegExp(r'[^0-9]'), ':');
 
                                 Count++;
 
-                                String start_time = st.toString(); // or if '24:00'
+                                String start_time =
+                                    st.toString(); // or if '24:00'
                                 String end_time = so.toString(); // or if '12:00
 
                                 var format = DateFormat("HH:mm");
                                 var start = format.parse(start_time);
                                 var end = format.parse(end_time);
 
-
-                                // if (start.isAfter(end)) {
-                                //   print('start is big');
-                                //   print('difference 1= ${start.difference(end)}');
-                                //
-                                // }
-                                // else if(start.isBefore(end)){
-                                //   print('end is big');
-                                //   print('difference2 = ${end.difference(start)}');
-                                // }
-                                if (end.isAfter(start)){
-                                  // print('difference 3= ${end.difference(start)}');
-                                   totaltime = end.difference(start);
-                                  // print('difference 3= ${totaltime.toString().substring(0,4)}');
-                                  totaltime = '${totaltime.toString().substring(0,4)}';
-
+                                if (end.isAfter(start)) {
+                                  totaltime = end.difference(start);
+                                  totaltime =
+                                      totaltime.toString().substring(0, 4);
                                 }
-
-                                // fromfield.clear();
-                                // tofield.clear();
-                                // percentfield.clear();
-                                // wrkdonefield.clear();
                               });
                             },
                             child: Container(
                               height: height * 0.05,
                               width: width * 0.3,
                               decoration: BoxDecoration(
-                                  color: Color(0xffFBF8FF),
-                                  boxShadow: [
+                                  color: const Color(0xffFBF8FF),
+                                  boxShadow: const [
                                     BoxShadow(
                                         color: Colors.black,
                                         offset: Offset(8, 8),
@@ -606,7 +525,7 @@ var totaltime;
                     // Color(0xffFBF8FF),
 
                     borderRadius: BorderRadius.circular(40),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                           color: Colors.black12,
                           offset: Offset(2.0, 4.0),
@@ -625,13 +544,13 @@ var totaltime;
                               fontWeight: FontWeight.w900,
                               fontFamily: "Nexa",
                               fontSize: height * 0.02,
-                              color: Color(0xffFBF8FF)),
+                              color: const Color(0xffFBF8FF)),
                         ),
                       ),
                       SizedBox(
                         height: height * 0.01,
                       ),
-                      Divider(
+                      const Divider(
                         thickness: 3,
                         indent: 30,
                         endIndent: 30,
@@ -645,7 +564,7 @@ var totaltime;
                           child: Column(
                             children: [
                               isloading
-                                  ? Text("Enter Your Works")
+                                  ? const Text("Enter Your Works")
                                   : buildGridView(height, width),
                             ],
                           ),
@@ -664,10 +583,10 @@ var totaltime;
     return SingleChildScrollView(
       child: SizedBox(
         child: GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 1,
                 childAspectRatio: 3 / 2,
                 crossAxisSpacing: 20,
@@ -689,27 +608,16 @@ var totaltime;
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // WrkDetails("Name", "${}"),
-                          WrkDetails("From", "${fromfield.text}"),
-                          WrkDetails("To", "${tofield.text}"),
-                          WrkDetails(
+                          wrkDetails("From", "${fromfield.text}"),
+                          wrkDetails("To", "${tofield.text}"),
+                          wrkDetails(
                             "Percent",
-                            "${percentfield.text}",
+                            percentfield.text,
                           )
-
-                          // WrkDetails(
-                          //     "Name", "${nameView[index].toString().trim()}"),
-                          // WrkDetails(
-                          //     "From", "${fromView[index].toString().trim()}"),
-                          // WrkDetails("To", "${toView[index].toString().trim()}"),
-                          // WrkDetails(
-                          //   "Percent",
-                          //   "${workPercentageView[index].toString().trim()}",
-                          // ),
                         ],
                       ),
                     ),
-                    VerticalDivider(
+                    const VerticalDivider(
                       width: 1,
                       color: Color(0xffFBF8FF),
                       indent: 25,
@@ -718,15 +626,13 @@ var totaltime;
                     ),
                     Container(
                       decoration: BoxDecoration(
-// color: Colors.blue,
                           borderRadius: BorderRadius.circular(30)),
                       width: width * 0.43,
                       child: Column(
                         children: [
                           Text(
-                            "${wrkdonefield.text}",
-                            // '${workDoneView[index].toString().trim()}',
-                            style: TextStyle(
+                            wrkdonefield.text,
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 15,
                                 fontFamily: "nexa",
@@ -735,7 +641,9 @@ var totaltime;
                         ],
                       ),
                       padding: EdgeInsets.symmetric(
-                          vertical: height * 0.03, horizontal: width * 0.02),
+                        vertical: height * 0.03,
+                        horizontal: width * 0.02,
+                      ),
                     ),
                   ],
                 ),
@@ -754,18 +662,18 @@ var totaltime;
     );
   }
 
-  WrkDetails(String title, String address) {
+  wrkDetails(String title, String address) {
     return SizedBox(
       child: ListTile(
         title: Text(title,
-            style: TextStyle(
+            style: const TextStyle(
                 fontFamily: 'Nexa', fontSize: 18, color: Color(0xffFBF8FF))),
         trailing: SizedBox(
           // width: 180,
           // height: 80,
           child: SingleChildScrollView(
             child: Text(address,
-                style: TextStyle(
+                style: const TextStyle(
                     fontFamily: 'Nexa',
                     fontSize: 18,
                     color: Color(0xffFBF8FF))),

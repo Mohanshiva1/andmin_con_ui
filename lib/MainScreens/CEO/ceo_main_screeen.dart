@@ -2,11 +2,12 @@ import 'dart:ui';
 
 import 'package:andmin_con_ui/MainScreens/CEO/management.dart';
 import 'package:andmin_con_ui/MainScreens/CEO/wrk_done_view.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import '../PR/view_leed.dart';
+import '../login_screen.dart';
 
 class CEOScreen extends StatefulWidget {
   const CEOScreen({Key? key}) : super(key: key);
@@ -31,16 +32,12 @@ class _CEOScreenState extends State<CEOScreen> {
             right: width * 0.01,
             left: width * 0.01,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.black, Colors.black],
-                    end: Alignment.bottomLeft,
-                    begin: Alignment.topRight,
-                  )),
-              child: Lottie.asset(
-                "assets/88132-management-1.json",
-                fit: BoxFit.scaleDown,
-              ),
+                colors: [Colors.black, Colors.black],
+                end: Alignment.bottomLeft,
+                begin: Alignment.topRight,
+              )),
             ),
             //
           ),
@@ -63,16 +60,34 @@ class _CEOScreenState extends State<CEOScreen> {
               child: Column(
                 children: [
                   Center(
-                    child: Text(
-                      "Management",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontFamily: "Nexa",
-                          fontSize: height * 0.03,
-                          color: Color(0xffFBF8FF)),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Choose your Destination",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontFamily: "Nexa",
+                              fontSize: height * 0.03,
+                              color: const Color(0xffFBF8FF)),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              FirebaseAuth.instance.signOut();
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => const LoginScreen()),
+                                  (Route<dynamic> route) => true);
+                            });
+                          },
+                          icon: Icon(Icons.logout),
+                          iconSize: 35,
+                        )
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     thickness: 3,
                     indent: 30,
                     endIndent: 30,
@@ -92,19 +107,20 @@ class _CEOScreenState extends State<CEOScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GridView(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 3 / 2,
                       crossAxisSpacing: 20,
-                      mainAxisSpacing: 20),
+                      mainAxisSpacing: 20,
+                  ),
                   children: [
                     Container(
-                      child: Buttons(
+                      child: buttons(
                           "Management",
-                          CeoManagement(),
+                          const CeoManagement(),
                           Icon(
                             Icons.manage_accounts_outlined,
                             size: height * 0.05,
@@ -112,9 +128,9 @@ class _CEOScreenState extends State<CEOScreen> {
                           )),
                     ),
                     Container(
-                      child: Buttons(
+                      child: buttons(
                           "View Leads",
-                          ViewLeeds(),
+                          const ViewLeeds(),
                           Icon(
                             Icons.view_day,
                             size: height * 0.05,
@@ -122,9 +138,9 @@ class _CEOScreenState extends State<CEOScreen> {
                           )),
                     ),
                     Container(
-                      child: Buttons(
+                      child: buttons(
                           "View Works",
-                          ViewWrkDone(),
+                          const ViewWrkDone(),
                           Icon(
                             Icons.work_outline_rounded,
                             size: height * 0.05,
@@ -141,7 +157,7 @@ class _CEOScreenState extends State<CEOScreen> {
     );
   }
 
-  GestureDetector Buttons(String name, Widget pageName, Icon icon) {
+  GestureDetector buttons(String name, Widget pageName, Icon icon) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return GestureDetector(
@@ -154,26 +170,10 @@ class _CEOScreenState extends State<CEOScreen> {
       child: AnimatedContainer(
         height: height * 0.15,
         width: width * 0.4,
-        duration: Duration(milliseconds: 100),
+        duration: const Duration(milliseconds: 100),
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.3),
           borderRadius: BorderRadius.circular(30),
-          //     boxShadow: [
-          //   BoxShadow(
-          //   blurRadius: 5.0,
-          //   offset: Offset(8, 8),
-          //   color: Colors.black12,
-          //
-          // ),
-          //   BoxShadow(
-          //       blurRadius: 5.0,
-          //       offset: Offset(8, 9),
-          //       color: Color(0xff1a1a1a)
-          //     // Color(0xffA7A9AF),
-          //     // inset: isPressed,
-          //     // inset: true,
-          //   ),
-          //   ]
         ),
         child: Center(
           child: Column(
@@ -185,7 +185,7 @@ class _CEOScreenState extends State<CEOScreen> {
               ),
               Text(
                 name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.w900,
                   fontFamily: 'Nexa',
                   fontSize: 18,

@@ -42,6 +42,7 @@ dependencies:
   intl:
   animated_splash_screen:
   shared_preferences:
+  flutter_spinkit:
 
 dev_dependencies:
   flutter_test:

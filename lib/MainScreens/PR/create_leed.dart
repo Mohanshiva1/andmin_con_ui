@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -57,24 +55,25 @@ class _CreateLeedsState extends State<CreateLeeds> {
                 width: width * 0.3,
                 height: height * 0.7,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Colors.white12,
-                      boxShadow: [
-                    BoxShadow(
-                        color: Colors.white12,
-                        spreadRadius: 2,
-                        blurRadius: 1,
-                        offset: Offset(0, 0)),
-                  ]
-                ),
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.white12,
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.white12,
+                          spreadRadius: 2,
+                          blurRadius: 1,
+                          offset: Offset(0, 0)),
+                    ]),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Text(
+                      const Text(
                         "Create Data",
                         style: TextStyle(
                             fontWeight: FontWeight.w900,
-                            fontFamily: 'Nexa', fontSize: 35, color: Color(0xffFBF8FF)),
+                            fontFamily: 'Nexa',
+                            fontSize: 35,
+                            color: Color(0xffFBF8FF)),
                       ),
                       dividers(),
                       buildListView("Name", name),
@@ -102,20 +101,22 @@ class _CreateLeedsState extends State<CreateLeeds> {
                 child: Container(
                   height: height * 0.05,
                   decoration: BoxDecoration(
-                      color: Color(0xffFBF8FF),
-                      boxShadow: [
+                      color: const Color(0xffFBF8FF),
+                      boxShadow: const [
                         BoxShadow(
-                          color: Colors.black,
-                          offset: Offset(8,8),
-                          blurRadius: 30,
-                          spreadRadius: 5
-                        )
+                            color: Colors.black,
+                            offset: Offset(8, 8),
+                            blurRadius: 30,
+                            spreadRadius: 5)
                       ],
                       borderRadius: BorderRadius.circular(30)),
-
                   child: const Center(
-                    child: Text("Submit",style: TextStyle(
-                        color: Colors.black, fontFamily: "Nexa", fontSize: 18,fontWeight: FontWeight.w800)),
+                    child: Text("Submit",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: "Nexa",
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800)),
                   ),
                 ),
               ))
@@ -128,7 +129,7 @@ class _CreateLeedsState extends State<CreateLeeds> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return ListView(
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       children: [
@@ -139,15 +140,16 @@ class _CreateLeedsState extends State<CreateLeeds> {
                 width: width * 0.5,
                 child: TextField(
                   controller: TextEditingController,
-                  style:
-                      TextStyle(color: Color(0xffFBF8FF), fontFamily: "Nexa"),
+                  style: const TextStyle(
+                      color: Color(0xffFBF8FF), fontFamily: "Nexa"),
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                        borderSide:  BorderSide(width: 1,color: Colors.teal.shade300),
+                      borderSide:
+                          BorderSide(width: 1, color: Colors.teal.shade300),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     // hintText: hint,
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                         color: Color(0xffFBF8FF),
                         fontFamily: 'Nexa',
                         fontSize: 13),
@@ -156,7 +158,7 @@ class _CreateLeedsState extends State<CreateLeeds> {
               ),
               leading: Text(
                 name,
-                style: TextStyle(
+                style: const TextStyle(
                     color: Color(0xffFBF8FF), fontFamily: "Nexa", fontSize: 15),
               )),
         ),
@@ -165,7 +167,7 @@ class _CreateLeedsState extends State<CreateLeeds> {
   }
 
   Divider dividers() {
-    return Divider(
+    return const Divider(
       height: 1,
       color: Color(0xffFBF8FF),
       indent: 30,

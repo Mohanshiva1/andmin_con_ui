@@ -6,25 +6,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:lottie/lottie.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'MainScreens/IT/it_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );
@@ -45,15 +43,14 @@ class SplashScreen extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return HomePage();
+              return const HomePage();
             } else {
-              print("error/////////////////////////////");
-              return LoginScreen();
+              return const LoginScreen();
             }
           },
         ),
       ),
-      backgroundColor: Color(0xff34455B),
+      backgroundColor: const Color(0xff34455B),
       splashIconSize: 350,
       splashTransition: SplashTransition.fadeTransition,
     );
@@ -61,7 +58,7 @@ class SplashScreen extends StatelessWidget {
 }
 
 class MainPage extends StatelessWidget {
-  MainPage({Key? key}) : super(key: key);
+  const MainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +67,9 @@ class MainPage extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return HomePage();
+            return const HomePage();
           } else {
-            return LoginScreen();
+            return const LoginScreen();
           }
         },
       ),
@@ -99,25 +96,24 @@ class _HomePageState extends State<HomePage> {
   loadData() {
     database.once().then((value) {
       for (var element in value.snapshot.children) {
-        // print(element.key);
         fbData = element.value;
-        // print(fbData['email']);
-        if(fbData['email'] == CurrerntUser){
-          print('kdkdmkdf');
-          if(fbData['department'] == "App"){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> ITScreen()));
-          }
-          else if(fbData['department'] == "CEO"){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> CEOScreen()));
-          }
-          else if(fbData['department'] == "PR"){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> PRScreen()));
-          }
-          else if(fbData['department'] == "Web"){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> ITScreen()));
-          }
-          else if(fbData['department'] == "RND"){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> ITScreen()));
+
+        if (fbData['email'] == CurrerntUser) {
+          if (fbData['department'] == "APP") {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const ITScreen()));
+          } else if (fbData['department'] == "CEO") {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const CEOScreen()));
+          } else if (fbData['department'] == "PR") {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const PRScreen()));
+          } else if (fbData['department'] == "WEB") {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const ITScreen()));
+          } else if (fbData['department'] == "RND") {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const ITScreen()));
           }
         }
       }
@@ -126,9 +122,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-
     setState(() {
       CurrerntUser = user?.email;
+      loadData();
     });
     super.initState();
   }
@@ -136,50 +132,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // ElevatedButton(
-              //     onPressed: () {
-              //       setState(() {
-              //         loadData();
-              //       });
-              //     },
-              //     child: Text("get")),
-
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      FirebaseAuth.instance.signOut();
-                    });
-                  },
-                  child: Text("Singout")),
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => CEOScreen()));
-                    });
-                  },
-                  child: Text("CEO")),
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => PRScreen()));
-                    });
-                  },
-                  child: Text("PR")),
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => ITScreen()));
-                    });
-                  },
-                  child: Text("IT")),
+              Lottie.asset(
+                "assets/81778-loading.json",
+              ),
             ],
           ),
         ),
