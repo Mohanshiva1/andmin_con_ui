@@ -38,18 +38,19 @@ class SplashScreen extends StatelessWidget {
       splash: Lottie.asset(
         "assets/splashscreen.json",
       ),
-      nextScreen: Scaffold(
-        body: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return const HomePage();
-            } else {
-              return const LoginScreen();
-            }
-          },
-        ),
-      ),
+      nextScreen: MainPage(),
+      // Scaffold(
+      //   body: StreamBuilder(
+      //     stream: FirebaseAuth.instance.authStateChanges(),
+      //     builder: (context, snapshot) {
+      //       if (snapshot.hasData) {
+      //         return const HomePage();
+      //       } else {
+      //         return const LoginScreen();
+      //       }
+      //     },
+      //   ),
+      // ),
       backgroundColor: const Color(0xff34455B),
       splashIconSize: 350,
       splashTransition: SplashTransition.fadeTransition,
@@ -97,7 +98,6 @@ class _HomePageState extends State<HomePage> {
     database.once().then((value) {
       for (var element in value.snapshot.children) {
         fbData = element.value;
-
         if (fbData['email'] == CurrerntUser) {
           if (fbData['department'] == "APP") {
             Navigator.pushReplacement(context,
@@ -141,6 +141,25 @@ class _HomePageState extends State<HomePage> {
               Lottie.asset(
                 "assets/81778-loading.json",
               ),
+              // ElevatedButton(onPressed: (){
+              //   setState(() {
+              //     Navigator.push(context, MaterialPageRoute(builder: (context)=>CEOScreen()));
+              //
+              //   });
+              // }, child: Text("ceo")),
+              // ElevatedButton(onPressed: (){
+              //   setState(() {
+              //
+              //     Navigator.push(context, MaterialPageRoute(builder: (context)=>ITScreen()));
+              //
+              //   });
+              // }, child: Text("It")),
+              // ElevatedButton(onPressed: (){
+              //   setState(() {
+              //     Navigator.push(context, MaterialPageRoute(builder: (context)=>PRScreen()));
+              //   });
+              // }, child: Text("PR")),
+
             ],
           ),
         ),

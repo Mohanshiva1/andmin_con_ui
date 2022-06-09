@@ -1,7 +1,8 @@
 import 'dart:ui';
 
-import 'package:andmin_con_ui/MainScreens/CEO/management.dart';
+import 'package:andmin_con_ui/MainScreens/CEO/newuser.dart';
 import 'package:andmin_con_ui/MainScreens/CEO/wrk_done_view.dart';
+import 'package:andmin_con_ui/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -51,6 +52,7 @@ class _CEOScreenState extends State<CEOScreen> {
               left: width * 0.0,
               right: width * 0.0,
               child: Lottie.asset("assets/84669-background-animation.json")),
+
           Positioned(
             top: height * 0.15,
             left: 1,
@@ -67,24 +69,24 @@ class _CEOScreenState extends State<CEOScreen> {
                           style: TextStyle(
                               fontWeight: FontWeight.w900,
                               fontFamily: "Nexa",
-                              fontSize: height * 0.03,
+                              fontSize: height * 0.025,
                               color: const Color(0xffFBF8FF)),
                         ),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              FirebaseAuth.instance.signOut();
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) => const LoginScreen()),
-                                  (Route<dynamic> route) => true);
-                            });
-                          },
-                          icon: Icon(Icons.logout),
-                          iconSize: 35,
-                        )
+                        // IconButton(
+                        //   onPressed: () {
+                        //     setState(() {
+                        //       FirebaseAuth.instance.signOut();
+                        //       Navigator.of(context).pushAndRemoveUntil(
+                        //           MaterialPageRoute(
+                        //               builder: (context) => const LoginScreen()),
+                        //           (Route<dynamic> route) => true);
+                        //     });
+                        //   },
+                        //   icon: Icon(Icons.logout),
+                        //   iconSize: 25,
+                        // )
                       ],
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.center,
                     ),
                   ),
                   const Divider(
@@ -98,6 +100,23 @@ class _CEOScreenState extends State<CEOScreen> {
               ),
             ),
           ),
+
+          Positioned(
+              top: height * 0.03,
+              left: width * 0.9,
+              right: width * 0.0,
+              child: IconButton(
+                onPressed: () {
+                  setState(() {
+                    FirebaseAuth.instance.signOut();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) =>  const MainPage()));
+
+                  });
+                },
+                icon: Icon(Icons.logout,color: Colors.white,),
+                iconSize: 25,
+              )),
           Positioned(
             top: height * 0.25,
             bottom: height * 0.30,
@@ -119,8 +138,8 @@ class _CEOScreenState extends State<CEOScreen> {
                   children: [
                     Container(
                       child: buttons(
-                          "Management",
-                          const CeoManagement(),
+                          "New User",
+                           NewUser(),
                           Icon(
                             Icons.manage_accounts_outlined,
                             size: height * 0.05,

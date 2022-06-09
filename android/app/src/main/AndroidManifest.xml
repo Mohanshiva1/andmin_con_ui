@@ -1,7 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.andmin_con_ui">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
    <application
-        android:label="andmin_con_ui"
+        android:label="Admin Console"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

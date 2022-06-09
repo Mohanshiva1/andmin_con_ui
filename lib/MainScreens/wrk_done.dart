@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,7 +20,9 @@ class _WRkDONEState extends State<WRkDONE> {
   final user = FirebaseAuth.instance.currentUser;
 
   bool isloading = true;
-  int Count = 0;
+
+  Timer? _timer;
+
   TextEditingController fromfield = TextEditingController();
   TextEditingController tofield = TextEditingController();
   TextEditingController wrkdonefield = TextEditingController();
@@ -42,6 +45,9 @@ class _WRkDONEState extends State<WRkDONE> {
     todayDate();
     setState(() {
       CurrerntUser = user?.email;
+      _timer = Timer.periodic(Duration(seconds: 2), (timer) {
+        loadData();
+      });
     });
 
     super.initState();
@@ -50,6 +56,11 @@ class _WRkDONEState extends State<WRkDONE> {
   var cutomData;
 
   loadData() {
+    nameView.clear();
+    fromView.clear();
+    toView.clear();
+    workDoneView.clear();
+    workPercentageView.clear();
     _auth.once().then((value) => {
           for (var element in value.snapshot.children)
             {
@@ -64,8 +75,10 @@ class _WRkDONEState extends State<WRkDONE> {
                             {
                               if (element3.key == "$formattedDate")
                                 {
+                                  print(element3.key),
                                   for (var element4 in element3.children)
                                     {
+                                      // print(element4.value),
                                       fbData = element4.value,
                                       setState(() {
                                         nameView.add(fbData['name']);
@@ -122,6 +135,14 @@ class _WRkDONEState extends State<WRkDONE> {
                 }
             }
         });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -444,14 +465,7 @@ class _WRkDONEState extends State<WRkDONE> {
                           GestureDetector(
                             onTap: () {
                               setState(() {
-                                buildGridView(height, width);
                                 isloading = false;
-                                final isValid =
-                                    formKey.currentState?.validate();
-                                if (isValid!) {
-                                  CreateWrkDone();
-                                  loadData();
-                                }
 
                                 from = fromfield.text
                                     .trim()
@@ -467,8 +481,6 @@ class _WRkDONEState extends State<WRkDONE> {
                                     .trim()
                                     .replaceAll(RegExp(r'[^0-9]'), ':');
 
-                                Count++;
-
                                 String start_time =
                                     st.toString(); // or if '24:00'
                                 String end_time = so.toString(); // or if '12:00
@@ -481,6 +493,13 @@ class _WRkDONEState extends State<WRkDONE> {
                                   totaltime = end.difference(start);
                                   totaltime =
                                       totaltime.toString().substring(0, 4);
+                                }
+
+                                final isValid =
+                                    formKey.currentState?.validate();
+                                if (isValid!) {
+                                  CreateWrkDone();
+                                  // loadData();
                                 }
                               });
                             },
@@ -580,77 +599,75 @@ class _WRkDONEState extends State<WRkDONE> {
   }
 
   Widget buildGridView(double height, double width) {
-    return SingleChildScrollView(
-      child: SizedBox(
-        child: GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                childAspectRatio: 3 / 2,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20),
-            itemCount: Count,
-            itemBuilder: (BuildContext ctx, index) {
-              return Container(
-                height: height * 0.0,
-                alignment: Alignment.center,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30)),
-                      width: width * 0.5,
-                      height: height * 0.3,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          wrkDetails("From", "${fromfield.text}"),
-                          wrkDetails("To", "${tofield.text}"),
-                          wrkDetails(
-                            "Percent",
-                            percentfield.text,
-                          )
-                        ],
-                      ),
-                    ),
-                    const VerticalDivider(
-                      width: 1,
-                      color: Color(0xffFBF8FF),
-                      indent: 25,
-                      endIndent: 25,
-                      thickness: 3,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30)),
-                      width: width * 0.43,
-                      child: Column(
-                        children: [
-                          Text(
-                            wrkdonefield.text,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 15,
-                                fontFamily: "nexa",
-                                color: Colors.white),
-                          )
-                        ],
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        vertical: height * 0.03,
-                        horizontal: width * 0.02,
-                      ),
-                    ),
-                  ],
+    return GridView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        // scrollDirection: Axis.vertical,
+        padding: EdgeInsets.all(5),
+        shrinkWrap: true,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 1,
+          childAspectRatio: 3 / 2,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+        ),
+        itemCount: nameView.length,
+        itemBuilder: (BuildContext ctx, index) {
+          return Container(
+            height: height * 0.0,
+            alignment: Alignment.center,
+            decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(15)),
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30)),
+                  width: width * 0.5,
+                  height: height * 0.3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      wrkDetails("From", "${fromView[index]}"),
+                      wrkDetails("To", "${toView[index]}"),
+                      wrkDetails(
+                        "Percent",
+                        "${workPercentageView[index]}",
+                      )
+                    ],
+                  ),
                 ),
-              );
-            }),
-      ),
-    );
+                const VerticalDivider(
+                  width: 1,
+                  color: Color(0xffFBF8FF),
+                  indent: 25,
+                  endIndent: 25,
+                  thickness: 3,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30)),
+                  width: width * 0.43,
+                  child: Column(
+                    children: [
+                      Text(
+                        "${workDoneView[index]}",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15,
+                            fontFamily: "",
+                            color: Colors.white),
+                      )
+                    ],
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    vertical: height * 0.03,
+                    horizontal: width * 0.02,
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   Text titleName(String name) {
@@ -674,9 +691,7 @@ class _WRkDONEState extends State<WRkDONE> {
           child: SingleChildScrollView(
             child: Text(address,
                 style: const TextStyle(
-                    fontFamily: 'Nexa',
-                    fontSize: 18,
-                    color: Color(0xffFBF8FF))),
+                    fontFamily: '', fontSize: 18, color: Color(0xffFBF8FF))),
           ),
         ),
       ),

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:andmin_con_ui/MainScreens/PR/create_leed.dart';
 import 'package:andmin_con_ui/MainScreens/PR/view_leed.dart';
+import 'package:andmin_con_ui/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -66,23 +67,10 @@ class _PRScreenState extends State<PRScreen> {
                           style: TextStyle(
                               fontWeight: FontWeight.w900,
                               fontFamily: "Nexa",
-                              fontSize: height * 0.03,
+                              fontSize: height * 0.025,
                               color: const Color(0xffFBF8FF)),
                         ),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              FirebaseAuth.instance.signOut();
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const LoginScreen()),
-                                  (Route<dynamic> route) => false);
-                            });
-                          },
-                          icon: const Icon(Icons.logout),
-                          iconSize: 35,
-                        )
+
                       ],
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                     ),
@@ -98,6 +86,22 @@ class _PRScreenState extends State<PRScreen> {
               ),
             ),
           ),
+          Positioned(
+              top: height * 0.03,
+              left: width * 0.9,
+              right: width * 0.0,
+              child: IconButton(
+                onPressed: () {
+                  setState(() {
+                    FirebaseAuth.instance.signOut();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) =>  const MainPage()));
+
+                  });
+                },
+                icon: Icon(Icons.logout,color: Colors.white,),
+                iconSize: 25,
+              )),
           Positioned(
             top: height * 0.25,
             bottom: height * 0.30,
