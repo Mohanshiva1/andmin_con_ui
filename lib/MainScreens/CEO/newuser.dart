@@ -1,3 +1,5 @@
+import 'package:clay_containers/constants.dart';
+import 'package:clay_containers/widgets/clay_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,18 +26,20 @@ class _NewUserState extends State<NewUser> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color(0xffFBF8FF),
-
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.only(top: height*0.05),
-                child: Text('Create New User',style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Nexa',
-                    fontWeight: FontWeight.w900,
-                    fontSize: height*0.03),),
+                margin: EdgeInsets.only(top: height * 0.05),
+                child: Text(
+                  'Create New User',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Nexa',
+                      fontWeight: FontWeight.w900,
+                      fontSize: height * 0.03),
+                ),
               ),
               const Divider(
                 thickness: 3,
@@ -69,7 +73,7 @@ class _NewUserState extends State<NewUser> {
                                 Color(0xff3865FA),
                               ],
                             ),
-                            boxShadow:  [
+                            boxShadow: [
                               BoxShadow(
                                   color: Colors.black.withOpacity(0.2),
                                   // Color(0xff233045),
@@ -133,7 +137,7 @@ class _NewUserState extends State<NewUser> {
                                 Color(0xff3865FA),
                               ],
                             ),
-                            boxShadow:  [
+                            boxShadow: [
                               BoxShadow(
                                   color: Colors.black.withOpacity(0.2),
                                   offset: Offset(20, 21),
@@ -166,7 +170,7 @@ class _NewUserState extends State<NewUser> {
                               child: Center(
                                 child: TextField(
                                   controller: depcntl,
-                                    textInputAction: TextInputAction.next,
+                                  textInputAction: TextInputAction.next,
                                   style: const TextStyle(
                                       color: Color(0xffFBF8FF), fontFamily: ""),
                                   decoration: const InputDecoration.collapsed(
@@ -197,7 +201,7 @@ class _NewUserState extends State<NewUser> {
                                 Color(0xff3865FA),
                               ],
                             ),
-                            boxShadow:  [
+                            boxShadow: [
                               BoxShadow(
                                   color: Colors.black.withOpacity(0.2),
                                   offset: Offset(20, 21),
@@ -232,7 +236,6 @@ class _NewUserState extends State<NewUser> {
                                   controller: Emailcntl,
                                   keyboardType: TextInputType.emailAddress,
                                   textInputAction: TextInputAction.next,
-
                                   style: const TextStyle(
                                       color: Color(0xffFBF8FF), fontFamily: ""),
                                   decoration: const InputDecoration.collapsed(
@@ -263,7 +266,7 @@ class _NewUserState extends State<NewUser> {
                                 Color(0xff3865FA),
                               ],
                             ),
-                            boxShadow:  [
+                            boxShadow: [
                               BoxShadow(
                                   color: Colors.black.withOpacity(0.2),
                                   offset: Offset(20, 21),
@@ -296,9 +299,7 @@ class _NewUserState extends State<NewUser> {
                               child: Center(
                                 child: TextField(
                                   controller: passwordcntl,
-
                                   textInputAction: TextInputAction.done,
-
                                   style: const TextStyle(
                                       color: Color(0xffFBF8FF), fontFamily: ""),
                                   decoration: const InputDecoration.collapsed(
@@ -314,9 +315,36 @@ class _NewUserState extends State<NewUser> {
                           ],
                         ),
                       ),
+                      SizedBox(
+                        height: 50,
+                      ),
 
-
-
+                      // ClayContainer(
+                      //   height: 70,
+                      //   width: 300,
+                      //   borderRadius: 200,
+                      //   color: Color(0xffFBF8FF),
+                      //   depth: 100,
+                      //   spread: 10,
+                      //   // curveType: CurveType.convex,
+                      //   surfaceColor: Color(0xffFBF8FF),
+                      //   child: Center(
+                      //     child: ClayContainer(
+                      //       height: 50,
+                      //       width: 280,
+                      //       borderRadius: 300,
+                      //       color: Color(0xffFBF8FF),
+                      //       depth: -50,
+                      //       spread: 2,
+                      //       // curveType: CurveType.concave,
+                      //       surfaceColor: Color(0xffFBF8FF),
+                      //       child: Center(
+                      //         child: Text("Create"),
+                      //       ),
+                      //
+                      //     ),
+                      //   ),
+                      // ),
                       SizedBox(
                         height: height * 0.1,
                       ),
@@ -324,7 +352,13 @@ class _NewUserState extends State<NewUser> {
                         onTap: () {
                           setState(() {
                             CreateDB();
-                            firebaseAuth.createUserWithEmailAndPassword(email: Emailcntl.text, password: passwordcntl.text);
+                            firebaseAuth.createUserWithEmailAndPassword(
+                                email: Emailcntl.text,
+                                password: passwordcntl.text);
+                            Emailcntl.clear();
+                            passwordcntl.clear();
+                            namecntl.clear();
+                            depcntl.clear();
                           });
                         },
                         child: Container(
@@ -344,7 +378,7 @@ class _NewUserState extends State<NewUser> {
                                   Color(0xff3865FA),
                                 ],
                               ),
-                              boxShadow:  [
+                              boxShadow: [
                                 BoxShadow(
                                     color: Color(0xff233045).withOpacity(0.40),
                                     offset: Offset(10, 13),
@@ -372,12 +406,11 @@ class _NewUserState extends State<NewUser> {
         ),
       ),
     );
-
   }
 
   CreateDB() {
     _auth.push().set({
-      "department": depcntl.text,
+      "department": depcntl.text.toUpperCase(),
       "email": Emailcntl.text,
       "name": namecntl.text,
       "password": passwordcntl.text,

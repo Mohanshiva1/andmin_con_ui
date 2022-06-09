@@ -43,6 +43,7 @@ dependencies:
   animated_splash_screen:
   shared_preferences:
   flutter_spinkit:
+  clay_containers:
 
 dev_dependencies:
   flutter_test:
