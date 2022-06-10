@@ -1,14 +1,12 @@
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:andmin_con_ui/MainScreens/IT/task.dart';
-import 'package:andmin_con_ui/MainScreens/login_screen.dart';
 import 'package:andmin_con_ui/MainScreens/wrk_done.dart';
 import 'package:andmin_con_ui/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-
 
 class ITScreen extends StatefulWidget {
   const ITScreen({Key? key}) : super(key: key);
@@ -18,7 +16,35 @@ class ITScreen extends StatefulWidget {
 }
 
 class _ITScreenState extends State<ITScreen> {
-  final user = FirebaseAuth.instance;
+  final _auth = FirebaseDatabase.instance.reference().child("staff");
+  final user = FirebaseAuth.instance.currentUser;
+
+  String? CurrerntUser;
+  var fbData;
+  var userName;
+
+  loadData() {
+    _auth.once().then((value) => {
+          for (var element in value.snapshot.children)
+            {
+              fbData = element.value,
+              if (fbData["email"] == CurrerntUser)
+                {
+                  setState(() {
+                    userName = fbData['name'];
+                  }),
+                }
+            }
+        });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    CurrerntUser = user?.email;
+    super.initState();
+    loadData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,19 +89,13 @@ class _ITScreenState extends State<ITScreen> {
               child: Column(
                 children: [
                   Center(
-                    child: Row(
-                      children: [
-                        Text(
-                          "Choose your Destination",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Nexa",
-                              fontSize: height * 0.025,
-                              color: const Color(0xffFBF8FF)),
-                        ),
-
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    child: Text(
+                      "Choose your Destination",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontFamily: "Nexa",
+                          fontSize: height * 0.025,
+                          color: const Color(0xffFBF8FF)),
                     ),
                   ),
                   const Divider(
@@ -84,6 +104,22 @@ class _ITScreenState extends State<ITScreen> {
                     endIndent: 30,
                     height: 4,
                     color: Colors.white,
+                  ),
+                  SizedBox(
+                    height: height * 0.03,
+                  ),
+                  SizedBox(
+                    width: width*0.75,
+                    child: Center(
+                      child: Text(
+                        "Welcome ${userName.toString().trim()} Update your Daily Works",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Nexa',
+                            fontWeight: FontWeight.bold,
+                            fontSize: height * 0.015),
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -97,12 +133,16 @@ class _ITScreenState extends State<ITScreen> {
                 onPressed: () {
                   setState(() {
                     FirebaseAuth.instance.signOut();
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) =>  const MainPage()));
-
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MainPage()));
                   });
                 },
-                icon: Icon(Icons.logout,color: Colors.white,),
+                icon: Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                ),
                 iconSize: 25,
               )),
           Positioned(

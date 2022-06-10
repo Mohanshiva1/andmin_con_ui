@@ -4,11 +4,11 @@ import 'package:andmin_con_ui/MainScreens/CEO/newuser.dart';
 import 'package:andmin_con_ui/MainScreens/CEO/wrk_done_view.dart';
 import 'package:andmin_con_ui/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import '../PR/view_leed.dart';
-import '../login_screen.dart';
 
 class CEOScreen extends StatefulWidget {
   const CEOScreen({Key? key}) : super(key: key);
@@ -18,6 +18,36 @@ class CEOScreen extends StatefulWidget {
 }
 
 class _CEOScreenState extends State<CEOScreen> {
+  final _auth = FirebaseDatabase.instance.reference().child("staff");
+  final user = FirebaseAuth.instance.currentUser;
+
+  String? CurrerntUser;
+  var fbData;
+  var userName;
+
+  loadData() {
+    _auth.once().then((value) => {
+          for (var element in value.snapshot.children)
+            {
+              fbData = element.value,
+              if (fbData["email"] == CurrerntUser)
+                {
+                  setState(() {
+                    userName = fbData['name'];
+                  }),
+                }
+            }
+        });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    CurrerntUser = user?.email;
+    super.initState();
+    loadData();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -52,7 +82,6 @@ class _CEOScreenState extends State<CEOScreen> {
               left: width * 0.0,
               right: width * 0.0,
               child: Lottie.asset("assets/84669-background-animation.json")),
-
           Positioned(
             top: height * 0.15,
             left: 1,
@@ -62,31 +91,13 @@ class _CEOScreenState extends State<CEOScreen> {
               child: Column(
                 children: [
                   Center(
-                    child: Row(
-                      children: [
-                        Text(
-                          "Choose your Destination",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Nexa",
-                              fontSize: height * 0.025,
-                              color: const Color(0xffFBF8FF)),
-                        ),
-                        // IconButton(
-                        //   onPressed: () {
-                        //     setState(() {
-                        //       FirebaseAuth.instance.signOut();
-                        //       Navigator.of(context).pushAndRemoveUntil(
-                        //           MaterialPageRoute(
-                        //               builder: (context) => const LoginScreen()),
-                        //           (Route<dynamic> route) => true);
-                        //     });
-                        //   },
-                        //   icon: Icon(Icons.logout),
-                        //   iconSize: 25,
-                        // )
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Text(
+                      "Choose your Destination",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontFamily: "Nexa",
+                          fontSize: height * 0.025,
+                          color: const Color(0xffFBF8FF)),
                     ),
                   ),
                   const Divider(
@@ -95,12 +106,24 @@ class _CEOScreenState extends State<CEOScreen> {
                     endIndent: 30,
                     height: 4,
                     color: Colors.white,
+                  ),
+                  SizedBox(
+                    height: height * 0.03,
+                  ),
+                  Center(
+                    child: Text(
+                      "Welcome ${userName.toString().trim()} ",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Nexa',
+                          fontWeight: FontWeight.bold,
+                          fontSize: height * 0.015),
+                    ),
                   )
                 ],
               ),
             ),
           ),
-
           Positioned(
               top: height * 0.03,
               left: width * 0.9,
@@ -109,12 +132,16 @@ class _CEOScreenState extends State<CEOScreen> {
                 onPressed: () {
                   setState(() {
                     FirebaseAuth.instance.signOut();
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) =>  const MainPage()));
-
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MainPage()));
                   });
                 },
-                icon: Icon(Icons.logout,color: Colors.white,),
+                icon: Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                ),
                 iconSize: 25,
               )),
           Positioned(
@@ -130,16 +157,16 @@ class _CEOScreenState extends State<CEOScreen> {
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 3 / 2,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
+                    crossAxisCount: 2,
+                    childAspectRatio: 3 / 2,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
                   ),
                   children: [
                     Container(
                       child: buttons(
                           "New User",
-                           NewUser(),
+                          NewUser(),
                           Icon(
                             Icons.manage_accounts_outlined,
                             size: height * 0.05,

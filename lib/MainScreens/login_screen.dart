@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     Container(
-                      width: width * 0.81,
+                      width: width * 0.82,
                       height: height * 0.06,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -115,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       margin: EdgeInsets.only(
                         top: height * 0.05,
                       ),
-                      width: width * 0.82,
+                      width: width * 0.83,
                       height: height * 0.06,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),

@@ -13,7 +13,7 @@ class ViewWrkDone extends StatefulWidget {
 }
 
 class _ViewWrkDoneState extends State<ViewWrkDone> {
-  final database = FirebaseDatabase.instance.reference().child("Staff");
+  final database = FirebaseDatabase.instance.reference().child("staff");
 
   DateTime now = DateTime.now();
   var formatterDate = DateFormat('yyyy-MM-dd');
@@ -27,6 +27,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
   List to = [];
   List workDone = [];
   List workPercentage = [];
+  List totalTime = [];
 
   DatePicker() async {
     selectedDate = formatterDate.format(now);
@@ -62,10 +63,11 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                   fbData = element4.value;
                   setState(() {
                     name.add(fbData['name']);
-                    to.add(fbData['To']);
-                    from.add(fbData['From']);
-                    workDone.add(fbData['WrkDone']);
-                    workPercentage.add(fbData['Percentage']);
+                    to.add(fbData['to']);
+                    from.add(fbData['from']);
+                    workDone.add(fbData['workDone']);
+                    workPercentage.add(fbData['workPercentage']);
+                    totalTime.add(fbData["time_in_hours"]);
                   });
                 }
               }
@@ -178,15 +180,15 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
               children: [
                 Container(
                   padding: EdgeInsets.only(
-                    top: height * 0.01,
-                    left: width * 0.01,
-                    right: width * 0.01,
-                  ),
+                      top: height * 0.01,
+                      left: width * 0.01,
+                      right: width * 0.01,
+                      bottom: height * 0.02),
                   height: height * 0.80,
                   width: width * 0.99,
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(40),
+                    borderRadius: BorderRadius.circular(20),
                     boxShadow: const [
                       BoxShadow(
                           color: Colors.white10,
@@ -226,64 +228,64 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
             crossAxisCount: 1,
             childAspectRatio: 3 / 2,
             crossAxisSpacing: 20,
-            mainAxisSpacing: 20),
+            mainAxisSpacing: 50),
         itemCount: name.length,
         itemBuilder: (BuildContext ctx, index) {
-          return Container(
-            height: height * 0.04,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-            child: Row(
-              children: [
-                Container(
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(30)),
-                  width: width * 0.5,
-                  height: height * 0.3,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      WrkDetails("Name", "${name[index]}"),
-                      WrkDetails("From", "${from[index]}"),
-                      WrkDetails("To", "${to[index]}"),
-                      WrkDetails("Percent", "${workPercentage[index]}"),
-                    ],
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white12.withOpacity(0.1)),
+                    width: width * 0.5,
+                    height: height * 0.3,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        WrkDetails("Name", "${name[index]}"),
+                        WrkDetails("From", "${from[index]}"),
+                        WrkDetails("To", "${to[index]}"),
+                        WrkDetails("Percent", "${workPercentage[index]}"),
+                        WrkDetails('Total Hours', "${totalTime[index]}")
+                      ],
+                    ),
                   ),
-                ),
-                const VerticalDivider(
-                  width: 1,
-                  color: Color(0xffFBF8FF),
-                  indent: 25,
-                  endIndent: 25,
-                  thickness: 3,
-                ),
-                Container(
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(30)),
-                  width: width * 0.43,
-                  child: Column(
-                    children: [
-                      Text(
-                        '${workDone[index]}',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                            fontFamily: "nexa",
-                            color: Colors.white),
-                      )
-                    ],
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white12.withOpacity(0.1)),
+                    width: width * 0.43,
+                    child: Column(
+                      children: [
+                        Text(
+                          '${workDone[index]}',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              color: Colors.white),
+                        )
+                      ],
+                    ),
+                    padding: EdgeInsets.symmetric(
+                        vertical: height * 0.03, horizontal: width * 0.02),
                   ),
-                  padding: EdgeInsets.symmetric(
-                      vertical: height * 0.03, horizontal: width * 0.02),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           );
         });
   }
 
   WrkDetails(String title, String details) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return SizedBox(
+      height: height * 0.05,
       child: ListTile(
         title: Text(title,
             style: const TextStyle(
@@ -292,7 +294,6 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
           child: Text(
             details,
             style: const TextStyle(
-              fontFamily: 'Nexa',
               fontSize: 13,
               color: Color(0xffFBF8FF),
             ),

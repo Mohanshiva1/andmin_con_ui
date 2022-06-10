@@ -86,7 +86,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final database = FirebaseDatabase.instance.reference().child("Staff");
+  final database = FirebaseDatabase.instance.reference().child("staff");
   final user = FirebaseAuth.instance.currentUser;
 
   String? CurrerntUser;
@@ -102,13 +102,14 @@ class _HomePageState extends State<HomePage> {
           if (fbData['department'] == "APP") {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const ITScreen()));
-          } else if (fbData['department'] == "CEO") {
+          } else if (fbData['department'] == "admin") {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const CEOScreen()));
           } else if (fbData['department'] == "PR") {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const PRScreen()));
-          } else if (fbData['department'] == "WEB") {
+          }
+            else if (fbData['department'] == "WEB") {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const ITScreen()));
           } else if (fbData['department'] == "RND") {

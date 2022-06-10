@@ -4,10 +4,11 @@ import 'package:andmin_con_ui/MainScreens/PR/create_leed.dart';
 import 'package:andmin_con_ui/MainScreens/PR/view_leed.dart';
 import 'package:andmin_con_ui/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import '../login_screen.dart';
+
 import '../wrk_done.dart';
 
 class PRScreen extends StatefulWidget {
@@ -18,6 +19,37 @@ class PRScreen extends StatefulWidget {
 }
 
 class _PRScreenState extends State<PRScreen> {
+  final _auth = FirebaseDatabase.instance.reference().child("staff");
+  final user = FirebaseAuth.instance.currentUser;
+
+  String? CurrerntUser;
+  var fbData;
+  var userName;
+
+  loadData() {
+    _auth.once().then((value) => {
+      for (var element in value.snapshot.children)
+        {
+          fbData = element.value,
+          if (fbData["email"] == CurrerntUser)
+            {
+              // print(fbData),
+              setState(() {
+                userName = fbData['name'];
+                print(userName);
+              }),
+            }
+        }
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    CurrerntUser = user?.email;
+    super.initState();
+    loadData();
+  }
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -60,19 +92,13 @@ class _PRScreenState extends State<PRScreen> {
               child: Column(
                 children: [
                   Center(
-                    child: Row(
-                      children: [
-                        Text(
-                          "Choose your Destination",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Nexa",
-                              fontSize: height * 0.025,
-                              color: const Color(0xffFBF8FF)),
-                        ),
-
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    child: Text(
+                      "Choose your Destination",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontFamily: "Nexa",
+                          fontSize: height * 0.025,
+                          color: const Color(0xffFBF8FF)),
                     ),
                   ),
                   const Divider(
@@ -81,6 +107,19 @@ class _PRScreenState extends State<PRScreen> {
                     endIndent: 30,
                     height: 4,
                     color: Colors.white,
+                  ),
+                  SizedBox(
+                    height: height * 0.03,
+                  ),
+                  Center(
+                    child: Text(
+                      "Welcome ${userName.toString().trim()} Update your Daily Works",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Nexa',
+                          fontWeight: FontWeight.bold,
+                          fontSize: height * 0.015),
+                    ),
                   )
                 ],
               ),

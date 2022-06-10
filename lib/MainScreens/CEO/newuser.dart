@@ -1,5 +1,3 @@
-import 'package:clay_containers/constants.dart';
-import 'package:clay_containers/widgets/clay_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +9,7 @@ class NewUser extends StatefulWidget {
 }
 
 class _NewUserState extends State<NewUser> {
-  final _auth = FirebaseDatabase.instance.reference().child("Staff");
+  final _auth = FirebaseDatabase.instance.reference().child("staff");
 
   final firebaseAuth = FirebaseAuth.instance;
 
@@ -318,33 +316,6 @@ class _NewUserState extends State<NewUser> {
                       SizedBox(
                         height: 50,
                       ),
-
-                      // ClayContainer(
-                      //   height: 70,
-                      //   width: 300,
-                      //   borderRadius: 200,
-                      //   color: Color(0xffFBF8FF),
-                      //   depth: 100,
-                      //   spread: 10,
-                      //   // curveType: CurveType.convex,
-                      //   surfaceColor: Color(0xffFBF8FF),
-                      //   child: Center(
-                      //     child: ClayContainer(
-                      //       height: 50,
-                      //       width: 280,
-                      //       borderRadius: 300,
-                      //       color: Color(0xffFBF8FF),
-                      //       depth: -50,
-                      //       spread: 2,
-                      //       // curveType: CurveType.concave,
-                      //       surfaceColor: Color(0xffFBF8FF),
-                      //       child: Center(
-                      //         child: Text("Create"),
-                      //       ),
-                      //
-                      //     ),
-                      //   ),
-                      // ),
                       SizedBox(
                         height: height * 0.1,
                       ),
@@ -380,10 +351,11 @@ class _NewUserState extends State<NewUser> {
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                    color: Color(0xff233045).withOpacity(0.40),
-                                    offset: Offset(10, 13),
-                                    blurRadius: 9,
-                                    spreadRadius: 1)
+                                  color: Color(0xff233045).withOpacity(0.40),
+                                  offset: Offset(10, 13),
+                                  blurRadius: 9,
+                                  spreadRadius: 1,
+                                ),
                               ]),
                           child: Center(
                             child: Text(
