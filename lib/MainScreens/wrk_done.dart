@@ -693,7 +693,7 @@ class _WRkDONEState extends State<WRkDONE> {
         trailing: SingleChildScrollView(
           child: Text(
             details,
-            style: const TextStyle(
+          style: const TextStyle(
               fontSize: 13,
               color: Color(0xffFBF8FF),
             ),

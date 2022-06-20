@@ -73,15 +73,17 @@ class _CEOScreenState extends State<CEOScreen> {
             //
           ),
           Positioned(
-              top: height * 0.01,
-              left: width * 0.0,
-              right: width * 0.0,
-              child: Lottie.asset("assets/84668-background-animation.json")),
+            top: height * 0.01,
+            left: width * 0.0,
+            right: width * 0.0,
+            child: Lottie.asset("assets/84668-background-animation.json"),
+          ),
           Positioned(
-              top: height * 0.7,
-              left: width * 0.0,
-              right: width * 0.0,
-              child: Lottie.asset("assets/84669-background-animation.json")),
+            top: height * 0.7,
+            left: width * 0.0,
+            right: width * 0.0,
+            child: Lottie.asset("assets/84669-background-animation.json"),
+          ),
           Positioned(
             top: height * 0.15,
             left: 1,
@@ -119,7 +121,7 @@ class _CEOScreenState extends State<CEOScreen> {
                           fontWeight: FontWeight.bold,
                           fontSize: height * 0.015),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -133,9 +135,11 @@ class _CEOScreenState extends State<CEOScreen> {
                   setState(() {
                     FirebaseAuth.instance.signOut();
                     Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MainPage()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainPage(),
+                      ),
+                    );
                   });
                 },
                 icon: Icon(
