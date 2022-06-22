@@ -85,8 +85,7 @@ class _WRkDONEState extends State<WRkDONE> {
                                         toView.add(fbData['to']);
                                         fromView.add(fbData['from']);
                                         workDoneView.add(fbData['workDone']);
-                                        workPercentageView
-                                            .add(fbData['workPercentage']);
+                                        workPercentageView.add(fbData['workPercentage']);
                                       }),
                                     },
                                 }

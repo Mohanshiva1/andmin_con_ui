@@ -45,6 +45,7 @@ dependencies:
   flutter_spinkit:
   clay_containers:
   rename:
+  kt_dart:
 
 
 dev_dependencies:

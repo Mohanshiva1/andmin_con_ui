@@ -118,7 +118,7 @@ class _PRScreenState extends State<PRScreen> {
                           color: Colors.white,
                           fontFamily: 'Nexa',
                           fontWeight: FontWeight.bold,
-                          fontSize: height * 0.015),
+                          fontSize: height * 0.017),
                     ),
                   )
                 ],

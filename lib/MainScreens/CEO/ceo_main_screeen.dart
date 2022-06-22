@@ -119,7 +119,7 @@ class _CEOScreenState extends State<CEOScreen> {
                           color: Colors.white,
                           fontFamily: 'Nexa',
                           fontWeight: FontWeight.bold,
-                          fontSize: height * 0.015),
+                          fontSize: height * 0.017),
                     ),
                   ),
                 ],
