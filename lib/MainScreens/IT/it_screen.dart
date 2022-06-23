@@ -52,26 +52,26 @@ class _ITScreenState extends State<ITScreen> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.black38,
+      backgroundColor: Color(0xffF7F9FC),
       body: Stack(
         children: [
+          // Positioned(
+          //   top: height * 0.01,
+          //   bottom: height * 0.01,
+          //   right: width * 0.01,
+          //   left: width * 0.01,
+          //   child: Container(
+          //     decoration: const BoxDecoration(
+          //         gradient: LinearGradient(
+          //       colors: [Colors.black, Colors.black],
+          //       end: Alignment.bottomLeft,
+          //       begin: Alignment.topRight,
+          //     )),
+          //   ),
+          //   //
+          // ),
           Positioned(
-            top: height * 0.01,
-            bottom: height * 0.01,
-            right: width * 0.01,
-            left: width * 0.01,
-            child: Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                colors: [Colors.black, Colors.black],
-                end: Alignment.bottomLeft,
-                begin: Alignment.topRight,
-              )),
-            ),
-            //
-          ),
-          Positioned(
-              top: height * 0.01,
+              top: height * 0.00,
               left: width * 0.0,
               right: width * 0.0,
               child: Lottie.asset("assets/84668-background-animation.json")),
@@ -85,7 +85,7 @@ class _ITScreenState extends State<ITScreen> {
             left: 1,
             right: 1,
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
+              filter: ImageFilter.blur(sigmaY: 5, sigmaX: 5),
               child: Column(
                 children: [
                   Center(
@@ -95,7 +95,7 @@ class _ITScreenState extends State<ITScreen> {
                           fontWeight: FontWeight.w900,
                           fontFamily: "Nexa",
                           fontSize: height * 0.025,
-                          color: const Color(0xffFBF8FF)),
+                          color: Colors.black87),
                     ),
                   ),
                   const Divider(
@@ -103,7 +103,7 @@ class _ITScreenState extends State<ITScreen> {
                     indent: 30,
                     endIndent: 30,
                     height: 4,
-                    color: Colors.white,
+                    color: Colors.black87,
                   ),
                   SizedBox(
                     height: height * 0.03,
@@ -114,7 +114,7 @@ class _ITScreenState extends State<ITScreen> {
                       child: Text(
                         "Welcome ${userName.toString().trim()} Update your Daily Works",
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontFamily: 'Nexa',
                             fontWeight: FontWeight.bold,
                             fontSize: height * 0.017),
@@ -146,44 +146,40 @@ class _ITScreenState extends State<ITScreen> {
                 iconSize: 25,
               )),
           Positioned(
-            top: height * 0.25,
-            bottom: height * 0.30,
+            top: height * 0.35,
+
             left: width * 0.05,
             right: width * 0.05,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              //     crossAxisCount: 2,
+              //     // childAspectRatio: 3 / 2,
+              //     // crossAxisSpacing: 20,
+              //     // mainAxisSpacing: 20,
+              // ),
               children: [
-                GridView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 3 / 2,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20),
-                  children: [
-                    Container(
-                      child: Buttons(
-                          "New Task",
-                          const TaskScreen(),
-                          Icon(
-                            Icons.add_task_sharp,
-                            size: height * 0.05,
-                            color: Colors.amber,
-                          )),
-                    ),
-                    Container(
-                      child: Buttons(
-                          "Work Manager",
-                          const WRkDONE(),
-                          Icon(
-                            Icons.work_outline_rounded,
-                            size: height * 0.05,
-                            color: Colors.amber,
-                          )),
-                    ),
-                  ],
+                Container(
+                  child: Buttons(
+                      "New Task",
+                      const TaskScreen(),
+                      Icon(
+                        Icons.add_task_sharp,
+                        size: height * 0.05,
+                        color: Colors.amber,
+                      )),
+                ),
+                Container(
+                  child: Buttons(
+                      "Work Manager",
+                      const WRkDONE(),
+                      Icon(
+                        Icons.work_outline_rounded,
+                        size: height * 0.05,
+                        color: Colors.amber,
+                      )),
                 ),
               ],
             ),
@@ -204,11 +200,25 @@ class _ITScreenState extends State<ITScreen> {
         });
       },
       child: AnimatedContainer(
+        margin: EdgeInsets.symmetric(vertical: height*0.02,horizontal: width*0.08),
         height: height * 0.15,
         width: width * 0.4,
-        duration: const Duration(milliseconds: 100),
+        duration:  Duration(milliseconds: 100),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.3),
+          color: Color(0xffF7F9FC),
+          // Colors.white.withOpacity(0.3),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(9.0, 9.0),
+              blurRadius: 9,
+            ),
+            BoxShadow(
+              color: Colors.white,
+              offset: Offset(-10.0, -10.0),
+              blurRadius: 10,
+            ),
+          ],
           borderRadius: BorderRadius.circular(30),
         ),
         child: Center(

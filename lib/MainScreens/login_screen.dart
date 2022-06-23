@@ -34,14 +34,14 @@ class _LoginScreenState extends State<LoginScreen> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xff34455B),
+      backgroundColor: const Color(0xffF7F9FC),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Center(
               child: Container(
                 margin: EdgeInsets.symmetric(
-                  vertical: height * 0.15,
+                  vertical: height * 0.13,
                 ),
                 padding: EdgeInsets.symmetric(
                   vertical: height * 0.09,
@@ -51,6 +51,27 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 child: Column(
                   children: [
+                    Container(
+                      child: Text(
+                        'Welcome Back',
+                        style: TextStyle(
+                            fontSize: height * 0.03,
+                            color: Colors.black,
+                            shadows: <Shadow>[
+
+                              Shadow(
+                                offset: Offset(10.0, 15.0),
+                                blurRadius: 8.0,
+                                color: Colors.black45,
+                              ),
+                            ],
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Nexa"),
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.09,
+                    ),
                     Container(
                       width: width * 0.82,
                       height: height * 0.06,
@@ -64,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           boxShadow: const [
                             BoxShadow(
-                                color: Color(0xff233045),
+                                color: Colors.black26,
                                 offset: Offset(20, 21),
                                 blurRadius: 9,
                                 spreadRadius: 1)
@@ -127,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           boxShadow: const [
                             BoxShadow(
-                                color: Color(0xff233045),
+                                color: Colors.black26,
                                 offset: Offset(20, 21),
                                 blurRadius: 9,
                                 spreadRadius: 1)

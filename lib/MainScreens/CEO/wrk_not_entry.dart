@@ -18,17 +18,11 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
   String? selectedDate;
 
   var fbData;
-  List data = [];
   List notEntry = [];
 
   List allData = [];
   List nameData = [];
-  List name = [];
-  List from = [];
-  List to = [];
-  List workDone = [];
-  List workPercentage = [];
-  List totalTime = [];
+
 
   DatePicker() async {
     selectedDate = formatterDate.format(now);
@@ -48,12 +42,6 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
   }
 
   loadData() {
-    name.clear();
-    from.clear();
-    to.clear();
-    workDone.clear();
-    workPercentage.clear();
-
     database.once().then((value) {
       for (var element in value.snapshot.children) {
         // print(element.value);
@@ -79,8 +67,8 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
                   if (fbData['name'] != notEntry) {
                     setState(() {
                       notEntry.remove(fbData['name']);
-                      print(
-                          "..................${notEntry}..............................");
+                      // print(
+                      //     "..................${notEntry}..............................");
                     });
                   }
                   setState(() {
@@ -89,12 +77,6 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
                     nameData.add(fbData['name']);
                     nameData = nameData.toSet().toList();
                     // print('data2 ..................${nameData}');
-                    name.add(fbData['name']);
-                    to.add(fbData['to']);
-                    from.add(fbData['from']);
-                    workDone.add(fbData['workDone']);
-                    workPercentage.add(fbData['workPercentage']);
-                    totalTime.add(fbData["time_in_hours"]);
                   });
                 }
               }
@@ -103,6 +85,13 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
         }
       }
     });
+  }
+  @override
+  void initState() {
+    selectedDate = formatterDate.format(now);
+    print(selectedDate);
+    loadData();
+    super.initState();
   }
 
   @override
@@ -118,15 +107,21 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
                 top: height * 0.05, left: width * 0.04, right: width * 0.04),
             height: height * 0.07,
             decoration: BoxDecoration(
-                color: Color(0xffFFFFFF),
+                color: Color(0xffF7F9FC),
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black26,
+                    color: Colors.white.withOpacity(0.2),
                     offset: Offset(9.0, 9.0),
                     blurRadius: 9,
                   ),
-                ]),
+                  BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset(-10.0, -10.0),
+                    blurRadius: 10,
+                  ),
+                ],
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -151,14 +146,12 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
                   onTap: () {
                     setState(() {
                       DatePicker();
-                      // allData.clear();
-                      // nameData.clear();
                       notEntry.clear();
                     });
                   },
                   child: Icon(Icons.calendar_month,
                       color: Colors.orange, size: height * 0.04),
-                )
+                ),
               ],
             ),
           ),
@@ -169,7 +162,7 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
             height: height * 0.5,
             width: width * 09,
             decoration: BoxDecoration(
-                color: Color(0xffFFFFFF),
+                color:Color(0xffF7F9FC),
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: [
                   BoxShadow(
@@ -177,16 +170,22 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
                     offset: Offset(9.0, 9.0),
                     blurRadius: 9,
                   ),
+                  BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(-10.0, -10.0),
+                    blurRadius: 10,
+                  ),
                 ]),
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   nameData.length == 0
-                      ? const Text("Select Date to View Details",
-                          style: TextStyle(
-                              fontFamily: 'Nexa',
-                              fontSize: 20,
-                              color: Colors.black))
+                      ? CircularProgressIndicator(color: Colors.orange,strokeWidth: 7,)
+                  // const Text("Select Date to View Details",
+                  //         style: TextStyle(
+                  //             fontFamily: 'Nexa',
+                  //             fontSize: 20,
+                  //             color: Colors.black))
                       : ListView.builder(
                           scrollDirection: Axis.vertical,
                           physics: NeverScrollableScrollPhysics(),
