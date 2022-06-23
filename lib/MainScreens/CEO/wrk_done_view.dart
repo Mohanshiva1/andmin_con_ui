@@ -318,10 +318,11 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
   DateTime now = DateTime.now();
   var formatterDate = DateFormat('yyyy-MM-dd');
   String? selectedDate;
+
   var fbData;
 
-  List data1 = [];
-  List data2 = [];
+  List allData = [];
+  List nameData = [];
   List name = [];
   List from = [];
   List to = [];
@@ -355,19 +356,24 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
 
     database.once().then((value) {
       for (var element in value.snapshot.children) {
+        // print(element.value);
+        fbData = element.value;
         for (var element1 in element.children) {
+
           for (var element2 in element1.children) {
             for (var element3 in element2.children) {
               if (element3.key == selectedDate) {
                 for (var element4 in element3.children) {
                   // print(element4.value);
+
                   fbData = element4.value;
+
                   setState(() {
-                    data1.add(fbData);
-                    print("data1......${data1}");
-                    data2.add(fbData['name']);
-                    data2 = data2.toSet().toList();
-                    // print('data2 ..................${data2}');
+                    allData.add(fbData);
+                    // print("allData......${allData}");
+                    nameData.add(fbData['name']);
+                    nameData = nameData.toSet().toList();
+                    // print('data2 ..................${nameData}');
                     name.add(fbData['name']);
                     to.add(fbData['to']);
                     from.add(fbData['from']);
@@ -375,6 +381,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                     workPercentage.add(fbData['workPercentage']);
                     totalTime.add(fbData["time_in_hours"]);
                   });
+
                 }
               }
             }
@@ -384,8 +391,17 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
     });
   }
 
+
+
+
+
+
+
+
+
   @override
   void initState() {
+
     super.initState();
   }
 
@@ -454,8 +470,8 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                           onTap: () {
                             setState(() {
                               DatePicker();
-                              data1.clear();
-                              data2.clear();
+                              allData.clear();
+                              nameData.clear();
                             });
                           },
                           child: Icon(Icons.calendar_month,
@@ -507,7 +523,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        data2.length == 0
+                        nameData.length == 0
                             ? const Text("Select Date",
                                 style: TextStyle(
                                     fontFamily: 'Nexa',
@@ -537,7 +553,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
           crossAxisSpacing: 0,
           mainAxisSpacing: 20,
         ),
-        itemCount: data2.length,
+        itemCount: nameData.length,
         itemBuilder: (BuildContext ctx, index) {
           return Container(
             decoration: BoxDecoration(
@@ -548,7 +564,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "${data2[index]}",
+                  "${nameData[index]}",
                   style: const TextStyle(
                     fontFamily: 'Nexa',
                     fontSize: 18,
@@ -560,19 +576,19 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                     // color: Colors.blue,
                     height: height * 0.20,
                     child: SingleChildScrollView(
-                      child: data2.length == 0
+                      child: nameData.length == 0
                           ? const Text("Select Date",
-                              style: TextStyle(
-                                  fontFamily: 'Nexa',
-                                  fontSize: 20,
-                                  color: Color(0xffFBF8FF)))
+                          style: TextStyle(
+                              fontFamily: 'Nexa',
+                              fontSize: 20,
+                              color: Color(0xffFBF8FF)))
                           : ListView.builder(
                               scrollDirection: Axis.vertical,
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: data1.length,
+                              itemCount: allData.length,
                               itemBuilder: (BuildContext context, int ind) {
-                                return data1[ind]['name'].contains(data2[index])
+                                return allData[ind]['name'].contains(nameData[index])
                                     ? Container(
                                         padding: EdgeInsets.only(
                                             right: width * 0.03,
@@ -591,14 +607,15 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                                                       .spaceBetween,
                                               children: [
                                                 subTitle(
-                                                    '${data1[ind]['from']}'),
-                                                subTitle(
-                                                    '[ ${data1[ind]['to']}'),
+                                                    '[ ${allData[ind]['from']}'),
                                                 subTitle("To"),
                                                 subTitle(
-                                                    '${data1[ind]['time_in_hours']} ]'),
+                                                    ' ${allData[ind]['to']} ]'),
+
                                                 subTitle(
-                                                    '${data1[ind]['workPercentage']}'),
+                                                    '${allData[ind]['time_in_hours']} '),
+                                                subTitle(
+                                                    '${allData[ind]['workPercentage']}'),
                                               ],
                                             ),
                                             Divider(
@@ -608,7 +625,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                                               color: Colors.white,
                                             ),
                                             Text(
-                                              '${data1[ind]['workDone']}',
+                                              '${allData[ind]['workDone']}',
                                               style: TextStyle(
                                                   fontFamily: 'Avenir',
                                                   fontWeight: FontWeight.w500,
@@ -624,56 +641,14 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                                     : Container();
                               },
                             ),
-                    )),
+                    ),
+                ),
                 SizedBox(
                   height: height * 0.01,
                 ),
               ],
             ),
           );
-
-          //   Row(
-          //   crossAxisAlignment: CrossAxisAlignment.start,
-          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //   children: [
-          //     Container(
-          //       decoration: BoxDecoration(
-          //           borderRadius: BorderRadius.circular(30),
-          //           color: Colors.white12.withOpacity(0.1)),
-          //       width: width * 0.5,
-          //       height: height * 0.3,
-          //       child: Column(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           WrkDetails("Name", "${name[index]}"),
-          //           WrkDetails("From", "${from[index]}"),
-          //           WrkDetails("To", "${to[index]}"),
-          //           WrkDetails("Percent", "${workPercentage[index]}"),
-          //           WrkDetails('Total Hours', "${totalTime[index]}")
-          //         ],
-          //       ),
-          //     ),
-          //     Container(
-          //       decoration: BoxDecoration(
-          //           borderRadius: BorderRadius.circular(30),
-          //           color: Colors.white12.withOpacity(0.1)),
-          //       width: width * 0.43,
-          //       child: Column(
-          //         children: [
-          //           Text(
-          //             '${workDone[index]}',
-          //             style: const TextStyle(
-          //                 fontWeight: FontWeight.w400,
-          //                 fontSize: 15,
-          //                 color: Colors.white),
-          //           )
-          //         ],
-          //       ),
-          //       padding: EdgeInsets.symmetric(
-          //           vertical: height * 0.03, horizontal: width * 0.02),
-          //     ),
-          //   ],
-          // );
         });
   }
 
@@ -685,56 +660,4 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
             fontSize: 15,
             color: Colors.white),
       );
-
-// Widget StaffWorks(){
-//   return GridView.builder(
-//     shrinkWrap: true,
-//     scrollDirection: Axis.vertical,
-//     physics: NeverScrollableScrollPhysics(),
-//     itemCount: headerName.length,
-//       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//           crossAxisCount: 1,
-//           childAspectRatio: 1 / 1.2,
-//           crossAxisSpacing: 0,
-//           mainAxisSpacing: 20
-//
-//
-//       ),
-//       itemBuilder: (context,index) {
-//         return Container(
-//           child: Column(
-//             children: [
-//               WrkDetails('title', '${name[index]}')
-//             ],
-//           ),
-//         );
-//       });
-// }
-
-// WrkDetails(String title, String details) {
-//   final height = MediaQuery.of(context).size.height;
-//   final width = MediaQuery.of(context).size.width;
-//   return SizedBox(
-//     height: height * 0.05,
-//     child: ListTile(
-//       title: Text(
-//         title,
-//         style: const TextStyle(
-//           fontFamily: 'Nexa',
-//           fontSize: 13,
-//           color: Color(0xffFBF8FF),
-//         ),
-//       ),
-//       trailing: SingleChildScrollView(
-//         child: Text(
-//           details,
-//           style: const TextStyle(
-//             fontSize: 13,
-//             color: Color(0xffFBF8FF),
-//           ),
-//         ),
-//       ),
-//     ),
-//   );
-// }
 }

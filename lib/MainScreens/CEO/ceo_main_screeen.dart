@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:andmin_con_ui/MainScreens/CEO/newuser.dart';
 import 'package:andmin_con_ui/MainScreens/CEO/wrk_done_view.dart';
+import 'package:andmin_con_ui/MainScreens/CEO/wrk_not_entry.dart';
 import 'package:andmin_con_ui/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -54,7 +55,7 @@ class _CEOScreenState extends State<CEOScreen> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.black38,
+      backgroundColor: Colors.black12,
       body: Stack(
         children: [
           Positioned(
@@ -191,6 +192,16 @@ class _CEOScreenState extends State<CEOScreen> {
                       child: buttons(
                           "View Works",
                           const ViewWrkDone(),
+                          Icon(
+                            Icons.work_outline_rounded,
+                            size: height * 0.05,
+                            color: Colors.amber,
+                          )),
+                    ),
+                    Container(
+                      child: buttons(
+                          "Absent Details",
+                          const AbsentAndPresent(),
                           Icon(
                             Icons.work_outline_rounded,
                             size: height * 0.05,
