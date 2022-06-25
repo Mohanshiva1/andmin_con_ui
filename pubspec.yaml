@@ -46,6 +46,7 @@ dependencies:
   clay_containers:
   rename:
   kt_dart:
+  flutter_toastr:
 
 
 dev_dependencies:

@@ -11,14 +11,33 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final auth = FirebaseAuth.instance;
 
+  final _forkey = GlobalKey<FormState>();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
   Future login() async {
-    await auth.signInWithEmailAndPassword(
+    await auth
+        .signInWithEmailAndPassword(
       email: email.text.trim(),
       password: password.text.trim(),
-    );
+    ).catchError((err) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Error"),
+              content: Text("Wrong Email or Password"),
+              actions: [
+                FlatButton(
+                  child: Text("Ok"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
+    });
   }
 
   @override
@@ -58,7 +77,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontSize: height * 0.03,
                             color: Colors.black,
                             shadows: <Shadow>[
-
                               Shadow(
                                 offset: Offset(10.0, 15.0),
                                 blurRadius: 8.0,
@@ -112,10 +130,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                     topRight: Radius.circular(10),
                                     bottomRight: Radius.circular(10))),
                             child: Center(
-                              child: TextField(
+                              child: TextFormField(
                                 controller: email,
                                 keyboardType: TextInputType.emailAddress,
                                 textInputAction: TextInputAction.next,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return ("Please Enter Email");
+                                  }
+                                  // if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
+                                  //   return ('Please Enter Valid Email');
+                                  // }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  email.text = value!;
+                                },
                                 style: const TextStyle(
                                     color: Color(0xffFBF8FF), fontFamily: ""),
                                 decoration: const InputDecoration.collapsed(
@@ -177,11 +207,19 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             child: Center(
-                              child: TextField(
+                              child: TextFormField(
                                 controller: password,
                                 keyboardType: TextInputType.visiblePassword,
                                 textInputAction: TextInputAction.done,
                                 obscureText: true,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return ('Password required');
+                                  }
+                                },
+                                onSaved: (value) {
+                                  password.text = value!;
+                                },
                                 style: const TextStyle(
                                     color: Color(0xffFBF8FF), fontFamily: ""),
                                 decoration: const InputDecoration.collapsed(

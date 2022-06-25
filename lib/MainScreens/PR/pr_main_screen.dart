@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 
+import '../work_entry.dart';
 import '../wrk_done.dart';
 
 class PRScreen extends StatefulWidget {
@@ -56,25 +57,25 @@ class _PRScreenState extends State<PRScreen> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Colors.black38,
+      backgroundColor: Color(0xffF7F9FC),
       body: Stack(
         children: [
+          // Positioned(
+          //   top: height * 0.01,
+          //   bottom: height * 0.01,
+          //   right: width * 0.01,
+          //   left: width * 0.01,
+          //   child: Container(
+          //     decoration: const BoxDecoration(
+          //         gradient: LinearGradient(
+          //       colors: [Colors.black, Colors.black],
+          //       end: Alignment.bottomLeft,
+          //       begin: Alignment.topRight,
+          //     )),
+          //   ),
+          // ),
           Positioned(
-            top: height * 0.01,
-            bottom: height * 0.01,
-            right: width * 0.01,
-            left: width * 0.01,
-            child: Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                colors: [Colors.black, Colors.black],
-                end: Alignment.bottomLeft,
-                begin: Alignment.topRight,
-              )),
-            ),
-          ),
-          Positioned(
-              top: height * 0.01,
+              top: height * 0.0,
               left: width * 0.0,
               right: width * 0.0,
               child: Lottie.asset("assets/84668-background-animation.json")),
@@ -88,7 +89,7 @@ class _PRScreenState extends State<PRScreen> {
             left: 1,
             right: 1,
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 20, sigmaX: 20),
+              filter: ImageFilter.blur(sigmaY: 0, sigmaX: 0),
               child: Column(
                 children: [
                   Center(
@@ -98,7 +99,7 @@ class _PRScreenState extends State<PRScreen> {
                           fontWeight: FontWeight.w900,
                           fontFamily: "Nexa",
                           fontSize: height * 0.025,
-                          color: const Color(0xffFBF8FF)),
+                          color: Colors.black),
                     ),
                   ),
                   const Divider(
@@ -106,16 +107,16 @@ class _PRScreenState extends State<PRScreen> {
                     indent: 30,
                     endIndent: 30,
                     height: 4,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                   SizedBox(
                     height: height * 0.03,
                   ),
                   Center(
                     child: Text(
-                      "Welcome ${userName.toString().trim()} Update your Daily Works",
+                      "Welcome Back ${userName.toString().trim()}",
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontFamily: 'Nexa',
                           fontWeight: FontWeight.bold,
                           fontSize: height * 0.017),
@@ -143,7 +144,7 @@ class _PRScreenState extends State<PRScreen> {
               )),
           Positioned(
             top: height * 0.25,
-            bottom: height * 0.30,
+            bottom: height * 0.0,
             left: width * 0.05,
             right: width * 0.05,
             child: Column(
@@ -155,9 +156,8 @@ class _PRScreenState extends State<PRScreen> {
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 3 / 2,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20),
+                    
+                      ),
                   children: [
                     Container(
                       child: Buttons(
@@ -182,7 +182,7 @@ class _PRScreenState extends State<PRScreen> {
                     Container(
                       child: Buttons(
                           "Work Manager",
-                          const WRkDONE(),
+                          WorkEntry(),
                           Icon(
                             Icons.work_outline_rounded,
                             size: height * 0.05,
@@ -210,11 +210,26 @@ class _PRScreenState extends State<PRScreen> {
         });
       },
       child: AnimatedContainer(
+        margin: EdgeInsets.all(20),
         height: height * 0.15,
         width: width * 0.4,
-        duration: const Duration(milliseconds: 100),
+
+        duration:  Duration(milliseconds: 100),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.3),
+          color: Color(0xffF7F9FC),
+          // Colors.white.withOpacity(0.3),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(9.0, 9.0),
+              blurRadius: 9,
+            ),
+            BoxShadow(
+              color: Colors.white,
+              offset: Offset(-10.0, -10.0),
+              blurRadius: 10,
+            ),
+          ],
           borderRadius: BorderRadius.circular(30),
         ),
         child: Center(

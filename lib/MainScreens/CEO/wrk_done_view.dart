@@ -508,10 +508,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                     child: Column(
                       children: [
                         nameData.length == 0
-                            ? CircularProgressIndicator(
-                          strokeWidth: 7,
-                          color: Colors.orange,
-                        )
+                            ? Text("${nameData == 0 ? 'Load Data': 'No Data'}")
                         // const Text("",
                         //         style: TextStyle(
                         //             fontFamily: 'Nexa',
@@ -562,7 +559,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                 ],
                 borderRadius: BorderRadius.circular(30)),
             padding: EdgeInsets.symmetric(
-                vertical: height * 0.01, horizontal: width * 0.02),
+                vertical: height * 0.005, horizontal: width * 0.03),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [

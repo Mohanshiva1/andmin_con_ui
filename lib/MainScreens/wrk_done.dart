@@ -53,7 +53,7 @@ class _WRkDONEState extends State<WRkDONE> {
     super.initState();
   }
 
-  var cutomData;
+  // var cutomData;
 
   loadData() {
     nameView.clear();
@@ -148,23 +148,23 @@ class _WRkDONEState extends State<WRkDONE> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.black38,
+      backgroundColor: Color(0xffF7F9FC),
       body: Form(
         key: formKey,
         child: SingleChildScrollView(
           child: Stack(
             children: [
+              // Positioned(
+              //   top: height * 0.01,
+              //   bottom: height * 0.01,
+              //   right: width * 0.01,
+              //   left: width * 0.01,
+              //   child: Lottie.asset(
+              //     "assets/96479-student-girl-academy.json",
+              //   ),
+              // ),
               Positioned(
-                top: height * 0.01,
-                bottom: height * 0.01,
-                right: width * 0.01,
-                left: width * 0.01,
-                child: Lottie.asset(
-                  "assets/96479-student-girl-academy.json",
-                ),
-              ),
-              Positioned(
-                  top: height * 0.01,
+                  top: height * 0.0,
                   left: width * 0.0,
                   right: width * 0.0,
                   child:
@@ -187,7 +187,7 @@ class _WRkDONEState extends State<WRkDONE> {
                       borderRadius: BorderRadius.circular(30)),
                   child: SingleChildScrollView(
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
+                      filter: ImageFilter.blur(sigmaY: 0, sigmaX: 0),
                       child: Column(
                         children: [
                           Row(
@@ -196,15 +196,22 @@ class _WRkDONEState extends State<WRkDONE> {
                               Container(
                                 margin: const EdgeInsets.only(top: 1),
                                 width: width * 0.3,
-                                height: height * 0.08,
+                                height: height * 0.06,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(40),
-                                  boxShadow: const [
+                                  color: Color(0xffF7F9FC),
+                                  // Colors.white.withOpacity(0.3),
+                                  boxShadow: [
                                     BoxShadow(
-                                        color: Colors.black45,
-                                        offset: Offset(5.9, -5.9),
-                                        spreadRadius: 1,
-                                        blurRadius: 10)
+                                      color: Colors.black26,
+                                      offset: Offset(9.0, 9.0),
+                                      blurRadius: 9,
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.white,
+                                      offset: Offset(-10.0, -10.0),
+                                      blurRadius: 10,
+                                    ),
                                   ],
                                 ),
                                 child: Column(
@@ -264,15 +271,22 @@ class _WRkDONEState extends State<WRkDONE> {
                               Container(
                                 margin: const EdgeInsets.only(top: 1),
                                 width: width * 0.3,
-                                height: height * 0.08,
+                                height: height * 0.06,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(40),
-                                  boxShadow: const [
+                                  color: Color(0xffF7F9FC),
+                                  // Colors.white.withOpacity(0.3),
+                                  boxShadow: [
                                     BoxShadow(
-                                        color: Colors.black12,
-                                        offset: Offset(5.9, -5.9),
-                                        spreadRadius: 1,
-                                        blurRadius: 10),
+                                      color: Colors.black26,
+                                      offset: Offset(9.0, 9.0),
+                                      blurRadius: 9,
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.white,
+                                      offset: Offset(-10.0, -1.0),
+                                      blurRadius: 10,
+                                    ),
                                   ],
                                 ),
                                 child: Column(
@@ -332,15 +346,22 @@ class _WRkDONEState extends State<WRkDONE> {
                               Container(
                                 margin: const EdgeInsets.only(top: 1),
                                 width: width * 0.3,
-                                height: height * 0.08,
+                                height: height * 0.06,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(40),
-                                  boxShadow: const [
+                                  color: Color(0xffF7F9FC),
+                                  // Colors.white.withOpacity(0.3),
+                                  boxShadow: [
                                     BoxShadow(
-                                        color: Colors.black12,
-                                        offset: Offset(5.9, -5.9),
-                                        spreadRadius: 1,
-                                        blurRadius: 10),
+                                      color: Colors.black26,
+                                      offset: Offset(9.0, 9.0),
+                                      blurRadius: 9,
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.white70,
+                                      offset: Offset(-0.0, -1.0),
+                                      blurRadius: 10,
+                                    ),
                                   ],
                                 ),
                                 child: Column(
@@ -350,7 +371,7 @@ class _WRkDONEState extends State<WRkDONE> {
                                         LengthLimitingTextInputFormatter(3),
                                       ],
                                       style: const TextStyle(
-                                          color: Colors.black,
+                                          color: Colors.black54,
                                           fontFamily: "Nexa"),
                                       controller: percentfield,
                                       textInputAction: TextInputAction.next,
@@ -387,7 +408,7 @@ class _WRkDONEState extends State<WRkDONE> {
                           ),
                           const Divider(
                             height: 1,
-                            color: Color(0xffFBF8FF),
+                            color: Colors.black,
                             indent: 30,
                             endIndent: 30,
                             thickness: 1,
@@ -397,34 +418,42 @@ class _WRkDONEState extends State<WRkDONE> {
                           ),
                           Container(
                             margin: const EdgeInsets.only(top: 1),
-                            height: height * 0.3,
+                            height: height * 0.15,
                             decoration: BoxDecoration(
-                              color: Colors.white24,
+
                               borderRadius: BorderRadius.circular(40),
-                              boxShadow: const [
+                              color: Color(0xffF7F9FC),
+                              // Colors.white.withOpacity(0.3),
+                              boxShadow: [
                                 BoxShadow(
-                                    color: Colors.black12,
-                                    offset: Offset(2.0, 4.0),
-                                    spreadRadius: 3,
-                                    blurRadius: 9),
+                                  color: Colors.black26,
+                                  offset: Offset(9.0, 9.0),
+                                  blurRadius: 9,
+                                ),
+                                BoxShadow(
+                                  color: Colors.white,
+                                  offset: Offset(-10.0, -10.0),
+                                  blurRadius: 10,
+                                ),
                               ],
                             ),
                             child: Column(
                               children: [
                                 TextFormField(
                                   style: const TextStyle(
-                                      color: Color(0xffFBF8FF),
+                                      color: Colors.black,
                                       fontFamily: "Nexa"),
                                   controller: wrkdonefield,
                                   keyboardType: TextInputType.multiline,
                                   maxLines: 5,
                                   textInputAction: TextInputAction.done,
                                   decoration: InputDecoration(
+                                    fillColor: Color(0xffFBF8FF),
                                     hintStyle: const TextStyle(
                                         fontFamily: 'Nexa',
                                         fontWeight: FontWeight.w900,
                                         fontSize: 16,
-                                        color: Color(0xffFBF8FF)
+                                        color: Colors.black54
                                         // (0xffFBF8FF)
                                         ),
                                     contentPadding: const EdgeInsets.all(20),
@@ -603,7 +632,8 @@ class _WRkDONEState extends State<WRkDONE> {
                         ),
                       )
                     ],
-                  ))
+                  ),
+              )
             ],
           ),
         ),

@@ -179,8 +179,8 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  nameData.length == 0
-                      ? CircularProgressIndicator(color: Colors.orange,strokeWidth: 7,)
+                  notEntry.length == 0
+                      ? Text("${notEntry.length == 0 ? 'No Data': 'Load Data'}")
                   // const Text("Select Date to View Details",
                   //         style: TextStyle(
                   //             fontFamily: 'Nexa',

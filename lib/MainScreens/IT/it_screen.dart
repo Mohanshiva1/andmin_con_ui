@@ -8,6 +8,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+import '../work_entry.dart';
+
 class ITScreen extends StatefulWidget {
   const ITScreen({Key? key}) : super(key: key);
 
@@ -112,7 +114,7 @@ class _ITScreenState extends State<ITScreen> {
                     width: width*0.75,
                     child: Center(
                       child: Text(
-                        "Welcome ${userName.toString().trim()} Update your Daily Works",
+                        "Welcome Back ${userName.toString().trim()}",
                         style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'Nexa',
@@ -150,16 +152,16 @@ class _ITScreenState extends State<ITScreen> {
 
             left: width * 0.05,
             right: width * 0.05,
-            child: ListView(
+            child: GridView(
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              //     crossAxisCount: 2,
-              //     // childAspectRatio: 3 / 2,
-              //     // crossAxisSpacing: 20,
-              //     // mainAxisSpacing: 20,
-              // ),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  // childAspectRatio: 3 / 2,
+                  // crossAxisSpacing: 20,
+                  // mainAxisSpacing: 20,
+              ),
               children: [
                 Container(
                   child: Buttons(
@@ -174,7 +176,7 @@ class _ITScreenState extends State<ITScreen> {
                 Container(
                   child: Buttons(
                       "Work Manager",
-                      const WRkDONE(),
+                      WorkEntry(),
                       Icon(
                         Icons.work_outline_rounded,
                         size: height * 0.05,
@@ -200,7 +202,7 @@ class _ITScreenState extends State<ITScreen> {
         });
       },
       child: AnimatedContainer(
-        margin: EdgeInsets.symmetric(vertical: height*0.02,horizontal: width*0.08),
+        margin: EdgeInsets.all(20),
         height: height * 0.15,
         width: width * 0.4,
         duration:  Duration(milliseconds: 100),

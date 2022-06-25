@@ -155,14 +155,14 @@ class _CEOScreenState extends State<CEOScreen> {
             bottom: height * 0.30,
             left: width * 0.0,
             right: width * 0.0,
-            child: ListView(
+            child: GridView(
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              //   crossAxisCount: 2,
-              //
-              // ),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+
+              ),
               children: [
                 // Container(
                 //   child: buttons(
@@ -224,7 +224,7 @@ class _CEOScreenState extends State<CEOScreen> {
       },
       child: AnimatedContainer(
 
-        margin: EdgeInsets.symmetric(vertical: height*0.03,horizontal: width*0.2),
+        margin: EdgeInsets.all(20),
         height: height * 0.15,
         width: width * 0.4,
 
