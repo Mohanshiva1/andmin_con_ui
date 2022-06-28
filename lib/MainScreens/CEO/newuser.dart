@@ -326,10 +326,6 @@ class _NewUserState extends State<NewUser> {
                             firebaseAuth.createUserWithEmailAndPassword(
                                 email: Emailcntl.text,
                                 password: passwordcntl.text);
-                            Emailcntl.clear();
-                            passwordcntl.clear();
-                            namecntl.clear();
-                            depcntl.clear();
                           });
                         },
                         child: Container(
@@ -386,6 +382,11 @@ class _NewUserState extends State<NewUser> {
       "email": Emailcntl.text,
       "name": namecntl.text,
       "password": passwordcntl.text,
+    }).then((value) {
+      Emailcntl.clear();
+      passwordcntl.clear();
+      namecntl.clear();
+      depcntl.clear();
     });
   }
 }

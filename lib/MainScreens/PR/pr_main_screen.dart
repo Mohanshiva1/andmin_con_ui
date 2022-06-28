@@ -10,7 +10,6 @@ import 'package:lottie/lottie.dart';
 
 
 import '../work_entry.dart';
-import '../wrk_done.dart';
 
 class PRScreen extends StatefulWidget {
   const PRScreen({Key? key}) : super(key: key);
@@ -80,12 +79,12 @@ class _PRScreenState extends State<PRScreen> {
               right: width * 0.0,
               child: Lottie.asset("assets/84668-background-animation.json")),
           Positioned(
-              top: height * 0.7,
+              top: height * 0.75,
               left: width * 0.0,
               right: width * 0.0,
               child: Lottie.asset("assets/84669-background-animation.json")),
           Positioned(
-            top: height * 0.15,
+            top: height * 0.13,
             left: 1,
             right: 1,
             child: BackdropFilter(
@@ -143,7 +142,7 @@ class _PRScreenState extends State<PRScreen> {
                 iconSize: 25,
               )),
           Positioned(
-            top: height * 0.25,
+            top: height * 0.01,
             bottom: height * 0.0,
             left: width * 0.05,
             right: width * 0.05,
@@ -161,7 +160,7 @@ class _PRScreenState extends State<PRScreen> {
                   children: [
                     Container(
                       child: Buttons(
-                          "New Leads",
+                          "Create Leads",
                           const CreateLeeds(),
                           Icon(
                             Icons.create_rounded,
@@ -242,10 +241,10 @@ class _PRScreenState extends State<PRScreen> {
               ),
               Text(
                 name,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontWeight: FontWeight.w900,
                   fontFamily: 'Nexa',
-                  fontSize: 18,
+                  fontSize: height*0.013,
                   color: Colors.black,
                 ),
               )

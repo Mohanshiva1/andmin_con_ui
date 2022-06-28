@@ -45,8 +45,10 @@ dependencies:
   flutter_spinkit:
   clay_containers:
   rename:
-  kt_dart:
   flutter_toastr:
+  geolocator:
+  geocoding:
+  location: ^4.3.0
 
 
 dev_dependencies:

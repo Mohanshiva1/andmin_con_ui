@@ -2,9 +2,13 @@
     package="com.example.andmin_con_ui">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-   <application
-        android:label="Admin Console"
+
+
+    <application
+        android:label="My Office"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

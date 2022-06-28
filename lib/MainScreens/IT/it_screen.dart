@@ -1,7 +1,5 @@
 import 'dart:ui';
 
-import 'package:andmin_con_ui/MainScreens/IT/task.dart';
-import 'package:andmin_con_ui/MainScreens/wrk_done.dart';
 import 'package:andmin_con_ui/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -86,45 +84,42 @@ class _ITScreenState extends State<ITScreen> {
             top: height * 0.15,
             left: 1,
             right: 1,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 5, sigmaX: 5),
-              child: Column(
-                children: [
-                  Center(
+            child: Column(
+              children: [
+                Center(
+                  child: Text(
+                    "Choose your Destination",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontFamily: "Nexa",
+                        fontSize: height * 0.025,
+                        color: Colors.black87),
+                  ),
+                ),
+                const Divider(
+                  thickness: 3,
+                  indent: 30,
+                  endIndent: 30,
+                  height: 4,
+                  color: Colors.black87,
+                ),
+                SizedBox(
+                  height: height * 0.03,
+                ),
+                SizedBox(
+                  width: width*0.75,
+                  child: Center(
                     child: Text(
-                      "Choose your Destination",
+                      "Welcome Back ${userName.toString().trim()}",
                       style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontFamily: "Nexa",
-                          fontSize: height * 0.025,
-                          color: Colors.black87),
+                          color: Colors.black,
+                          fontFamily: 'Nexa',
+                          fontWeight: FontWeight.bold,
+                          fontSize: height * 0.017),
                     ),
                   ),
-                  const Divider(
-                    thickness: 3,
-                    indent: 30,
-                    endIndent: 30,
-                    height: 4,
-                    color: Colors.black87,
-                  ),
-                  SizedBox(
-                    height: height * 0.03,
-                  ),
-                  SizedBox(
-                    width: width*0.75,
-                    child: Center(
-                      child: Text(
-                        "Welcome Back ${userName.toString().trim()}",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Nexa',
-                            fontWeight: FontWeight.bold,
-                            fontSize: height * 0.017),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           ),
           Positioned(
@@ -163,16 +158,16 @@ class _ITScreenState extends State<ITScreen> {
                   // mainAxisSpacing: 20,
               ),
               children: [
-                Container(
-                  child: Buttons(
-                      "New Task",
-                      const TaskScreen(),
-                      Icon(
-                        Icons.add_task_sharp,
-                        size: height * 0.05,
-                        color: Colors.amber,
-                      )),
-                ),
+                // Container(
+                //   child: Buttons(
+                //       "New Task",
+                //       const TaskScreen(),
+                //       Icon(
+                //         Icons.add_task_sharp,
+                //         size: height * 0.05,
+                //         color: Colors.amber,
+                //       )),
+                // ),
                 Container(
                   child: Buttons(
                       "Work Manager",
@@ -233,10 +228,10 @@ class _ITScreenState extends State<ITScreen> {
               ),
               Text(
                 name,
-                style: const TextStyle(
+                style:  TextStyle(
                   fontWeight: FontWeight.w900,
                   fontFamily: 'Nexa',
-                  fontSize: 18,
+                  fontSize: height*0.013,
                   color: Colors.black,
                 ),
               )

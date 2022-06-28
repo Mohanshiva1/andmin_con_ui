@@ -490,6 +490,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
             top: height * 0.15,
             left: width * 0.02,
             right: width * 0.02,
+            bottom: 0,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -528,20 +529,21 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
   }
 
   Widget buildGridView(double height, double width) {
-    return GridView.builder(
+    return ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1,
-          childAspectRatio: 3 / 1.9,
-          crossAxisSpacing: 0,
-          mainAxisSpacing: 20,
-        ),
+        // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        //   crossAxisCount: 1,
+        //   // childAspectRatio: 3 / 1.9,
+        //   // crossAxisSpacing: 0,
+        //   // mainAxisSpacing: 20,
+        // ),
         itemCount: nameData.length,
         itemBuilder: (BuildContext ctx, index) {
           return Container(
-            margin: EdgeInsets.symmetric(horizontal: width * 0.04),
+
+            margin: EdgeInsets.all(10),
             decoration: BoxDecoration(
                 color: Color(0xffF7F9FC),
                 // Colors.white.withOpacity(0.3),

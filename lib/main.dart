@@ -7,9 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:lottie/lottie.dart';
-
 import 'MainScreens/IT/it_screen.dart';
 
 Future<void> main() async {
@@ -19,7 +17,7 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
   ]);
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   runApp(const MyApp());
 }
 
@@ -45,18 +43,6 @@ class SplashScreen extends StatelessWidget {
         "assets/splashscreen.json",
       ),
       nextScreen: MainPage(),
-      // Scaffold(
-      //   body: StreamBuilder(
-      //     stream: FirebaseAuth.instance.authStateChanges(),
-      //     builder: (context, snapshot) {
-      //       if (snapshot.hasData) {
-      //         return const HomePage();
-      //       } else {
-      //         return const LoginScreen();
-      //       }
-      //     },
-      //   ),
-      // ),
       backgroundColor: const Color(0xff34455B),
       splashIconSize: 350,
       splashTransition: SplashTransition.fadeTransition,
@@ -108,17 +94,20 @@ class _HomePageState extends State<HomePage> {
           if (fbData['department'] == "APP") {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const ITScreen()));
-          } else if (fbData['department'] == "admin") {
+          }
+          else if (fbData['department'] == "admin") {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const CEOScreen()));
-          } else if (fbData['department'] == "PR") {
+          }
+          else if (fbData['department'] == "PR") {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const PRScreen()));
           }
-            else if (fbData['department'] == "WEB") {
+          else if (fbData['department'] == "WEB") {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const ITScreen()));
-          } else if (fbData['department'] == "RND") {
+          }
+          else if (fbData['department'] == "RND") {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const ITScreen()));
           }
@@ -127,11 +116,15 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  // ....................Get Location........................................
+
+
   @override
   void initState() {
-    setState(() {
+    setState(()  {
       CurrerntUser = user?.email;
       loadData();
+
     });
     super.initState();
   }
