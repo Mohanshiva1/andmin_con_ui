@@ -208,7 +208,7 @@ class _WorkEntryState extends State<WorkEntry> {
                 // print(wrkdone),
                 // print(logval),
                 // print(latval),
-                _auth.child(wrkDone).child("Location_history/'${formattedDate.toString().trim()}'/'Loc : ${formattedTime.toString().trim()}'/").set({
+                _auth.child(wrkDone).child("Location_history/${formattedDate.toString().trim()}/Loc : ${formattedTime.toString().trim()}/").set({
                   'Lat': latVal,
                   "Log": logVal,
                 }),

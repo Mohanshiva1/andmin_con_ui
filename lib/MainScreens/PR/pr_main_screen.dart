@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:andmin_con_ui/MainScreens/PR/create_leed.dart';
+import 'package:andmin_con_ui/MainScreens/PR/serarch_leads.dart';
 import 'package:andmin_con_ui/MainScreens/PR/view_leed.dart';
 import 'package:andmin_con_ui/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -184,6 +185,16 @@ class _PRScreenState extends State<PRScreen> {
                           WorkEntry(),
                           Icon(
                             Icons.work_outline_rounded,
+                            size: height * 0.05,
+                            color: Colors.amber,
+                          )),
+                    ),
+                    Container(
+                      child: Buttons(
+                          "Search Leads",
+                          SearchLeads(),
+                          Icon(
+                            Icons.view_day,
                             size: height * 0.05,
                             color: Colors.amber,
                           )),

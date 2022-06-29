@@ -18,7 +18,7 @@ class _CreateLeedsState extends State<CreateLeeds> {
   final user = FirebaseAuth.instance.currentUser;
 
   String? userEmail;
-  Timer? _timer;
+
 
   final formKey = GlobalKey<FormState>();
 
