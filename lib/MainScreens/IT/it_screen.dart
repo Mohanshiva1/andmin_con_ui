@@ -55,28 +55,13 @@ class _ITScreenState extends State<ITScreen> {
       backgroundColor: Color(0xffF7F9FC),
       body: Stack(
         children: [
-          // Positioned(
-          //   top: height * 0.01,
-          //   bottom: height * 0.01,
-          //   right: width * 0.01,
-          //   left: width * 0.01,
-          //   child: Container(
-          //     decoration: const BoxDecoration(
-          //         gradient: LinearGradient(
-          //       colors: [Colors.black, Colors.black],
-          //       end: Alignment.bottomLeft,
-          //       begin: Alignment.topRight,
-          //     )),
-          //   ),
-          //   //
-          // ),
           Positioned(
               top: height * 0.00,
               left: width * 0.0,
               right: width * 0.0,
               child: Lottie.asset("assets/84668-background-animation.json")),
           Positioned(
-              top: height * 0.7,
+              top: height * 0.75 ,
               left: width * 0.0,
               right: width * 0.0,
               child: Lottie.asset("assets/84669-background-animation.json")),

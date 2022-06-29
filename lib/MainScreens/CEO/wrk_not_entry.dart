@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 class AbsentAndPresent extends StatefulWidget {
   const AbsentAndPresent({Key? key}) : super(key: key);
@@ -22,7 +23,6 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
 
   List allData = [];
   List nameData = [];
-
 
   DatePicker() async {
     selectedDate = formatterDate.format(now);
@@ -86,6 +86,7 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
       }
     });
   }
+
   @override
   void initState() {
     selectedDate = formatterDate.format(now);
@@ -100,125 +101,274 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color(0xffF7F9FC),
-      body: Column(
+      body: Stack(
         children: [
-          Container(
-            margin: EdgeInsets.only(
-                top: height * 0.05, left: width * 0.04, right: width * 0.04),
-            height: height * 0.07,
-            decoration: BoxDecoration(
-                color: Color(0xffF7F9FC),
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.white.withOpacity(0.2),
-                    offset: Offset(9.0, 9.0),
-                    blurRadius: 9,
-                  ),
-                  BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(-10.0, -10.0),
-                    blurRadius: 10,
-                  ),
-                ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          Positioned(
+            top: height * 0.0,
+            left: width * 0.0,
+            right: width * 0.0,
+            child: Lottie.asset("assets/84668-background-animation.json"),
+          ),
+          Positioned(
+            top: height * 0.75,
+            left: width * 0.0,
+            right: width * 0.0,
+            child: Lottie.asset("assets/84669-background-animation.json"),
+          ),
+          Positioned(
+            top: height * 0.05,
+            left: 1,
+            right: 1,
+            child: Column(
               children: [
-                Text(
-                  "Staff Absents Details ",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontFamily: "Avenir",
-                    fontSize: height * 0.018,
+                Container(
+                  margin: EdgeInsets.only(
+                      top: height * 0.05,
+                      left: width * 0.04,
+                      right: width * 0.04),
+                  height: height * 0.07,
+                  decoration: BoxDecoration(
+                    color: Color(0xffF7F9FC),
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withOpacity(0.2),
+                        offset: Offset(9.0, 9.0),
+                        blurRadius: 9,
+                      ),
+                      BoxShadow(
+                        color: Colors.black26,
+                        offset: Offset(-10.0, -10.0),
+                        blurRadius: 10,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Staff Absents Details ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontFamily: "Avenir",
+                          fontSize: height * 0.018,
+                        ),
+                      ),
+                      // SizedBox(
+                      //   width: width * 0.06,
+                      // ),
+                      VerticalDivider(
+                        color: Colors.black,
+                        thickness: 2,
+                        indent: 15,
+                        endIndent: 15,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            DatePicker();
+                            notEntry.clear();
+                          });
+                        },
+                        child: Icon(Icons.calendar_month,
+                            color: Colors.orange, size: height * 0.04),
+                      ),
+                    ],
                   ),
                 ),
-                // SizedBox(
-                //   width: width * 0.06,
-                // ),
-                VerticalDivider(
-                  color: Colors.black,
-                  thickness: 2,
-                  indent: 15,
-                  endIndent: 15,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      DatePicker();
-                      notEntry.clear();
-                    });
-                  },
-                  child: Icon(Icons.calendar_month,
-                      color: Colors.orange, size: height * 0.04),
+                Container(
+                  padding: EdgeInsets.all(20),
+                  margin: EdgeInsets.only(
+                      top: height * 0.05,
+                      left: width * 0.04,
+                      right: width * 0.04),
+                  height: height * 0.5,
+                  width: width * 09,
+                  decoration: BoxDecoration(
+                      color: Color(0xffF7F9FC),
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(9.0, 9.0),
+                          blurRadius: 9,
+                        ),
+                        BoxShadow(
+                          color: Colors.white,
+                          offset: Offset(-10.0, -10.0),
+                          blurRadius: 10,
+                        ),
+                      ]),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        notEntry.length == 0
+                            ? Text(
+                                "${notEntry.length == 0 ? 'No Data' : 'Load Data'}")
+                            // const Text("Select Date to View Details",
+                            //         style: TextStyle(
+                            //             fontFamily: 'Nexa',
+                            //             fontSize: 20,
+                            //             color: Colors.black))
+                            : ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: notEntry.length,
+                                itemBuilder: (BuildContext context, int ind) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: Color(0xffF7F9FC),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    margin: EdgeInsets.all(5),
+                                    padding: EdgeInsets.all(9),
+                                    // height: height*0.0,
+                                    width: width * 0.9,
+                                    child: Column(
+                                      children: [
+                                        notEntry != 0
+                                            ? Text("${notEntry[ind]}",
+                                                style: TextStyle(
+                                                    fontFamily: 'Nexa',
+                                                    fontSize: 18,
+                                                    color: Colors.black))
+                                            : Text("No Absents in This Date")
+                                      ],
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                    ),
+                                  );
+                                },
+                              ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(20),
-            margin: EdgeInsets.only(
-                top: height * 0.05, left: width * 0.04, right: width * 0.04),
-            height: height * 0.5,
-            width: width * 09,
-            decoration: BoxDecoration(
-                color:Color(0xffF7F9FC),
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(9.0, 9.0),
-                    blurRadius: 9,
-                  ),
-                  BoxShadow(
-                    color: Colors.white,
-                    offset: Offset(-10.0, -10.0),
-                    blurRadius: 10,
-                  ),
-                ]),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  notEntry.length == 0
-                      ? Text("${notEntry.length == 0 ? 'No Data': 'Load Data'}")
-                  // const Text("Select Date to View Details",
-                  //         style: TextStyle(
-                  //             fontFamily: 'Nexa',
-                  //             fontSize: 20,
-                  //             color: Colors.black))
-                      : ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: notEntry.length,
-                          itemBuilder: (BuildContext context, int ind) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: Color(0xffF7F9FC),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              margin: EdgeInsets.all(5),
-                              padding: EdgeInsets.all(9),
-                              // height: height*0.0,
-                              width: width * 0.9,
-                              child: Column(
-                                children: [
-                                notEntry != 0 ?Text("${notEntry[ind]}",
-                                      style: TextStyle(
-                                          fontFamily: 'Nexa',
-                                          fontSize: 18,
-                                          color: Colors.black)):Text("No Absents in This Date")
-                                ],
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                              ),
-                            );
-                          },
-                        ),
-                ],
-              ),
-            ),
-          ),
         ],
+        //  Column(
+        //   children: [
+        //     Container(
+        //       margin: EdgeInsets.only(
+        //           top: height * 0.05, left: width * 0.04, right: width * 0.04),
+        //       height: height * 0.07,
+        //       decoration: BoxDecoration(
+        //           color: Color(0xffF7F9FC),
+        //           borderRadius: BorderRadius.circular(30),
+        //           boxShadow: [
+        //             BoxShadow(
+        //               color: Colors.white.withOpacity(0.2),
+        //               offset: Offset(9.0, 9.0),
+        //               blurRadius: 9,
+        //             ),
+        //             BoxShadow(
+        //               color: Colors.black26,
+        //               offset: Offset(-10.0, -10.0),
+        //               blurRadius: 10,
+        //             ),
+        //           ],
+        //       ),
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.center,
+        //         children: [
+        //           Text(
+        //             "Staff Absents Details ",
+        //             style: TextStyle(
+        //               fontWeight: FontWeight.w900,
+        //               fontFamily: "Avenir",
+        //               fontSize: height * 0.018,
+        //             ),
+        //           ),
+        //           // SizedBox(
+        //           //   width: width * 0.06,
+        //           // ),
+        //           VerticalDivider(
+        //             color: Colors.black,
+        //             thickness: 2,
+        //             indent: 15,
+        //             endIndent: 15,
+        //           ),
+        //           GestureDetector(
+        //             onTap: () {
+        //               setState(() {
+        //                 DatePicker();
+        //                 notEntry.clear();
+        //               });
+        //             },
+        //             child: Icon(Icons.calendar_month,
+        //                 color: Colors.orange, size: height * 0.04),
+        //           ),
+        //         ],
+        //       ),
+        //     ),
+        //     Container(
+        //       padding: EdgeInsets.all(20),
+        //       margin: EdgeInsets.only(
+        //           top: height * 0.05, left: width * 0.04, right: width * 0.04),
+        //       height: height * 0.5,
+        //       width: width * 09,
+        //       decoration: BoxDecoration(
+        //           color:Color(0xffF7F9FC),
+        //           borderRadius: BorderRadius.circular(30),
+        //           boxShadow: [
+        //             BoxShadow(
+        //               color: Colors.black26,
+        //               offset: Offset(9.0, 9.0),
+        //               blurRadius: 9,
+        //             ),
+        //             BoxShadow(
+        //               color: Colors.white,
+        //               offset: Offset(-10.0, -10.0),
+        //               blurRadius: 10,
+        //             ),
+        //           ]),
+        //       child: SingleChildScrollView(
+        //         child: Column(
+        //           children: [
+        //             notEntry.length == 0
+        //                 ? Text("${notEntry.length == 0 ? 'No Data': 'Load Data'}")
+        //             // const Text("Select Date to View Details",
+        //             //         style: TextStyle(
+        //             //             fontFamily: 'Nexa',
+        //             //             fontSize: 20,
+        //             //             color: Colors.black))
+        //                 : ListView.builder(
+        //                     scrollDirection: Axis.vertical,
+        //                     physics: NeverScrollableScrollPhysics(),
+        //                     shrinkWrap: true,
+        //                     itemCount: notEntry.length,
+        //                     itemBuilder: (BuildContext context, int ind) {
+        //                       return Container(
+        //                         decoration: BoxDecoration(
+        //                           color: Color(0xffF7F9FC),
+        //                           borderRadius: BorderRadius.circular(20),
+        //                         ),
+        //                         margin: EdgeInsets.all(5),
+        //                         padding: EdgeInsets.all(9),
+        //                         // height: height*0.0,
+        //                         width: width * 0.9,
+        //                         child: Column(
+        //                           children: [
+        //                           notEntry != 0 ?Text("${notEntry[ind]}",
+        //                                 style: TextStyle(
+        //                                     fontFamily: 'Nexa',
+        //                                     fontSize: 18,
+        //                                     color: Colors.black)):Text("No Absents in This Date")
+        //                           ],
+        //                           crossAxisAlignment: CrossAxisAlignment.center,
+        //                         ),
+        //                       );
+        //                     },
+        //                   ),
+        //           ],
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ),
     );
   }

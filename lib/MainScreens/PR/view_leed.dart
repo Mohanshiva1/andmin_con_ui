@@ -143,11 +143,11 @@ class _ViewLeedsState extends State<ViewLeeds> {
                     offset: Offset(9.0, 9.0),
                     blurRadius: 9,
                   ),
-                  BoxShadow(
-                    color: Colors.white,
-                    offset: Offset(-10.0, -10.0),
-                    blurRadius: 10,
-                  ),
+                  // BoxShadow(
+                  //   color: Colors.white,
+                  //   offset: Offset(-10.0, -10.0),
+                  //   blurRadius: 10,
+                  // ),
                 ],
                 borderRadius: BorderRadius.circular(15)),
             child: Column(

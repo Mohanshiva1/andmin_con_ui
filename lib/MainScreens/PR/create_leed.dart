@@ -49,27 +49,27 @@ class _CreateLeedsState extends State<CreateLeeds> {
 
   createLeads() {
     _auth.once().then((value) => {
-      setState(() {
-        _auth.child("${phone.text.trim()}").set({
-          'city': loc.text.trim(),
-          'created_by': userEmail.toString().trim(),
-          'created_date': formattedDate,
-          'created_time': formattedTime,
-          'customer_state': 'following up',
-          'data_fetched_by': fetch.text.trim(),
-          'inquired_for': enq.text.trim(),
-          'name': name.text.trim(),
-          'phone_number': phone.text.trim(),
-          'rating': '0',
-        }).then((value) {
-          name.clear();
-          phone.clear();
-          loc.clear();
-          enq.clear();
-          email.clear();
-          fetch.clear();
-        });
-      }),
+          setState(() {
+            _auth.child("${phone.text.trim()}").set({
+              'city': loc.text.trim(),
+              'created_by': userEmail.toString().trim(),
+              'created_date': formattedDate,
+              'created_time': formattedTime,
+              'customer_state': 'following up',
+              'data_fetched_by': fetch.text.trim(),
+              'inquired_for': enq.text.trim(),
+              'name': name.text.trim(),
+              'phone_number': phone.text.trim(),
+              'rating': '0',
+            }).then((value) {
+              name.clear();
+              phone.clear();
+              loc.clear();
+              enq.clear();
+              email.clear();
+              fetch.clear();
+            });
+          }),
         });
   }
 
@@ -94,7 +94,15 @@ class _CreateLeedsState extends State<CreateLeeds> {
         child: Stack(
           children: [
             Positioned(
-                top: height * 0.7,
+              top: height * 0.0,
+              left: width * 0.0,
+              right: width * 0.0,
+              child: Container(
+                child: Lottie.asset("assets/84668-background-animation.json"),
+              ),
+            ),
+            Positioned(
+                top: height * 0.75,
                 left: width * 0.0,
                 right: width * 0.0,
                 child: Lottie.asset("assets/84669-background-animation.json")),
@@ -106,7 +114,7 @@ class _CreateLeedsState extends State<CreateLeeds> {
                 padding: EdgeInsets.symmetric(
                     vertical: height * 0.03, horizontal: width * 0.01),
                 width: width * 0.3,
-                height: height * 0.7,
+                height: height * 0.85,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   color: Color(0xffF7F9FC),
@@ -115,20 +123,20 @@ class _CreateLeedsState extends State<CreateLeeds> {
                     BoxShadow(
                       color: Colors.black26,
                       offset: Offset(9.0, 9.0),
-                      blurRadius: 9,
-                    ),
-                    BoxShadow(
-                      color: Colors.white,
-                      offset: Offset(-10.0, -10.0),
                       blurRadius: 10,
                     ),
+                    // BoxShadow(
+                    //   color: Colors.white,
+                    //   offset: Offset(-1.0, -0.0),
+                    //   blurRadius: 10,
+                    // ),
                   ],
                 ),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
                       const Text(
-                        "Create Data",
+                        "Create Lead",
                         style: TextStyle(
                             fontWeight: FontWeight.w900,
                             fontFamily: 'Nexa',

@@ -364,9 +364,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
               if (element3.key == selectedDate) {
                 for (var element4 in element3.children) {
                   // print(element4.value);
-
                   fbData = element4.value;
-
                   setState(() {
                     allData.add(fbData);
                     // print("allData......${allData}");
@@ -405,107 +403,81 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
       backgroundColor: Color(0xffF7F9FC),
       body: Stack(
         children: [
-          // Positioned(
-          //   top: height * 0.01,
-          //   bottom: height * 0.01,
-          //   right: width * 0.01,
-          //   left: width * 0.01,
-          //   child: Container(
-          //     decoration: const BoxDecoration(
-          //         gradient: LinearGradient(
-          //       colors: [Colors.black, Colors.black],
-          //       end: Alignment.bottomLeft,
-          //       begin: Alignment.topRight,
-          //     )),
-          //   ),
-          // ),
+
           Positioned(
             top: height * 0.00,
             left: width * 0.0,
             right: width * 0.0,
             child: Lottie.asset("assets/84668-background-animation.json"),
           ),
-          // Positioned(
-          //   top: height * 0.7,
-          //   left: width * 0.0,
-          //   right: width * 0.0,
-          //   child: Lottie.asset("assets/84669-background-animation.json"),
-          // ),
+          Positioned(
+            top: height * 0.75,
+            left: width * 0.0,
+            right: width * 0.0,
+            child: Lottie.asset("assets/84669-background-animation.json"),
+          ),
           Positioned(
             top: height * 0.07,
             left: 1,
             right: 1,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 5, sigmaX: 5),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: width * 0.25,
-                        ),
-                        Text(
-                          "Works History",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontFamily: "Nexa",
-                              fontSize: height * 0.03,
-                              color: Colors.black),
-                        ),
-                        SizedBox(
-                          width: width * 0.06,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              DatePicker();
-                              allData.clear();
-                              nameData.clear();
-                            });
-                          },
-                          child: Icon(Icons.calendar_month,
-                              color: Colors.white, size: height * 0.04),
-                        )
-                      ],
-                    ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: width * 0.25,
+                      ),
+                      Text(
+                        "Works History",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontFamily: "Nexa",
+                            fontSize: height * 0.03,
+                            color: Colors.black),
+                      ),
+                      SizedBox(
+                        width: width * 0.06,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            DatePicker();
+                            allData.clear();
+                            nameData.clear();
+                          });
+                        },
+                        child: Icon(Icons.calendar_month,
+                            color: Colors.white, size: height * 0.04),
+                      )
+                    ],
                   ),
-                  SizedBox(
-                    height: height * 0.01,
-                  ),
-                  const Divider(
-                    thickness: 3,
-                    indent: 30,
-                    endIndent: 30,
-                    height: 4,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                const Divider(
+                  thickness: 3,
+                  indent: 30,
+                  endIndent: 30,
+                  height: 4,
+                  color: Colors.black,
+                ),
+              ],
             ),
           ),
           Positioned(
             top: height * 0.15,
-            left: width * 0.02,
-            right: width * 0.02,
+            left: width * 0.0,
+            right: width * 0.0,
             bottom: 0,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  padding: EdgeInsets.only(
-                      top: height * 0.01,
-                      left: width * 0.01,
-                      right: width * 0.01,
-                      bottom: height * 0.02),
-                  height: height * 0.80,
-                  width: width * 0.99,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: SingleChildScrollView(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SingleChildScrollView(
                     child: Column(
                       children: [
                         nameData.length == 0
@@ -519,8 +491,8 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
@@ -553,11 +525,12 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                     offset: Offset(9.0, 9.0),
                     blurRadius: 9,
                   ),
-                  BoxShadow(
-                    color: Colors.white,
-                    offset: Offset(-10.0, -10.0),
-                    blurRadius: 10,
-                  ),
+                  // BoxShadow(
+                  //   color: Colors.white,
+                  //   offset: Offset(-10.0, -10.0),
+                  //   blurRadius: 10,
+                  //
+                  // ),
                 ],
                 borderRadius: BorderRadius.circular(30)),
             padding: EdgeInsets.symmetric(

@@ -174,10 +174,10 @@ class _WorkEntryState extends State<WorkEntry> {
     // Placemark place = placeMark[0];
     lat = "${position.latitude.toDouble()}";
     long = " ${position.longitude.toDouble()}";
-    setState(() {
+    // setState(() {
       latVal = double.parse(lat);
       logVal = double.parse(long);
-    });
+    // });
   }
 
   getLocation() async {
@@ -258,19 +258,19 @@ class _WorkEntryState extends State<WorkEntry> {
         key: formKey,
         child: Stack(
           children: [
-            // Positioned(
-            //   top: height * 0.0,
-            //   left: width * 0.0,
-            //   right: width * 0.0,
-            //   child: Container(
-            //     child: Lottie.asset("assets/84668-background-animation.json"),
-            //   ),
-            // ),
             Positioned(
-              top: height * 0.74,
+              top: height * 0.0,
               left: width * 0.0,
               right: width * 0.0,
-              bottom: 0.0,
+              child: Container(
+                child: Lottie.asset("assets/84668-background-animation.json"),
+              ),
+            ),
+            Positioned(
+              top: height * 0.75,
+              left: width * 0.0,
+              right: width * 0.0,
+
               child:
               Lottie.asset("assets/84669-background-animation.json"),
             ),
@@ -303,11 +303,7 @@ class _WorkEntryState extends State<WorkEntry> {
                                   offset: Offset(9.0, 9.0),
                                   blurRadius: 9,
                                 ),
-                                BoxShadow(
-                                  color: Colors.white,
-                                  offset: Offset(-10.0, -10.0),
-                                  blurRadius: 10,
-                                ),
+
                               ],
                             ),
                             child: Center(
@@ -365,7 +361,6 @@ class _WorkEntryState extends State<WorkEntry> {
                           ),
                           Container(
                             margin: const EdgeInsets.only(top: 1),
-
                             width: width * 0.3,
                             height: height * 0.06,
                             decoration: BoxDecoration(
@@ -377,11 +372,6 @@ class _WorkEntryState extends State<WorkEntry> {
                                   color: Colors.black26,
                                   offset: Offset(9.0, 9.0),
                                   blurRadius: 9,
-                                ),
-                                BoxShadow(
-                                  color: Colors.white,
-                                  offset: Offset(-10.0, -1.0),
-                                  blurRadius: 10,
                                 ),
                               ],
                             ),
@@ -451,11 +441,7 @@ class _WorkEntryState extends State<WorkEntry> {
                                   offset: Offset(9.0, 9.0),
                                   blurRadius: 9,
                                 ),
-                                BoxShadow(
-                                  color: Colors.white70,
-                                  offset: Offset(-0.0, -1.0),
-                                  blurRadius: 10,
-                                ),
+
                               ],
                             ),
                             child: Center(
@@ -524,7 +510,7 @@ class _WorkEntryState extends State<WorkEntry> {
                             ),
                             BoxShadow(
                               color: Colors.white,
-                              offset: Offset(-10.0, -10.0),
+                              offset: Offset(-20.0, -1.0),
                               blurRadius: 10,
                             ),
                           ],
@@ -666,7 +652,7 @@ class _WorkEntryState extends State<WorkEntry> {
                             ),
                             BoxShadow(
                               color: Colors.white,
-                              offset: Offset(-10.0, -10.0),
+                              offset: Offset(-1.0, -8.0),
                               blurRadius: 10,
                             ),
                           ],
@@ -677,7 +663,7 @@ class _WorkEntryState extends State<WorkEntry> {
                           children: [
                             Center(
                               child: Text(
-                                "Works History",
+                                "Work History",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w900,
                                     fontFamily: "Nexa",
@@ -740,7 +726,7 @@ class _WorkEntryState extends State<WorkEntry> {
         itemCount: nameView.length,
         itemBuilder: (BuildContext ctx, index) {
           return Container(
-            color: Colors.blueGrey,
+
             padding: EdgeInsets.only(
                 right: width * 0.03,
                 left: width * 0.03),
