@@ -10,6 +10,9 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'MainScreens/IT/it_screen.dart';
 
+
+// version 1.0 06/07/2022
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -145,24 +148,7 @@ class _HomePageState extends State<HomePage> {
               Lottie.asset(
                 "assets/81778-loading.json",
               ),
-              // ElevatedButton(onPressed: (){
-              //   setState(() {
-              //     Navigator.push(context, MaterialPageRoute(builder: (context)=>CEOScreen()));
-              //
-              //   });
-              // }, child: Text("ceo")),
-              // ElevatedButton(onPressed: (){
-              //   setState(() {
-              //
-              //     Navigator.push(context, MaterialPageRoute(builder: (context)=>ITScreen()));
-              //
-              //   });
-              // }, child: Text("It")),
-              // ElevatedButton(onPressed: (){
-              //   setState(() {
-              //     Navigator.push(context, MaterialPageRoute(builder: (context)=>PRScreen()));
-              //   });
-              // }, child: Text("PR")),
+
 
             ],
           ),
