@@ -1,5 +1,4 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -41,6 +40,22 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
     });
   }
 
+  String? formattedTime;
+  var formattedDate;
+  var formattedMonth;
+  var formattedYear;
+
+  todayDate() {
+    var now = DateTime.now();
+    var formatterDate = DateFormat('yyy-MM-dd');
+    var formatterYear = DateFormat('yyy');
+    var formatterMonth = DateFormat('MM');
+    formattedTime = DateFormat('kk:mm:a').format(now);
+    formattedDate = formatterDate.format(now);
+    formattedYear = formatterYear.format(now);
+    formattedMonth = formatterMonth.format(now);
+  }
+
   loadData() {
     database.once().then((value) {
       for (var element in value.snapshot.children) {
@@ -49,8 +64,8 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
 
         setState(() {
           notEntry.add(fbData['name']);
-          // notEntry = notEntry.toSet().toList();
-          if (fbData['department'] == "admin") {
+          notEntry = notEntry.toSet().toList();
+          if (fbData['department'] == "ADMIN") {
             setState(() {
               notEntry.remove(fbData['name']);
             });
@@ -58,26 +73,31 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
           // print(notEntry);
         });
         for (var element1 in element.children) {
-          for (var element2 in element1.children) {
-            for (var element3 in element2.children) {
-              if (element3.key == selectedDate) {
-                for (var element4 in element3.children) {
-                  // print(element4.value);
-                  fbData = element4.value;
-                  if (fbData['name'] != notEntry) {
-                    setState(() {
-                      notEntry.remove(fbData['name']);
-                      // print(
-                      //     "..................${notEntry}..............................");
-                    });
+          if (element1.key == "workManager") {
+            for (var element2 in element1.children) {
+              // print(element2.key);
+              for (var element3 in element2.children) {
+                if (element3.key == formattedYear) {
+                  for (var element4 in element3.children) {
+                    if (element4.key == formattedMonth) {
+                      for (var element5 in element4.children) {
+                        if (element5.key == selectedDate) {
+                          for (var element6 in element5.children) {
+                            fbData = element6.value;
+                            // print(fbData);
+
+                            if (fbData['name'] != notEntry) {
+                              setState(() {
+                                notEntry.remove(fbData['name']);
+                                print("..................${notEntry}..............................");
+                              });
+                            }
+
+                          }
+                        }
+                      }
+                    }
                   }
-                  setState(() {
-                    allData.add(fbData);
-                    // print("allData......${allData}");
-                    nameData.add(fbData['name']);
-                    nameData = nameData.toSet().toList();
-                    // print('data2 ..................${nameData}');
-                  });
                 }
               }
             }
@@ -87,11 +107,58 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
     });
   }
 
+  // loadData() {
+  //   database.once().then((value) {
+  //     for (var element in value.snapshot.children) {
+  //       // print(element.value);
+  //       fbData = element.value;
+  //
+  //       setState(() {
+  //         notEntry.add(fbData['name']);
+  //         // notEntry = notEntry.toSet().toList();
+  //         if (fbData['department'] == "admin") {
+  //           setState(() {
+  //             notEntry.remove(fbData['name']);
+  //           });
+  //         }
+  //         // print(notEntry);
+  //       });
+  //       for (var element1 in element.children) {
+  //         for (var element2 in element1.children) {
+  //           for (var element3 in element2.children) {
+  //             if (element3.key == selectedDate) {
+  //               for (var element4 in element3.children) {
+  //                 // print(element4.value);
+  //                 fbData = element4.value;
+  //                 if (fbData['name'] != notEntry) {
+  //                   setState(() {
+  //                     notEntry.remove(fbData['name']);
+  //                     // print(
+  //                     //     "..................${notEntry}..............................");
+  //                   });
+  //                 }
+  //                 setState(() {
+  //                   allData.add(fbData);
+  //                   // print("allData......${allData}");
+  //                   nameData.add(fbData['name']);
+  //                   nameData = nameData.toSet().toList();
+  //                   // print('data2 ..................${nameData}');
+  //                 });
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
+
   @override
   void initState() {
     selectedDate = formatterDate.format(now);
     print(selectedDate);
     loadData();
+    todayDate();
     super.initState();
   }
 
@@ -176,6 +243,12 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
                     ],
                   ),
                 ),
+             Text('$selectedDate',style: TextStyle(
+                fontFamily: 'Nexa',
+                fontSize: 15,
+                color: Colors.black)),
+
+
                 Container(
                   padding: EdgeInsets.all(20),
                   margin: EdgeInsets.only(
@@ -204,43 +277,43 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
                       children: [
                         notEntry.length == 0
                             ? Text(
-                                "${notEntry.length == 0 ? 'No Data' : 'Load Data'}")
-                            // const Text("Select Date to View Details",
-                            //         style: TextStyle(
-                            //             fontFamily: 'Nexa',
-                            //             fontSize: 20,
-                            //             color: Colors.black))
+                            "${notEntry.length == 0 ? 'No Data' : 'Load Data'}")
+                        // const Text("Select Date to View Details",
+                        //         style: TextStyle(
+                        //             fontFamily: 'Nexa',
+                        //             fontSize: 20,
+                        //             color: Colors.black))
                             : ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: notEntry.length,
-                                itemBuilder: (BuildContext context, int ind) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      color: Color(0xffF7F9FC),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    margin: EdgeInsets.all(5),
-                                    padding: EdgeInsets.all(9),
-                                    // height: height*0.0,
-                                    width: width * 0.9,
-                                    child: Column(
-                                      children: [
-                                        notEntry != 0
-                                            ? Text("${notEntry[ind]}",
-                                                style: TextStyle(
-                                                    fontFamily: 'Nexa',
-                                                    fontSize: 18,
-                                                    color: Colors.black))
-                                            : Text("No Absents in This Date")
-                                      ],
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                    ),
-                                  );
-                                },
+                          scrollDirection: Axis.vertical,
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: notEntry.length,
+                          itemBuilder: (BuildContext context, int ind) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: Color(0xffF7F9FC),
+                                borderRadius: BorderRadius.circular(20),
                               ),
+                              margin: EdgeInsets.all(5),
+                              padding: EdgeInsets.all(9),
+                              // height: height*0.0,
+                              width: width * 0.9,
+                              child: Column(
+                                children: [
+                                  notEntry != 0
+                                      ? Text("${notEntry[ind]}",
+                                      style: TextStyle(
+                                          fontFamily: 'Nexa',
+                                          fontSize: 18,
+                                          color: Colors.black))
+                                      : Text("No Absents in This Date")
+                                ],
+                                crossAxisAlignment:
+                                CrossAxisAlignment.center,
+                              ),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),

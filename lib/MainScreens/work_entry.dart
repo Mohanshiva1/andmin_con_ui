@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -9,7 +8,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-// import 'package:lottie/lottie.dart';
 
 class WorkEntry extends StatefulWidget {
   const WorkEntry({Key? key}) : super(key: key);
@@ -23,8 +21,6 @@ class _WorkEntryState extends State<WorkEntry> {
   final user = FirebaseAuth.instance.currentUser;
   final formKey = GlobalKey<FormState>();
 
-  bool isloading = false;
-
   Timer? _timer;
 
   TextEditingController fromfield = TextEditingController();
@@ -32,79 +28,93 @@ class _WorkEntryState extends State<WorkEntry> {
   TextEditingController wrkdonefield = TextEditingController();
   TextEditingController percentfield = TextEditingController();
 
-
-
   String? formattedTime;
   var formattedDate;
+  var formattedMonth;
+  var formattedYear;
+
   todayDate() {
     var now = DateTime.now();
-    var formatter = DateFormat('yyy-MM-dd');
+    var formatterDate = DateFormat('yyy-MM-dd');
+    var formatterYear = DateFormat('yyy');
+    var formatterMonth = DateFormat('MM');
     formattedTime = DateFormat('kk:mm:a').format(now);
-    formattedDate = formatter.format(now);
+    formattedDate = formatterDate.format(now);
+    formattedYear = formatterYear.format(now);
+    formattedMonth = formatterMonth.format(now);
   }
 
   //....view Works.............................
   String? CurrerntUser;
   var fbData;
+  var fbdata1;
   var totalTime;
   List nameView = [];
   List fromView = [];
   List toView = [];
   List workDoneView = [];
   List workPercentageView = [];
+  List ttlWrk = [];
+  List dayTotalWrk = [];
 
   //............View Firebase Data.............................
-  viewData() {
-    nameView.clear();
-    fromView.clear();
-    toView.clear();
-    workDoneView.clear();
-    workPercentageView.clear();
-    _auth.once().then((value) => {
-      for (var element in value.snapshot.children)
-        {
-          fbData = element.value,
-          if (fbData["email"] == CurrerntUser)
-            {
-              for (var element1 in element.children)
-                {
-                  for (var element2 in element1.children)
-                    {
-                      for (var element3 in element2.children)
-                        {
-                          if (element3.key == "$formattedDate")
-                            {
-                              // print(element3.key),
-                              for (var element4 in element3.children)
-                                {
-                                  // print(element4.value),
-                                  fbData = element4.value,
-                                  setState(() {
-                                    nameView.add(fbData['name']);
-                                    toView.add(fbData['to']);
-                                    fromView.add(fbData['from']);
-                                    workDoneView.add(fbData['workDone']);
-                                    workPercentageView.add(fbData['workPercentage']);
-                                    print(nameView);
 
-                                  }),
-                                },
+  viewData() {
+
+    _auth.once().then((value) {
+      for (var step1 in value.snapshot.children) {
+        fbData = step1.value;
+        if (fbData['email'] == CurrerntUser) {
+          for (var step2 in step1.children) {
+            if (step2.key == "workManager") {
+              for (var step3 in step2.children) {
+                for (var step4 in step3.children) {
+                  if (step4.key == formattedYear) {
+                    for (var step5 in step4.children) {
+                      if (step5.key == formattedMonth) {
+                        for (var step6 in step5.children) {
+                          if (step6.key == formattedDate) {
+                            for (var step7 in step6.children) {
+                              fbdata1 = step7.value;
+                              // print(fbdata1);
+                              if(fbdata1['to'] != null){
+                                nameView.remove(fbdata1['to']);
+                                setState(() {
+                                  fromView.add(fbdata1['from']);
+                                  toView.add(fbdata1['to']);
+                                  workPercentageView.add(fbdata1['workPercentage']);
+                                  workDoneView.add(fbdata1['workDone']);
+                                  ttlWrk.add(fbdata1['from']);
+                                  nameView.add(fbdata1['name']);
+                                  print(nameView);
+                                });
+                              }
+
                             }
-                        },
-                    },
-                },
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
+          }
         }
+      }
     });
   }
 
-  //..........Create Work don...................................
+
+
+
   String? from;
   String? to;
   var wrkDone;
 
-  CreateWrkDone() {
-    _auth.once().then((value) => {
+  createWrkDone() {
+    _auth.once().then((value) =>
+    {
       for (var element in value.snapshot.children)
         {
           fbData = element.value,
@@ -114,7 +124,8 @@ class _WorkEntryState extends State<WorkEntry> {
               _auth
                   .child(wrkDone)
                   .child(
-                  "workManager/timeSheet/$formattedDate/'${fromfield.text.trim()} to ${tofield.text.trim()}'")
+                  "workManager/timeSheet/$formattedYear/$formattedMonth/$formattedDate/'${fromfield
+                      .text.trim()} to ${tofield.text.trim()}'")
                   .set({
                 "from": from,
                 "to": to,
@@ -122,13 +133,33 @@ class _WorkEntryState extends State<WorkEntry> {
                 "workPercentage": '${percentfield.text.trim()}%',
                 'name': fbData['name'],
                 'time_in_hours': totalTime.toString().trim()
-              }).then((value){
+              }).then((value) {
                 fromfield.clear();
                 tofield.clear();
                 wrkdonefield.clear();
                 percentfield.clear();
                 viewData();
+                dayWrkTime();
               }),
+            }
+        }
+    });
+  }
+
+  dayWrkTime() {
+    _auth.once().then((value) =>
+    {
+      for (var element in value.snapshot.children)
+        {
+          fbData = element.value,
+          if (fbData["email"] == user?.email)
+            {
+              wrkDone = element.key,
+              _auth
+                  .child(wrkDone)
+                  .child(
+                  "workManager/timeSheet/$formattedYear/$formattedMonth/$formattedDate/totalWorkingTime")
+                  .set({'day': 'time'})
             }
         }
     });
@@ -171,12 +202,12 @@ class _WorkEntryState extends State<WorkEntry> {
     List<Placemark> placeMark =
     await placemarkFromCoordinates(position.latitude, position.longitude);
 
-    // Placemark place = placeMark[0];
+    Placemark place = placeMark[0];
     lat = "${position.latitude.toDouble()}";
     long = " ${position.longitude.toDouble()}";
     // setState(() {
-      latVal = double.parse(lat);
-      logVal = double.parse(long);
+    latVal = double.parse(lat);
+    logVal = double.parse(long);
     // });
   }
 
@@ -185,34 +216,33 @@ class _WorkEntryState extends State<WorkEntry> {
     // print(position.latitude);
     // print(position.longitude);
     getAddressFromLatLong(position);
-    location =
-    'Lat: ${position.latitude}   long: ${position.longitude}';
+    location = 'Lat: ${position.latitude}   long: ${position.longitude}';
   }
 
-  createLocation(){
-    _auth.once().then((value) => {
+  createLocation() {
+    _auth.once().then((value) =>
+    {
       for (var element in value.snapshot.children)
         {
           fbData = element.value,
           // print(fbData),
-          // print(fbData["name"]),
-
           // print(
           //   User?.email,
           // ),
           // print(Email["email"] == User?.email),
+          // print(CurrerntUser),
           if (fbData["email"] == CurrerntUser)
             {
-              {
-                wrkDone = element.key,
-                // print(wrkdone),
-                // print(logval),
-                // print(latval),
-                _auth.child(wrkDone).child("Location_history/${formattedDate.toString().trim()}/Loc : ${formattedTime.toString().trim()}/").set({
-                  'Lat': latVal,
-                  "Log": logVal,
-                }),
-              }
+              wrkDone = element.key,
+              _auth
+                  .child(wrkDone)
+                  .child(
+                  "Location_history/${formattedDate.toString()
+                      .trim()}/Loc : ${formattedTime.toString().trim()}/")
+                  .set({
+                'Lat': latVal,
+                "Log": logVal,
+              }),
             }
         }
     });
@@ -227,7 +257,7 @@ class _WorkEntryState extends State<WorkEntry> {
     viewData();
     setState(() {
       CurrerntUser = user?.email;
-      Timer.periodic(Duration( seconds : 15), (timer) {
+      Timer.periodic(const Duration(minutes: 15), (timer) {
         todayDate();
         getLocation();
         _determinePosition();
@@ -248,10 +278,19 @@ class _WorkEntryState extends State<WorkEntry> {
     super.dispose();
   }
 
+  bool button = false;
+
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
+
     return Scaffold(
       backgroundColor: Color(0xffF7F9FC),
       body: Form(
@@ -270,16 +309,14 @@ class _WorkEntryState extends State<WorkEntry> {
               top: height * 0.75,
               left: width * 0.0,
               right: width * 0.0,
-
-              child:
-              Lottie.asset("assets/84669-background-animation.json"),
+              child: Lottie.asset("assets/84669-background-animation.json"),
             ),
             Positioned(
               top: height * 0.06,
               right: width * 0.0,
               left: width * 0.0,
               child: Container(
-                padding:  EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.symmetric(horizontal: 15),
                 // height: height * 0.85,
                 decoration: BoxDecoration(
                   // color: Colors.white.withOpacity(0.3),
@@ -303,33 +340,30 @@ class _WorkEntryState extends State<WorkEntry> {
                                   offset: Offset(9.0, 9.0),
                                   blurRadius: 9,
                                 ),
-
                               ],
                             ),
                             child: Center(
                               child: TextFormField(
-
                                   style: const TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: "Nexa"),
+                                      color: Colors.black, fontFamily: "Nexa"),
                                   controller: fromfield,
                                   textInputAction: TextInputAction.next,
                                   decoration: InputDecoration(
                                     hintStyle: const TextStyle(
                                         fontFamily: 'Nexa', fontSize: 13),
-                                    contentPadding:
-                                    const EdgeInsets.all(20),
+                                    contentPadding: const EdgeInsets.all(20),
                                     hintText: '    From',
                                     filled: true,
                                     fillColor: const Color(0xffFBF8FF),
                                     border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(40),
+                                      borderRadius: BorderRadius.circular(40),
                                       borderSide: BorderSide.none,
                                     ),
                                   ),
                                   validator: (value) {
-                                    if (value.toString().isEmpty) {
+                                    if (value
+                                        .toString()
+                                        .isEmpty) {
                                       return 'Enter value';
                                     } else {
                                       return null;
@@ -344,13 +378,13 @@ class _WorkEntryState extends State<WorkEntry> {
                                     );
 
                                     if (pickedTime != null) {
-                                      DateTime parsedTime =
-                                      DateFormat.jm().parse(pickedTime
+                                      DateTime parsedTime = DateFormat.jm()
+                                          .parse(pickedTime
                                           .format(context)
                                           .toString());
-                                      String formattedTime =
-                                      DateFormat('HH:mm a')
+                                      String formattedTime = DateFormat('HH:mm')
                                           .format(parsedTime);
+                                      //DateFormat('HH:mm a // a for AM PM').format(parsedTime);
 
                                       setState(() {
                                         fromfield.text = formattedTime;
@@ -378,26 +412,25 @@ class _WorkEntryState extends State<WorkEntry> {
                             child: Center(
                               child: TextFormField(
                                   style: const TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: "Nexa"),
+                                      color: Colors.black, fontFamily: "Nexa"),
                                   controller: tofield,
                                   textInputAction: TextInputAction.next,
                                   decoration: InputDecoration(
                                     hintStyle: const TextStyle(
                                         fontFamily: 'Nexa', fontSize: 15),
-                                    contentPadding:
-                                    const EdgeInsets.all(20),
+                                    contentPadding: const EdgeInsets.all(20),
                                     hintText: '       To',
                                     filled: true,
                                     fillColor: const Color(0xffFBF8FF),
                                     border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(40),
+                                      borderRadius: BorderRadius.circular(40),
                                       borderSide: BorderSide.none,
                                     ),
                                   ),
                                   validator: (value) {
-                                    if (value.toString().isEmpty) {
+                                    if (value
+                                        .toString()
+                                        .isEmpty) {
                                       return 'Enter value';
                                     } else {
                                       return null;
@@ -412,12 +445,11 @@ class _WorkEntryState extends State<WorkEntry> {
                                     );
 
                                     if (pickedTime != null) {
-                                      DateTime parsedTime =
-                                      DateFormat.jm().parse(pickedTime
+                                      DateTime parsedTime = DateFormat.jm()
+                                          .parse(pickedTime
                                           .format(context)
                                           .toString());
-                                      String formattedTime =
-                                      DateFormat('HH:mm a')
+                                      String formattedTime = DateFormat('HH:mm')
                                           .format(parsedTime);
 
                                       setState(() {
@@ -441,36 +473,34 @@ class _WorkEntryState extends State<WorkEntry> {
                                   offset: Offset(9.0, 9.0),
                                   blurRadius: 9,
                                 ),
-
                               ],
                             ),
                             child: Center(
-                              child:   TextFormField(
+                              child: TextFormField(
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(3),
                                 ],
                                 style: const TextStyle(
-                                    color: Colors.black54,
-                                    fontFamily: "Nexa"),
+                                    color: Colors.black, fontFamily: "Nexa"),
                                 controller: percentfield,
                                 textInputAction: TextInputAction.next,
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   hintStyle: const TextStyle(
                                       fontFamily: 'Nexa', fontSize: 15),
-                                  contentPadding:
-                                  const EdgeInsets.all(20),
+                                  contentPadding: const EdgeInsets.all(20),
                                   hintText: '   Percent',
                                   filled: true,
                                   fillColor: const Color(0xffFBF8FF),
                                   border: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(40),
+                                    borderRadius: BorderRadius.circular(40),
                                     borderSide: BorderSide.none,
                                   ),
                                 ),
                                 validator: (value) {
-                                  if (value.toString().isEmpty) {
+                                  if (value
+                                      .toString()
+                                      .isEmpty) {
                                     return 'Enter value';
                                   } else {
                                     return null;
@@ -498,7 +528,6 @@ class _WorkEntryState extends State<WorkEntry> {
                         margin: const EdgeInsets.only(top: 1),
                         height: height * 0.15,
                         decoration: BoxDecoration(
-
                           borderRadius: BorderRadius.circular(30),
                           color: Color(0xffF7F9FC),
                           // Colors.white.withOpacity(0.3),
@@ -518,8 +547,7 @@ class _WorkEntryState extends State<WorkEntry> {
                         child: Center(
                           child: TextFormField(
                             style: const TextStyle(
-                                color: Colors.black,
-                                fontFamily: "Nexa"),
+                                color: Colors.black, fontFamily: "Nexa"),
                             controller: wrkdonefield,
                             keyboardType: TextInputType.multiline,
                             maxLines: 5,
@@ -535,7 +563,7 @@ class _WorkEntryState extends State<WorkEntry> {
                               ),
                               contentPadding: const EdgeInsets.all(20),
                               hintText:
-                              '                                  Enter your Work',
+                              '                        Enter your Work',
                               filled: true,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(40),
@@ -543,7 +571,9 @@ class _WorkEntryState extends State<WorkEntry> {
                               ),
                             ),
                             validator: (value) {
-                              if (value.toString().isEmpty) {
+                              if (value
+                                  .toString()
+                                  .isEmpty) {
                                 return 'Enter value';
                               } else {
                                 return null;
@@ -566,12 +596,9 @@ class _WorkEntryState extends State<WorkEntry> {
                         height: height * 0.02,
                       ),
 
-
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            isloading = false;
-
                             from = fromfield.text
                                 .trim()
                                 .replaceAll(RegExp(r'[^0-9^:]'), ' ');
@@ -586,8 +613,7 @@ class _WorkEntryState extends State<WorkEntry> {
                                 .trim()
                                 .replaceAll(RegExp(r'[^0-9]'), ':');
 
-                            String start_time =
-                            st.toString(); // or if '24:00'
+                            String start_time = st.toString(); // or if '24:00'
                             String end_time = so.toString(); // or if '12:00
 
                             var format = DateFormat("HH:mm");
@@ -596,14 +622,12 @@ class _WorkEntryState extends State<WorkEntry> {
 
                             if (end.isAfter(start)) {
                               totalTime = end.difference(start);
-                              totalTime =
-                                  totalTime.toString().substring(0, 4);
+                              totalTime = totalTime.toString().substring(0, 4);
                             }
 
-                            final isValid =
-                            formKey.currentState?.validate();
+                            final isValid = formKey.currentState?.validate();
                             if (isValid!) {
-                              CreateWrkDone();
+                              createWrkDone();
                             }
                           });
                         },
@@ -637,7 +661,6 @@ class _WorkEntryState extends State<WorkEntry> {
                         ),
                       ),
                       Container(
-                        // ,
                         margin: EdgeInsets.only(top: height * 0.05),
                         // width: width * 0.8,
                         height: height * 0.4,
@@ -668,10 +691,9 @@ class _WorkEntryState extends State<WorkEntry> {
                                     fontWeight: FontWeight.w900,
                                     fontFamily: "Nexa",
                                     fontSize: height * 0.02,
-                                    color:  Colors.black87),
+                                    color: Colors.black87),
                               ),
                             ),
-
                             const Divider(
                               thickness: 3,
                               indent: 100,
@@ -707,29 +729,25 @@ class _WorkEntryState extends State<WorkEntry> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
     );
   }
+
   Widget buildGridView(double height, double width) {
     return GridView.builder(
-        physics:  NeverScrollableScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1,
           childAspectRatio: 3 / 1.3,
-
         ),
         itemCount: nameView.length,
         itemBuilder: (BuildContext ctx, index) {
           return Container(
-
-            padding: EdgeInsets.only(
-                right: width * 0.03,
-                left: width * 0.03),
+            padding: EdgeInsets.only(right: width * 0.03, left: width * 0.03),
             child: Column(
               children: [
                 Divider(
@@ -739,8 +757,7 @@ class _WorkEntryState extends State<WorkEntry> {
                   color: Colors.black,
                 ),
                 Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     subTitle("[ ${fromView[index]}"),
                     subTitle("To"),
@@ -771,15 +788,13 @@ class _WorkEntryState extends State<WorkEntry> {
         });
   }
 
-  Text subTitle(String name) => Text(
-    name,
-    style: const TextStyle(
-        fontFamily: 'Avenir',
-        fontWeight: FontWeight.w500,
-        fontSize: 15,
-        color: Colors.black),
-  );
-
-
-
+  Text subTitle(String name) =>
+      Text(
+        name,
+        style: const TextStyle(
+            fontFamily: 'Avenir',
+            fontWeight: FontWeight.w500,
+            fontSize: 15,
+            color: Colors.black),
+      );
 }

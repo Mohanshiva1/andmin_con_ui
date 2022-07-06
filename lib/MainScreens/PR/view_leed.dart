@@ -13,7 +13,7 @@ class ViewLeeds extends StatefulWidget {
 }
 
 class _ViewLeedsState extends State<ViewLeeds> {
-  final _auth = FirebaseDatabase.instance.reference().child("cust");
+  final _auth = FirebaseDatabase.instance.reference().child("customer");
   final user = FirebaseAuth.instance.currentUser;
 
   List name = [];
@@ -24,6 +24,7 @@ class _ViewLeedsState extends State<ViewLeeds> {
   List createdDate = [];
   List enquiry = [];
   List state = [];
+  List fetched = [];
   var fbData;
 
   viewLeads() {
@@ -39,7 +40,7 @@ class _ViewLeedsState extends State<ViewLeeds> {
           rating.add(fbData['rating']);
           enquiry.add(fbData['inquired_for']);
           email.add(fbData['email_id']);
-          print(number);
+          fetched.add(fbData['data_fetched_by']);
         });
       }
     });
@@ -105,7 +106,10 @@ class _ViewLeedsState extends State<ViewLeeds> {
                     child: Column(
                       children: [
                         number.length == 0
-                            ? Lottie.asset("assets/81778-loading.json",repeat: true,)
+                            ? Lottie.asset(
+                          "assets/81778-loading.json",
+                          repeat: true,
+                        )
                             : buildGridView(width, height),
                       ],
                     ),
@@ -136,6 +140,15 @@ class _ViewLeedsState extends State<ViewLeeds> {
             margin: EdgeInsets.symmetric(horizontal: width * 0.05),
             decoration: BoxDecoration(
                 color: Color(0xffF7F9FC),
+                // : state[index] == "Following Up"
+                // ? Colors.green
+                // : state[index] == "Delayed"
+                // ? Colors.orange
+                // : state[index] == "Rejected from management side"
+                // ? Colors.red
+                // : state[index] == "Rejected from Customer end"
+                // ? Colors.red
+
                 // Colors.white.withOpacity(0.3),
                 boxShadow: [
                   BoxShadow(
@@ -143,49 +156,60 @@ class _ViewLeedsState extends State<ViewLeeds> {
                     offset: Offset(9.0, 9.0),
                     blurRadius: 9,
                   ),
-                  // BoxShadow(
-                  //   color: Colors.white,
-                  //   offset: Offset(-10.0, -10.0),
-                  //   blurRadius: 10,
-                  // ),
+                  BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(-10.0, -10.0),
+                    blurRadius: 10,
+                  ),
                 ],
                 borderRadius: BorderRadius.circular(15)),
             child: Column(
               children: [
                 SizedBox(
-                  height: height * 0.03,
+                  height: height * 0.01,
                 ),
-                leadDetails("Name", "${name[index]}"),
-                leadDetails("Phone", "${number[index]}"),
-                leadDetails("Location", "${location[index]}"),
-                leadDetails("Enquiry", "${enquiry[index]}"),
-                leadDetails("Email",
-                    "${email.length == 0 ? Text("No Data") : email[index]}"),
-                leadDetails("createdDate", "${createdDate[index]}"),
-                leadDetails("inquired_for", "${enquiry[index]}"),
-                leadDetails("Rating", "${rating[index]}"),
+                leadDetails("Name", "${name[index]}",Colors.black),
+                leadDetails("Phone", "${number[index]}",Colors.black),
+                leadDetails("Location", "${location[index]}",Colors.black),
+                leadDetails("Enquiry", "${enquiry[index]}",Colors.black),
+                leadDetails("Email", "${email[index]}",Colors.black),
+                leadDetails("createdDate", "${createdDate[index]}",Colors.black),
+                leadDetails("Data Fetched From", "${[index]}",Colors.black),
+                leadDetails('Status', '${state[index]}',state[index] == "Following Up"
+                    ? Colors.green
+                    : state[index] == "Delayed"
+                    ? Colors.orange
+                    : state[index] == "Rejected from management side"
+                    ? Colors.red
+                    : state[index] == "Rejected from Customer end"
+                    ? Colors.red
+                    : Color(0xffF7F9FC),),
+                leadDetails("Rating", "${rating[index]}",Colors.black),
               ],
             ),
           );
         });
   }
 
-  leadDetails(String title, String address) {
+  leadDetails(String title, String address, color) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return SizedBox(
       height: height * 0.04,
       child: ListTile(
         title: Text(title,
-            style: const TextStyle(
-                fontFamily: 'Nexa', fontSize: 18, color: Colors.black)),
+            style:  TextStyle(
+                fontFamily: 'Avenir',
+                fontSize: height*0.013,
+                color: Colors.black,
+                fontWeight: FontWeight.w800)),
         trailing: SizedBox(
           // width: 180,
           // height: 80,
           child: SingleChildScrollView(
             child: Text(address,
-                style: const TextStyle(
-                    fontFamily: 'Nexa', fontSize: 18, color: Colors.black)),
+                style: TextStyle(
+                    fontFamily: 'Avenir', fontSize: height*0.013, color: color,fontWeight: FontWeight.w600)),
           ),
         ),
       ),

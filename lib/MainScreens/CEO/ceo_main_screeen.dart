@@ -1,16 +1,13 @@
 import 'dart:ui';
 
-import 'package:andmin_con_ui/MainScreens/CEO/newuser.dart';
 import 'package:andmin_con_ui/MainScreens/CEO/wrk_done_view.dart';
 import 'package:andmin_con_ui/MainScreens/CEO/wrk_not_entry.dart';
 import 'package:andmin_con_ui/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import '../PR/view_leed.dart';
 
 class CEOScreen extends StatefulWidget {
   const CEOScreen({Key? key}) : super(key: key);
@@ -59,21 +56,6 @@ class _CEOScreenState extends State<CEOScreen> {
       backgroundColor: Color(0xffF7F9FC),
       body: Stack(
         children: [
-          // Positioned(
-          //   top: height * 0.01,
-          //   bottom: height * 0.01,
-          //   right: width * 0.01,
-          //   left: width * 0.01,
-          //   child: Container(
-          //     decoration: const BoxDecoration(
-          //         gradient: LinearGradient(
-          //       colors: [Colors.black, Colors.black],
-          //       end: Alignment.bottomLeft,
-          //       begin: Alignment.topRight,
-          //     )),
-          //   ),
-          //   //
-          // ),
           Positioned(
             top: height * 0.00,
             left: width * 0.0,
@@ -90,42 +72,39 @@ class _CEOScreenState extends State<CEOScreen> {
             top: height * 0.15,
             left: 1,
             right: 1,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 1, sigmaX: 0),
-              child: Column(
-                children: [
-                  // Center(
-                  //   child: Text(
-                  //     "Choose your Destination",
-                  //     style: TextStyle(
-                  //         fontWeight: FontWeight.w900,
-                  //         fontFamily: "Nexa",
-                  //         fontSize: height * 0.025,
-                  //         color:  Colors.black),
-                  //   ),
-                  // ),
-                  // const Divider(
-                  //   thickness: 3,
-                  //   indent: 30,
-                  //   endIndent: 30,
-                  //   height: 4,
-                  //   color: Colors.black,
-                  // ),
-                  // SizedBox(
-                  //   height: height * 0.03,
-                  // ),
-                  // Center(
-                  //   child: Text(
-                  //     "Welcome ${userName.toString().trim()} ",
-                  //     style: TextStyle(
-                  //         color: Colors.black,
-                  //         fontFamily: 'Nexa',
-                  //         fontWeight: FontWeight.bold,
-                  //         fontSize: height * 0.017),
-                  //   ),
-                  // ),
-                ],
-              ),
+            child: Column(
+              children: [
+                // Center(
+                //   child: Text(
+                //     "Choose your Destination",
+                //     style: TextStyle(
+                //         fontWeight: FontWeight.w900,
+                //         fontFamily: "Nexa",
+                //         fontSize: height * 0.025,
+                //         color:  Colors.black),
+                //   ),
+                // ),
+                // const Divider(
+                //   thickness: 3,
+                //   indent: 30,
+                //   endIndent: 30,
+                //   height: 4,
+                //   color: Colors.black,
+                // ),
+                // SizedBox(
+                //   height: height * 0.03,
+                // ),
+                // Center(
+                //   child: Text(
+                //     "Welcome ${userName.toString().trim()} ",
+                //     style: TextStyle(
+                //         color: Colors.black,
+                //         fontFamily: 'Nexa',
+                //         fontWeight: FontWeight.bold,
+                //         fontSize: height * 0.017),
+                //   ),
+                // ),
+              ],
             ),
           ),
           Positioned(

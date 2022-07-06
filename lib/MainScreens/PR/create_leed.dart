@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
 class CreateLeeds extends StatefulWidget {
   const CreateLeeds({Key? key}) : super(key: key);
@@ -14,11 +15,10 @@ class CreateLeeds extends StatefulWidget {
 }
 
 class _CreateLeedsState extends State<CreateLeeds> {
-  final _auth = FirebaseDatabase.instance.reference().child("cust");
+  final _auth = FirebaseDatabase.instance.reference().child("customer");
   final user = FirebaseAuth.instance.currentUser;
 
   String? userEmail;
-
 
   final formKey = GlobalKey<FormState>();
 
@@ -49,28 +49,29 @@ class _CreateLeedsState extends State<CreateLeeds> {
 
   createLeads() {
     _auth.once().then((value) => {
-          setState(() {
-            _auth.child("${phone.text.trim()}").set({
-              'city': loc.text.trim(),
-              'created_by': userEmail.toString().trim(),
-              'created_date': formattedDate,
-              'created_time': formattedTime,
-              'customer_state': 'following up',
-              'data_fetched_by': fetch.text.trim(),
-              'inquired_for': enq.text.trim(),
-              'name': name.text.trim(),
-              'phone_number': phone.text.trim(),
-              'rating': '0',
-            }).then((value) {
-              name.clear();
-              phone.clear();
-              loc.clear();
-              enq.clear();
-              email.clear();
-              fetch.clear();
-            });
-          }),
+      setState(() {
+        _auth.child("${phone.text.trim()}").set({
+          'city': loc.text.trim(),
+          'email_id' : email.text,
+          'created_by': userEmail.toString().trim(),
+          'created_date': formattedDate,
+          'created_time': formattedTime,
+          'customer_state': 'Following Up',
+          'data_fetched_by': fetch.text.trim(),
+          'inquired_for': enq.text.trim(),
+          'name': name.text.trim(),
+          'phone_number': phone.text.trim(),
+          'rating': '0',
+        }).then((value) {
+          name.clear();
+          phone.clear();
+          loc.clear();
+          enq.clear();
+          email.clear();
+          fetch.clear();
         });
+      }),
+    });
   }
 
   @override
@@ -83,10 +84,14 @@ class _CreateLeedsState extends State<CreateLeeds> {
     super.initState();
   }
 
+  bool isPressed = false;
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    Offset distance = isPressed ? Offset(5, 5) : Offset(10, 10);
+    double blur = isPressed ?  25:5.0;
     return Scaffold(
       backgroundColor: Color(0xffF7F9FC),
       body: Form(
@@ -110,6 +115,7 @@ class _CreateLeedsState extends State<CreateLeeds> {
               top: height * 0.1,
               left: width * 0.03,
               right: width * 0.03,
+              bottom: 0,
               child: Container(
                 padding: EdgeInsets.symmetric(
                     vertical: height * 0.03, horizontal: width * 0.01),
@@ -163,46 +169,59 @@ class _CreateLeedsState extends State<CreateLeeds> {
                               height: height * 0.09,
                             ),
                             GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  final isValid =
-                                      formKey.currentState?.validate();
-                                  if (isValid!) {
-                                    createLeads();
-                                  }
-                                  // print(formattedTime);
-                                  // print(formattedDate);
-                                });
-                              },
-                              child: Container(
-                                height: height * 0.05,
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: width * 0.3),
-                                decoration: BoxDecoration(
-                                    color: Color(0xffF7F9FC),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black26,
-                                        offset: Offset(9.0, 9.0),
-                                        blurRadius: 9,
-                                      ),
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: Offset(-10.0, -10.0),
-                                        blurRadius: 10,
-                                      ),
-                                    ],
-                                    borderRadius: BorderRadius.circular(30)),
-                                child: const Center(
-                                  child: Text("Submit",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontFamily: "Nexa",
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800)),
-                                ),
-                              ),
-                            )
+                                onTap: () {
+                                  setState(() {
+                                    isPressed = !isPressed;
+                                    final isValid =
+                                    formKey.currentState?.validate();
+                                    if (isValid!) {
+                                      createLeads();
+                                    }
+                                    // print(formattedTime);
+                                    // print(formattedDate);
+                                  });
+                                },
+                                child: Listener(
+                                  onPointerUp: (_) => setState(() {
+                                    isPressed = true;
+                                  }),
+                                  onPointerDown: (_) => setState(() {
+                                    isPressed = true;
+                                  }),
+                                  child: AnimatedContainer(
+                                    margin: const EdgeInsets.only(top: 1),
+                                    width: width * 0.3,
+                                    height: height * 0.06,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30),
+                                      color: const Color(0xffF7F9FC),
+                                      // Colors.white.withOpacity(0.3),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black26,
+                                          offset: distance,
+                                          blurRadius: blur,
+                                          inset: isPressed,
+                                        ),
+                                        BoxShadow(
+                                          color: Colors.white,
+                                          offset: -distance,
+                                          blurRadius: blur,
+                                          inset: isPressed,
+                                        ),
+                                      ],
+                                    ),
+                                    duration: Duration(milliseconds: 250),
+                                    child: const Center(
+                                      child: Text("Submit",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: "Nexa",
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w800)),
+                                    ),
+                                  ),
+                                )),
                           ],
                         ),
                       ),
@@ -225,6 +244,7 @@ class _CreateLeedsState extends State<CreateLeeds> {
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
+      reverse: true,
       children: [
         SizedBox(
           height: height * 0.05,

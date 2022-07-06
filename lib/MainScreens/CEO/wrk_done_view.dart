@@ -27,6 +27,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
   List workDone = [];
   List workPercentage = [];
   List totalTime = [];
+  List dayTotalWork = [];
 
   DatePicker() async {
     selectedDate = formatterDate.format(now);
@@ -45,6 +46,22 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
     });
   }
 
+  String? formattedTime;
+  var formattedDate;
+  var formattedMonth;
+  var formattedYear;
+
+  todayDate() {
+    var now = DateTime.now();
+    var formatterDate = DateFormat('yyy-MM-dd');
+    var formatterYear = DateFormat('yyy');
+    var formatterMonth = DateFormat('MM');
+    formattedTime = DateFormat('kk:mm:a').format(now);
+    formattedDate = formatterDate.format(now);
+    formattedYear = formatterYear.format(now);
+    formattedMonth = formatterMonth.format(now);
+  }
+
   loadData() {
     name.clear();
     from.clear();
@@ -54,32 +71,81 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
 
     database.once().then((value) {
       for (var element in value.snapshot.children) {
-        // print(element.value);
-        fbData = element.value;
+        // fbData = element.value;
         for (var element1 in element.children) {
-          for (var element2 in element1.children) {
-            for (var element3 in element2.children) {
-              if (element3.key == selectedDate) {
-                for (var element4 in element3.children) {
-                  // print(element4.value);
-                  fbData = element4.value;
-                  setState(() {
-                    allData.add(fbData);
-                    // print("allData......${allData}");
-                    nameData.add(fbData['name']);
-                    nameData = nameData.toSet().toList();
-                    // print('data2 ..................${nameData}');
-                    name.add(fbData['name']);
-                    to.add(fbData['to']);
-                    from.add(fbData['from']);
-                    workDone.add(fbData['workDone']);
-                    workPercentage.add(fbData['workPercentage']);
-                    totalTime.add(fbData["time_in_hours"]);
-                  });
+          // print(element1.key);
+          if (element1.key == "workManager") {
+            for (var element2 in element1.children) {
+              // print(element2.key);
+              for (var element3 in element2.children) {
+                if (element3.key == formattedYear) {
+                  for (var element4 in element3.children) {
+                    if (element4.key == formattedMonth) {
+                      for (var element5 in element4.children) {
+                        if (element5.key == selectedDate) {
+                          for (var element6 in element5.children) {
+                            // print(element6.key);
+                            // if(element6.key == 'totalWorkingTime'){
+                            //   // for(var element7 in element6.children){
+                            //   //   setState(() {
+                            //   //     daytotalWork.add(element7.value);
+                            //   //     print(daytotalWork);
+                            //   //   });
+                            //   // }
+                            // }
+                            fbData = element6.value;
+                            if(fbData['name'] != null){
+                              name.remove(fbData['name']);
+                              setState(() {
+                                allData.add(fbData);
+                                nameData.add(fbData['name']);
+                                nameData = nameData.toSet().toList();
+                                // print(nameData);
+                                name.add(fbData['name']);
+                                dayTotalWork.add(fbData['day']);
+                                to.add(fbData['to']);
+                                from.add(fbData['from']);
+                                print(name);
+                              });
+                            }
+                            // print(fbData);
+
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
           }
+
+
+          // for (var element2 in element1.children) {
+          //
+          //   for (var element3 in element2.children) {
+          //
+          //     // if (element3.key == selectedDate) {
+          //     //   for (var element4 in element3.children) {
+          //     //     // print(element4.value);
+          //     //     fbData = element4.value;
+          //     //     setState(() {
+          //     //       allData.add(fbData);
+          //     //       // print("allData......${allData}");
+          //     //       nameData.add(fbData['name']);
+          //     //       nameData = nameData.toSet().toList();
+          //     //       // print('data2 ..................${nameData}');
+          //     //       name.add(fbData['name']);
+          //     //       to.add(fbData['to']);
+          //     //       from.add(fbData['from']);
+          //     //       workDone.add(fbData['workDone']);
+          //     //       workPercentage.add(fbData['workPercentage']);
+          //     //       totalTime.add(fbData["time_in_hours"]);
+          //     //     });
+          //     //   }
+          //     // }
+          //   }
+          // }
         }
       }
     });
@@ -89,6 +155,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
   void initState() {
     selectedDate = formatterDate.format(now);
     print(selectedDate);
+    todayDate();
     loadData();
     super.initState();
   }
@@ -101,7 +168,6 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
       backgroundColor: Color(0xffF7F9FC),
       body: Stack(
         children: [
-
           Positioned(
             top: height * 0.00,
             left: width * 0.0,
@@ -128,13 +194,22 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                       SizedBox(
                         width: width * 0.25,
                       ),
-                      Text(
-                        "Works History",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            fontFamily: "Nexa",
-                            fontSize: height * 0.03,
-                            color: Colors.black),
+                      Column(
+                        children: [
+                          Text(
+                            "Works History",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontFamily: "Nexa",
+                                fontSize: height * 0.03,
+                                color: Colors.black),
+                          ),
+                          Text('$selectedDate',style: TextStyle(
+                              fontFamily: 'Nexa',
+                              fontSize: 15,
+                              color: Colors.black)),
+
+                        ],
                       ),
                       SizedBox(
                         width: width * 0.06,
@@ -163,11 +238,12 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                   height: 4,
                   color: Colors.black,
                 ),
+
               ],
             ),
           ),
           Positioned(
-            top: height * 0.15,
+            top: height * 0.18,
             left: width * 0.0,
             right: width * 0.0,
             bottom: 0,
@@ -178,8 +254,15 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                   SingleChildScrollView(
                     child: Column(
                       children: [
+                        // ElevatedButton(
+                        //     onPressed: () {
+                        //       setState(() {
+                        //         loadData();
+                        //       });
+                        //     },
+                        //     child: Text("print")),
                         nameData.length == 0
-                            ? Text("${nameData == 0 ? 'Load Data': 'No Data'}")
+                            ? Text("${nameData == 0 ? 'Load Data' : 'No Data'}")
                         // const Text("",
                         //         style: TextStyle(
                         //             fontFamily: 'Nexa',
@@ -212,7 +295,6 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
         itemCount: nameData.length,
         itemBuilder: (BuildContext ctx, index) {
           return Container(
-
             margin: EdgeInsets.all(10),
             decoration: BoxDecoration(
                 color: Color(0xffF7F9FC),
@@ -251,68 +333,68 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                   child: SingleChildScrollView(
                     child: nameData.length == 0
                         ? const Text("Select Date",
-                            style: TextStyle(
-                                fontFamily: 'Nexa',
-                                fontSize: 20,
-                                color: Colors.black))
+                        style: TextStyle(
+                            fontFamily: 'Nexa',
+                            fontSize: 20,
+                            color: Colors.black))
                         : ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: allData.length,
-                            itemBuilder: (BuildContext context, int ind) {
-                              return allData[ind]['name']
-                                      .contains(nameData[index])
-                                  ? Container(
-                                      padding: EdgeInsets.only(
-                                          right: width * 0.03,
-                                          left: width * 0.03),
-                                      child: Column(
-                                        children: [
-                                          Divider(
-                                            endIndent: 5,
-                                            indent: 5,
-                                            thickness: 2,
-                                            color: Colors.black,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              subTitle(
-                                                  '[ ${allData[ind]['from']}'),
-                                              subTitle("To"),
-                                              subTitle(
-                                                  ' ${allData[ind]['to']} ]'),
-                                              subTitle(
-                                                  '${allData[ind]['time_in_hours']} '),
-                                              subTitle(
-                                                  '${allData[ind]['workPercentage']}'),
-                                            ],
-                                          ),
-                                          Divider(
-                                            endIndent: 5,
-                                            indent: 5,
-                                            thickness: 2,
-                                            color: Colors.black,
-                                          ),
-                                          Text(
-                                            '${allData[ind]['workDone']}',
-                                            style: TextStyle(
-                                                fontFamily: 'Avenir',
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 17,
-                                                color: Colors.black),
-                                          ),
-                                          SizedBox(
-                                            height: height * 0.05,
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  : Container();
-                            },
+                      scrollDirection: Axis.vertical,
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: allData.length,
+                      itemBuilder: (BuildContext context, int ind) {
+                        return allData[ind]['name']
+                            .contains(nameData[index])
+                            ? Container(
+                          padding: EdgeInsets.only(
+                              right: width * 0.03,
+                              left: width * 0.03),
+                          child: Column(
+                            children: [
+                              Divider(
+                                endIndent: 5,
+                                indent: 5,
+                                thickness: 2,
+                                color: Colors.black,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  subTitle(
+                                      '[ ${allData[ind]['from']}'),
+                                  subTitle("To"),
+                                  subTitle(
+                                      ' ${allData[ind]['to']} ]'),
+                                  subTitle(
+                                      '${allData[ind]['time_in_hours']} '),
+                                  subTitle(
+                                      '${allData[ind]['workPercentage']}'),
+                                ],
+                              ),
+                              Divider(
+                                endIndent: 5,
+                                indent: 5,
+                                thickness: 2,
+                                color: Colors.black,
+                              ),
+                              Text(
+                                '${allData[ind]['workDone']}',
+                                style: TextStyle(
+                                    fontFamily: 'Avenir',
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 17,
+                                    color: Colors.black),
+                              ),
+                              SizedBox(
+                                height: height * 0.05,
+                              )
+                            ],
                           ),
+                        )
+                            : Container();
+                      },
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -325,11 +407,11 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
   }
 
   Text subTitle(String name) => Text(
-        name,
-        style: const TextStyle(
-            fontFamily: 'Avenir',
-            fontWeight: FontWeight.w500,
-            fontSize: 15,
-            color: Colors.black),
-      );
+    name,
+    style: const TextStyle(
+        fontFamily: 'Avenir',
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
+        color: Colors.black),
+  );
 }

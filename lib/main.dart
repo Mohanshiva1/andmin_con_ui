@@ -43,7 +43,7 @@ class SplashScreen extends StatelessWidget {
         "assets/splashscreen.json",
       ),
       nextScreen: MainPage(),
-      backgroundColor: const Color(0xff34455B),
+      backgroundColor: Color(0xffF7F9FC),
       splashIconSize: 350,
       splashTransition: SplashTransition.fadeTransition,
     );
@@ -91,17 +91,21 @@ class _HomePageState extends State<HomePage> {
       for (var element in value.snapshot.children) {
         fbData = element.value;
         if (fbData['email'] == CurrerntUser) {
-          if (fbData['department'] == "APP") {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const ITScreen()));
-          }
-          else if (fbData['department'] == "admin") {
+          if (fbData['department'] == "ADMIN") {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const CEOScreen()));
+          }
+          else if (fbData['department'] == "APP") {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const ITScreen()));
           }
           else if (fbData['department'] == "PR") {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const PRScreen()));
+          }
+          else if (fbData['department'] == "MEDIA") {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const ITScreen()));
           }
           else if (fbData['department'] == "WEB") {
             Navigator.pushReplacement(context,
@@ -132,7 +136,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xffF7F9FC),
       body: SafeArea(
         child: Center(
           child: Column(
