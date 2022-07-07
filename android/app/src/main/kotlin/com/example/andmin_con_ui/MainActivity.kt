@@ -1,4 +1,4 @@
-package com.example.andmin_con_ui
+package com.onwords.admin_console
 
 import io.flutter.embedding.android.FlutterActivity
 
