@@ -59,16 +59,16 @@ class _WorkEntryState extends State<WorkEntry> {
   List ttlWrk = [];
   List dayTotalWrk = [];
 
+
+
   //............View Firebase Data.............................
 
   viewData() {
-
     nameView.clear();
     toView.clear();
     fromfield.clear();
     workPercentageView.clear();
     workDoneView.clear();
-
     _auth.once().then((value) {
       for (var step1 in value.snapshot.children) {
         fbData = step1.value;
@@ -85,19 +85,20 @@ class _WorkEntryState extends State<WorkEntry> {
                             for (var step7 in step6.children) {
                               fbdata1 = step7.value;
                               // print(fbdata1);
-                              if(fbdata1['to'] != null){
+                              if (fbdata1['to'] != null) {
                                 nameView.remove(fbdata1['to']);
                                 setState(() {
                                   fromView.add(fbdata1['from']);
                                   toView.add(fbdata1['to']);
-                                  workPercentageView.add(fbdata1['workPercentage']);
+                                  workPercentageView
+                                      .add(fbdata1['workPercentage']);
                                   workDoneView.add(fbdata1['workDone']);
-                                  ttlWrk.add(fbdata1['from']);
+                                  ttlWrk.add(fbdata1['time_in_hours']);
                                   nameView.add(fbdata1['name']);
                                   print(nameView);
+
                                 });
                               }
-
                             }
                           }
                         }
@@ -113,14 +114,241 @@ class _WorkEntryState extends State<WorkEntry> {
     });
   }
 
-
-
-
   String? from;
   String? to;
   var wrkDone;
 
   createWrkDone() {
+    _auth.once().then((value) => {
+      for (var element in value.snapshot.children)
+        {
+          fbData = element.value,
+          if (fbData["email"] == user?.email)
+            {
+              wrkDone = element.key,
+              _auth
+                  .child(wrkDone)
+                  .child(
+                  "workManager/timeSheet/$formattedYear/$formattedMonth/$formattedDate/${upLoadTime1.toString().trim()} to ${upLoadTime2.toString().trim()}")
+                  .set({
+                "from": upLoadTime1.toString().trim(),
+                "to": upLoadTime2.toString().trim(),
+                "workDone": wrkdonefield.text.trim(),
+                "workPercentage": '${percentfield.text.trim()}%',
+                'name': fbData['name'],
+                'time_in_hours': totalTime.toString().trim()
+              }).then((value) {
+                fromfield.clear();
+                tofield.clear();
+                wrkdonefield.clear();
+                percentfield.clear();
+                viewData();
+                getDayWrkTime();
+                getMonthWrkTime();
+              })
+            }
+        }
+    });
+  }
+//........................day.........................
+  var fbDataDayList;
+  List dayWrkTimingList = [];
+
+  getDayWrkTime() {
+    _auth.once().then((value) {
+      for (var step1 in value.snapshot.children) {
+        fbData = step1.value;
+        if (fbData['email'] == CurrerntUser) {
+          for (var step2 in step1.children) {
+            if (step2.key == "workManager") {
+              for (var step3 in step2.children) {
+                for (var step4 in step3.children) {
+                  if (step4.key == formattedYear) {
+                    for (var step5 in step4.children) {
+                      if (step5.key == formattedMonth) {
+                        for (var step6 in step5.children) {
+                          if (step6.key == formattedDate) {
+                            for (var mwt in step5.children) {
+                              if (mwt.key != 'totalWorkingTime') {
+                                for (var mwt2 in mwt.children) {
+                                  if (mwt2.key != 'totalWorkingTime') {
+                                    // print(mwt2.value);
+                                    fbDataDayList = mwt2.value;
+                                    setState(() {
+                                      dayWrkTimingList.add(fbDataDayList['time_in_hours']);
+                                      print("${dayWrkTimingList}...............getmonth");
+                                    });
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }).then((value) => {uploadDayTotalWorkTiming(),dayWrkTimingList.clear()});
+  }
+
+  int testingHours = 0;
+  int finalTestingHours = 0;
+
+  int testingMinutes = 0;
+  int finalTestingMinutes = 0;
+  var finalDayWrkTime;
+
+  uploadDayTotalWorkTiming() {
+    List daytimeList = dayWrkTimingList;
+
+    // print('${timeList}...........timeList');
+    for (var time in daytimeList) {
+      // print("${time}..............loop in time");
+
+      var format = time;
+      // print("${format}..............format in time");
+
+      var timeFormat = DateFormat("HH:mm");
+      var starTime = timeFormat.parse(format).toString().substring(10, 19);
+
+      var hours = starTime.substring(0, 3);
+
+      var minutes = starTime.substring(4, 6);
+
+      testingHours = int.parse(hours);
+
+
+      var addTime = finalTestingHours + testingHours;
+      // print(addTime);
+      finalTestingHours = addTime;
+
+
+      testingMinutes = int.parse(minutes);
+      var addMinutes = finalTestingMinutes + testingMinutes;
+      // print(addTime);
+      finalTestingMinutes = addMinutes;
+      // print(finalTestingMinutes);
+
+      var today = DateTime.utc(0);
+      finalDayWrkTime =  today.add(Duration(hours: finalTestingHours,minutes: finalTestingMinutes)).toString().substring(10,19);
+
+
+      // print(dayTotalWorkingTime);
+    }
+    _auth.once().then((value) => {
+      for (var element in value.snapshot.children)
+        {
+          fbData = element.value,
+          if (fbData["email"] == user?.email)
+            {
+              wrkDone = element.key,
+              _auth
+                  .child(wrkDone)
+                  .child(
+                  "workManager/timeSheet/$formattedYear/$formattedMonth/$formattedDate/totalWorkingTime")
+                  .set({'day': finalDayWrkTime}).then((value) => {
+                finalTestingHours = 0,
+                finalTestingMinutes = 0,
+                dayWrkTimingList.clear(),
+                daytimeList.clear(),
+              })
+            }
+        }
+    });
+  }
+
+//...............................month,..............................
+  var fbDataMonthList;
+  List monthWrkTiminglist = [];
+  getMonthWrkTime(){
+    _auth.once().then((value) {
+      for (var step1 in value.snapshot.children) {
+        fbData = step1.value;
+        if (fbData['email'] == CurrerntUser) {
+          for (var step2 in step1.children) {
+            if (step2.key == "workManager") {
+              for (var step3 in step2.children) {
+                for (var step4 in step3.children) {
+                  if (step4.key == formattedYear) {
+                    for (var step5 in step4.children) {
+                      if (step5.key == formattedMonth) {
+                        for (var mwt in step5.children) {
+                          if (mwt.key != 'totalWorkingTime') {
+                            for (var mwt2 in mwt.children) {
+                              if (mwt2.key != 'totalWorkingTime') {
+                                // print(mwt2.value);
+                                fbDataMonthList = mwt2.value;
+                                setState(() {
+                                  monthWrkTiminglist.add(fbDataMonthList['time_in_hours']);
+                                  print("${monthWrkTiminglist}...............getmonth");
+                                });
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }).then((value) => {uploadMonthWorkingTime(),monthWrkTiminglist.clear()});
+  }
+
+
+  int monthHours = 0;
+  int finalMonthHours = 0;
+
+  int monthMinutes = 0;
+  int finalMonthMinutes = 0;
+  var finalmothTotalWorkingTime;
+
+  uploadMonthWorkingTime(){
+    List monthTimeList = monthWrkTiminglist;
+
+    for(var time in monthTimeList) {
+      // print("${time}..............loop in time");
+
+      var format = time;
+      // print("${format}..............format in time");
+
+      var timeFormat = DateFormat("HH:mm");
+      var starTime = timeFormat.parse(format).toString().substring(10, 19);
+
+      var hours = starTime.substring(0, 3);
+
+      var minutes = starTime.substring(4, 6);
+
+      monthHours = int.parse(hours);
+
+
+      var addTime = finalMonthHours + monthHours;
+      // print(addTime);
+      finalMonthHours = addTime;
+
+
+      monthMinutes = int.parse(minutes);
+      var addMinutes = finalMonthMinutes + monthMinutes;
+      // print(addTime);
+      finalMonthMinutes = addMinutes;
+      // print(finalTestingMinutes);
+
+      var today = DateTime.utc(0);
+      print(today);
+      finalmothTotalWorkingTime =  today.add(Duration(hours: finalMonthHours,minutes: finalMonthMinutes)).toString().substring(8,19);
+
+    }
+
+
 
     _auth.once().then((value) =>
     {
@@ -133,22 +361,13 @@ class _WorkEntryState extends State<WorkEntry> {
               _auth
                   .child(wrkDone)
                   .child(
-                  "workManager/timeSheet/$formattedYear/$formattedMonth/$formattedDate/'${upLoadTime1.toString().trim()} to ${upLoadTime2.toString().trim()}'")
-                  .set({
-                "from": from,
-                "to": to,
-                "workDone": wrkdonefield.text.trim(),
-                "workPercentage": '${percentfield.text.trim()}%',
-                'name': fbData['name'],
-                'time_in_hours': totalTime.toString().trim()
-              }).then((value) {
-                fromfield.clear();
-                tofield.clear();
-                wrkdonefield.clear();
-                percentfield.clear();
-                viewData();
-                // dayWrkTime();
-              }),
+                  "workManager/timeSheet/$formattedYear/$formattedMonth/totalWorkingTime")
+                  .set({'month': finalmothTotalWorkingTime}).then((value) {
+                finalMonthHours = 0;
+                finalMonthMinutes = 0;
+                monthWrkTiminglist.clear();
+                monthTimeList.clear();
+              })
             }
         }
     });
@@ -157,27 +376,13 @@ class _WorkEntryState extends State<WorkEntry> {
 
 
 
-  // dayWrkTime() {
-  //
-  //   // _auth.once().then((value) =>
-  //   // {
-  //   //   for (var element in value.snapshot.children)
-  //   //     {
-  //   //       fbData = element.value,
-  //   //       if (fbData["email"] == user?.email)
-  //   //         {
-  //   //           wrkDone = element.key,
-  //   //           _auth
-  //   //               .child(wrkDone)
-  //   //               .child(
-  //   //               "workManager/timeSheet/$formattedYear/$formattedMonth/$formattedDate/totalWorkingTime")
-  //   //               .set({'day': 'time'})
-  //   //         }
-  //   //     }
-  //   // });
-  // }
-
   // Get Current Location........................................
+
+
+
+
+
+
   String location = 'Get';
   String lat = '';
   String long = '';
@@ -232,8 +437,7 @@ class _WorkEntryState extends State<WorkEntry> {
   }
 
   createLocation() {
-    _auth.once().then((value) =>
-    {
+    _auth.once().then((value) => {
       for (var element in value.snapshot.children)
         {
           fbData = element.value,
@@ -249,8 +453,7 @@ class _WorkEntryState extends State<WorkEntry> {
               _auth
                   .child(wrkDone)
                   .child(
-                  "Location_history/${formattedDate.toString()
-                      .trim()}/Loc : ${formattedTime.toString().trim()}/")
+                  "Location_history/${formattedDate.toString().trim()}/Loc : ${formattedTime.toString().trim()}/")
                   .set({
                 'Lat': latVal,
                 "Log": logVal,
@@ -294,14 +497,8 @@ class _WorkEntryState extends State<WorkEntry> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery
-        .of(context)
-        .size
-        .height;
-    final width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: Color(0xffF7F9FC),
@@ -336,6 +533,7 @@ class _WorkEntryState extends State<WorkEntry> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -373,9 +571,7 @@ class _WorkEntryState extends State<WorkEntry> {
                                     ),
                                   ),
                                   validator: (value) {
-                                    if (value
-                                        .toString()
-                                        .isEmpty) {
+                                    if (value.toString().isEmpty) {
                                       return 'Enter value';
                                     } else {
                                       return null;
@@ -394,18 +590,19 @@ class _WorkEntryState extends State<WorkEntry> {
                                           .parse(pickedTime
                                           .format(context)
                                           .toString());
-                                      String formattedTime = DateFormat('h:m a')
+                                      String formattedTime =
+                                      DateFormat('h:mm a')
                                           .format(parsedTime);
 
                                       //DateFormat('HH:mm a // a for AM PM').format(parsedTime);
 
-                                      String formattedUploadTime = DateFormat('HH:mm')
+                                      String formattedUploadTime =
+                                      DateFormat('HH:mm')
                                           .format(parsedTime);
 
                                       setState(() {
                                         fromfield.text = formattedTime;
                                         upLoadTime1 = formattedUploadTime;
-
                                       });
                                     }
                                   }),
@@ -446,9 +643,7 @@ class _WorkEntryState extends State<WorkEntry> {
                                     ),
                                   ),
                                   validator: (value) {
-                                    if (value
-                                        .toString()
-                                        .isEmpty) {
+                                    if (value.toString().isEmpty) {
                                       return 'Enter value';
                                     } else {
                                       return null;
@@ -467,15 +662,16 @@ class _WorkEntryState extends State<WorkEntry> {
                                           .parse(pickedTime
                                           .format(context)
                                           .toString());
-                                      String formattedTime = DateFormat('h:m a')
+                                      String formattedTime =
+                                      DateFormat('h:mm a')
                                           .format(parsedTime);
-                                      String formattedUploadTime = DateFormat('HH:mm')
+                                      String formattedUploadTime =
+                                      DateFormat('HH:mm')
                                           .format(parsedTime);
 
                                       setState(() {
                                         tofield.text = formattedTime;
                                         upLoadTime2 = formattedUploadTime;
-
                                       });
                                     }
                                   }),
@@ -520,9 +716,7 @@ class _WorkEntryState extends State<WorkEntry> {
                                   ),
                                 ),
                                 validator: (value) {
-                                  if (value
-                                      .toString()
-                                      .isEmpty) {
+                                  if (value.toString().isEmpty) {
                                     return 'Enter value';
                                   } else {
                                     return null;
@@ -577,7 +771,7 @@ class _WorkEntryState extends State<WorkEntry> {
                             decoration: InputDecoration(
                               fillColor: Color(0xffFBF8FF),
                               hintStyle: const TextStyle(
-                                  fontFamily: 'Nexa',
+                                // fontFamily: 'Avenir',
                                   fontWeight: FontWeight.w900,
                                   fontSize: 16,
                                   color: Colors.black54
@@ -585,7 +779,7 @@ class _WorkEntryState extends State<WorkEntry> {
                               ),
                               contentPadding: const EdgeInsets.all(20),
                               hintText:
-                              '                                  Enter your Work',
+                              '                        Enter your Work',
                               filled: true,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(40),
@@ -593,9 +787,7 @@ class _WorkEntryState extends State<WorkEntry> {
                               ),
                             ),
                             validator: (value) {
-                              if (value
-                                  .toString()
-                                  .isEmpty) {
+                              if (value.toString().isEmpty) {
                                 return 'Enter value';
                               } else {
                                 return null;
@@ -614,7 +806,6 @@ class _WorkEntryState extends State<WorkEntry> {
                         endIndent: 30,
                         thickness: 2,
                       ),
-
                       SizedBox(
                         height: height * 0.02,
                       ),
@@ -646,7 +837,7 @@ class _WorkEntryState extends State<WorkEntry> {
 
                             if (end.isAfter(start)) {
                               totalTime = end.difference(start);
-                              totalTime = totalTime.toString().substring(0, 4);
+                              totalTime = totalTime.toString().substring(0, 7);
                             }
 
                             final isValid = formKey.currentState?.validate();
@@ -812,21 +1003,15 @@ class _WorkEntryState extends State<WorkEntry> {
         });
   }
 
-  Text subTitle(String name) =>
-      Text(
-        name,
-        style: const TextStyle(
-            fontFamily: 'Avenir',
-            fontWeight: FontWeight.w500,
-            fontSize: 15,
-            color: Colors.black),
-      );
+  Text subTitle(String name) => Text(
+    name,
+    style: const TextStyle(
+        fontFamily: 'Avenir',
+        fontWeight: FontWeight.w500,
+        fontSize: 15,
+        color: Colors.black),
+  );
 }
-
-
-
-
-
 
 // int dtt = 0;
 // int dtt2 = 0;
