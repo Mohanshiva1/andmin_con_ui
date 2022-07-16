@@ -156,7 +156,7 @@ class _ITScreenState extends State<ITScreen> {
                 Container(
                   child: Buttons(
                       "Work Manager",
-                      WorkEntry(),
+                      NewWorkEntry(),
                       Icon(
                         Icons.work_outline_rounded,
                         size: height * 0.05,

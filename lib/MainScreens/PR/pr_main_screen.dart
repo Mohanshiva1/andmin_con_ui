@@ -182,7 +182,7 @@ class _PRScreenState extends State<PRScreen> {
                     Container(
                       child: Buttons(
                           "Work Manager",
-                          WorkEntry(),
+                          NewWorkEntry(),
                           Icon(
                             Icons.work_outline_rounded,
                             size: height * 0.05,
