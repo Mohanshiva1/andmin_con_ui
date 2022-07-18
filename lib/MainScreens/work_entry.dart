@@ -84,7 +84,9 @@ class _NewWorkEntryState extends State<NewWorkEntry> {
         }
     }).then((value)  {
       getDayWrkTime();
-      getMonthWrkTime();});
+      getMonthWrkTime();
+      getYearWorkingTime();
+    });
   }
 
   String? CurrerntUser;
@@ -453,6 +455,113 @@ class _NewWorkEntryState extends State<NewWorkEntry> {
 
     }
 
+
+  }
+
+  List yearWrkTimeList = [];
+  var fbywt;
+  getYearWorkingTime(){
+    _auth.once().then((value) {
+      for (var step1 in value.snapshot.children) {
+        fbData = step1.value;
+        if (fbData['email'] == CurrerntUser) {
+          for (var step2 in step1.children) {
+            if (step2.key == "workManager") {
+              for (var step3 in step2.children) {
+                for (var step4 in step3.children) {
+                  if (step4.key == formattedYear) {
+                    for(var ywt in step4.children){
+                      for(var ywt2 in ywt.children){
+                        if(ywt2.key != 'totalWorkingTime'){
+                          for (var ywt3 in ywt2.children){
+                            if(ywt3.key != 'totalWorkingTime'){
+                              // print(ywt3.value);
+                              fbywt = ywt3.value;
+                              setState(() {
+                                yearWrkTimeList.add(fbywt['time_in_hours']);
+                                print("${yearWrkTimeList}.........Get year");
+                              });
+
+                            }
+                          }
+                        }
+
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }).then((value) {uploadYearWorkTime();});
+  }
+
+  int yearHours = 0;
+  int finalYearHours = 0;
+
+  int yearMinutes = 0;
+  int finalYearMinutes = 0;
+  var finalYearTotalWorkingTime;
+
+  uploadYearWorkTime(){
+    print("${yearWrkTimeList}year work time list in upload side");
+    List yearTimeList = yearWrkTimeList;
+
+    for (var time in yearTimeList) {
+
+      var format = time;
+      print("${format}..............format in time");
+
+      if(format != null){
+        var timeFormat = DateFormat("HH:mm");
+        var starTime = timeFormat.parse(format).toString().substring(10, 19);
+
+        var hours = starTime.substring(0, 3);
+
+        var minutes = starTime.substring(4, 6);
+
+        yearHours = int.parse(hours);
+        var addTime = finalYearHours + yearHours;
+        finalYearHours = addTime;
+
+        yearMinutes = int.parse(minutes);
+        var addMinutes = finalYearMinutes + yearMinutes;
+        finalYearMinutes = addMinutes;
+        // print(finalTestingMinutes);
+
+        var today = DateTime.utc(0);
+        // print(today);
+        finalYearTotalWorkingTime = today
+            .add(Duration(hours: finalYearHours, minutes: finalYearMinutes))
+            .toString()
+            .substring(8, 19);
+
+        _auth.once().then((value) => {
+          for (var element in value.snapshot.children)
+            {
+              fbData = element.value,
+              if (fbData["email"] == user?.email)
+                {
+                  wrkDone = element.key,
+                  _auth
+                      .child(wrkDone)
+                      .child(
+                      "workManager/timeSheet/$formattedYear/totalWorkingTime")
+                      .set({'year': finalYearTotalWorkingTime})
+                }
+            }
+        }).then((value) {
+          finalYearHours = 0;
+          finalYearMinutes = 0;
+          yearWrkTimeList.clear();
+          yearTimeList.clear();
+          print('Year Working time uploaded successfully');
+        });
+      }
+
+    }
 
   }
 
