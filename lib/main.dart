@@ -10,8 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'MainScreens/IT/it_screen.dart';
 
-
-// version 1.0 06/07/2022
+// 2.0.0+5 currently
+// version 2.0.0+6 23/07/2022 not published
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

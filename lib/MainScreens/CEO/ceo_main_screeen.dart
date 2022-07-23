@@ -5,8 +5,10 @@ import 'package:andmin_con_ui/MainScreens/CEO/wrk_not_entry.dart';
 import 'package:andmin_con_ui/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'hide BoxDecoration, BoxShadow;
 import 'package:lottie/lottie.dart';
+import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
+
 
 
 class CEOScreen extends StatefulWidget {
@@ -19,6 +21,11 @@ class CEOScreen extends StatefulWidget {
 class _CEOScreenState extends State<CEOScreen> {
   final _auth = FirebaseDatabase.instance.reference().child("staff");
   final user = FirebaseAuth.instance.currentUser;
+
+  final database = FirebaseDatabase.instance.ref().child("onyx");
+  final textController = TextEditingController();
+
+  bool isPressed = false;
 
   String? CurrerntUser;
   var fbData;
@@ -39,6 +46,17 @@ class _CEOScreenState extends State<CEOScreen> {
         });
   }
 
+  var fbdata2;
+  UpdateOnyx() {
+    database.update({
+      "announcement": textController.text,
+    }).then((value) {
+      textController.clear();
+    });
+  }
+  
+  
+
   @override
   void initState() {
     // TODO: implement initState
@@ -52,6 +70,8 @@ class _CEOScreenState extends State<CEOScreen> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
+    Offset distance = isPressed ? Offset(5, 5) : Offset(10, 10);
+    double blur = isPressed ? 5.0 : 25;
     return Scaffold(
       backgroundColor: Color(0xffF7F9FC),
       body: Stack(
@@ -69,11 +89,94 @@ class _CEOScreenState extends State<CEOScreen> {
             child: Lottie.asset("assets/84669-background-animation.json"),
           ),
           Positioned(
-            top: height * 0.15,
+            top: height * 0.13,
             left: 1,
             right: 1,
             child: Column(
               children: [
+                Container(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: width*0.3,
+                          child: TextFormField(
+                            controller: textController,
+                            decoration: InputDecoration(
+                                hintText: "Announcement",
+                              hintStyle: const TextStyle(
+                                  color: Colors.black26,
+                                  fontFamily: 'Nexa',
+                                  fontSize: 13),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(width: 2, color: Colors.orange),
+
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: height*0.02,),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              UpdateOnyx();
+                              isPressed = !isPressed;
+                            });
+                          },
+                          child: Listener(
+                            onPointerUp: (_) => setState(() {
+                              isPressed = true;
+                            }),
+                            onPointerDown: (_) => setState(() {
+                              isPressed = true;
+                            }),
+                            child: AnimatedContainer(
+                              margin: const EdgeInsets.only(top: 1),
+                              width: width * 0.2,
+                              height: height * 0.05,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: const Color(0xffF7F9FC),
+                                // Colors.white.withOpacity(0.3),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    offset: distance,
+                                    blurRadius: blur,
+                                    inset: isPressed,
+                                  ),
+                                  BoxShadow(
+                                    color: Colors.white12,
+                                    offset: -distance,
+                                    blurRadius: blur,
+                                    inset: isPressed,
+                                  ),
+                                ],
+                              ),
+                              duration: Duration(milliseconds: 250),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    // Icon(Icons.search_rounded,size: height*0.02,color: Colors.blueGrey,),
+                                    Text(
+                                      'Announce',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                          fontFamily: "Nexa",
+                                          fontSize: height * 0.013,
+                                          color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                ),
                 // Center(
                 //   child: Text(
                 //     "Choose your Destination",
@@ -163,6 +266,7 @@ class _CEOScreenState extends State<CEOScreen> {
                 //         color: Colors.amber,
                 //       )),
                 // ),
+
                 Container(
                   child: buttons(
                       "Work Done",
@@ -183,9 +287,11 @@ class _CEOScreenState extends State<CEOScreen> {
                         color: Colors.amber,
                       )),
                 ),
+
               ],
             ),
-          )
+          ),
+
         ],
       ),
     );
