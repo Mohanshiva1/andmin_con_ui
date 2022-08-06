@@ -1,21 +1,20 @@
-import 'dart:ui';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class ViewLeeds extends StatefulWidget {
-  const ViewLeeds({Key? key}) : super(key: key);
+class ViewLeads extends StatefulWidget {
+  const ViewLeads({Key? key}) : super(key: key);
 
   @override
-  State<ViewLeeds> createState() => _ViewLeedsState();
+  State<ViewLeads> createState() => _ViewLeadsState();
 }
 
-class _ViewLeedsState extends State<ViewLeeds> {
-  final _auth = FirebaseDatabase.instance.reference().child("customer");
-  final user = FirebaseAuth.instance.currentUser;
+class _ViewLeadsState extends State<ViewLeads> {
 
+  final customer = FirebaseDatabase.instance.reference().child("customer");
+  final user = FirebaseAuth.instance.currentUser;
   List name = [];
   List number = [];
   List location = [];
@@ -27,32 +26,41 @@ class _ViewLeedsState extends State<ViewLeeds> {
   List fetched = [];
   var fbData;
 
-  viewLeads() {
-    _auth.once().then((value) {
-      for (var element in value.snapshot.children) {
-        fbData = element.value;
+  details(){
+    customer.once().then((value) {
+      for(var lead in value.snapshot.children){
+        fbData = lead.value;
+        print(fbData);
         setState(() {
           number.add(fbData['phone_number']);
+          print('step 1');
           name.add(fbData['name']);
+          print('step 2');
           location.add(fbData['city']);
+          print('step 3');
           state.add(fbData['customer_state']);
+          print('step 4');
           createdDate.add(fbData['created_date']);
+          print('step 5');
           rating.add(fbData['rating']);
+          print('step 6');
           enquiry.add(fbData['inquired_for']);
+          print('step 7');
           email.add(fbData['email_id']);
+          print('step 8');
           fetched.add(fbData['data_fetched_by']);
+          print('step 9');
         });
       }
     });
   }
-
   @override
   void initState() {
-    setState(() {
-      viewLeads();
-    });
-    super.initState();
+    // TODO: implement initState
+    details();
   }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -63,135 +71,161 @@ class _ViewLeedsState extends State<ViewLeeds> {
       body: Stack(
         children: [
           Positioned(
-              top: height * 0.0,
-              left: width * 0.0,
-              right: width * 0.0,
-              child: Lottie.asset("assets/84668-background-animation.json")),
-          Positioned(
-              top: height * 0.75,
-              left: width * 0.0,
-              right: width * 0.0,
-              child: Lottie.asset("assets/84669-background-animation.json")),
-          Positioned(
-            top: height * 0.1,
-            left: width * 0.0,
-            right: width * 0.0,
-            child: Column(
-              children: [
-                const Text("Lead Information",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontFamily: 'Nexa',
-                        fontSize: 35,
-                        color: Colors.black)),
-                const Divider(
-                  height: 1,
-                  color: Colors.black,
-                  indent: 30,
-                  endIndent: 30,
-                  thickness: 1,
-                ),
-                // ElevatedButton(
-                //     onPressed: () {
-                //       setState(() {
-                //         viewLeads();
-                //       });
-                //     },
-                //     child: Text("get")),
-                Container(
-                  height: height * 0.85,
-                  // padding: EdgeInsets.all(1),
-                  // color: Colors.black,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        number.length == 0
-                            ? Lottie.asset(
-                          "assets/81778-loading.json",
-                          repeat: true,
-                        )
-                            : buildGridView(width, height),
-                      ],
+            top: 0,
+            right: 0,
+            left: 0,
+            bottom: 0,
+            child: Container(
+              width: double.infinity,
+              height: 600,
+              decoration: BoxDecoration(
+                // color: Colors.orange.shade400,
+                gradient: LinearGradient(
+                    colors: [
+                      Color(0xff21409D),
+                      Color(0xff050851),
+                    ],
+                    stops: [
+                      0.0,
+                      11.0
+                    ],
+                    begin: FractionalOffset.topLeft,
+                    end: FractionalOffset.bottomRight,
+                    tileMode: TileMode.repeated),
+              ),
+              child: Stack(
+                children: [
+                  Positioned(
+                      top: height * 0.03,
+                      right: width*0.01,
+                      // left: width*0.3,
+                      child: Image.asset('assets/searching-error.png',scale: 10.0,)
+                  ),
+                  Positioned(
+                    top: 30,
+                    left: 20,
+                    // right: 30,
+
+                    child: IconButton(
+
+                      color: Colors.orange.shade800,
+                      onPressed: () {
+                        setState(() {
+                          _scaffoldKey.currentState?.openDrawer();
+                        });
+                      },
+                      iconSize: height * 0.04,
+                      icon: Container(child: Image.asset('assets/menu.png')),
                     ),
                   ),
+                  Positioned(
+                    top: height * 0.13,
+                    // right: 0,
+                    left: width*0.04,
+                    child: Center(
+                      child: Text(
+                        'Lead Info',
+                        style: TextStyle(
+                            fontSize: height*0.02,
+                            color: Color(0xffffffff),
+                            fontFamily: "Nexa",
+                            fontWeight: FontWeight.w900),
+                      ),
+                    ),
+                  ),
+
+
+
+                ],
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: 300,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Color(0xffF7F9FC),
+                image:  DecorationImage(
+                  alignment: Alignment.bottomCenter,
+                  image:  AssetImage('assets/outdoor.png',),
+                  fit: BoxFit.scaleDown,
                 ),
-              ],
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(30),
+                  topLeft: Radius.circular(30),
+                ),
+              ),
+              child:
+              SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    number.isEmpty
+                        ? Lottie.asset(
+                      "assets/81778-loading.json",
+                      repeat: true,)
+                        : GridView.builder (
+                      shrinkWrap: true,
+                      itemCount:name.length,
+                      scrollDirection: Axis.vertical,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                        childAspectRatio: 3 / 1.8,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          child:
+                          Column(
+                            children: [
+                              leadDetails("Name", "${name[index]}",Colors.black),
+                              leadDetails("Phone", "${number[index]}",Colors.black),
+                              leadDetails("Location", "${location[index]}",Colors.black),
+                              leadDetails("Enquiry", "${enquiry[index]}",Colors.black),
+                              leadDetails("Email", "${email[index]}",Colors.black),
+                              leadDetails("createdDate", "${createdDate[index]}",Colors.black),
+                              leadDetails("Data Fetched From", "${[index]}",Colors.black),
+                              // leadDetails('Status', '${state[index]}',state[index] == "Following Up"
+                              //     ? Colors.green
+                              //     : state[index] == "Delayed"
+                              //     ? Colors.orange
+                              //     : state[index] == "Rejected from management side"
+                              //     ? Colors.red
+                              //     : state[index] == "Rejected from Customer end"
+                              //     ? Colors.red
+                              //     : Color(0xffF7F9FC),),
+                              Divider(
+                                endIndent: width*0.09,
+                                indent: width*0.09,
+                                thickness: 1,
+                                color: Colors.black26,
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
           )
+
+
         ],
       ),
     );
+
+
   }
 
-  Widget buildGridView(double width, double height) {
-    return GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1,
-          childAspectRatio: 3 / 2.5,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-        ),
-        itemCount: number.length,
-        itemBuilder: (BuildContext ctx, index) {
-          return Container(
-            margin: EdgeInsets.symmetric(horizontal: width * 0.05),
-            decoration: BoxDecoration(
-                color: Color(0xffF7F9FC),
-                // : state[index] == "Following Up"
-                // ? Colors.green
-                // : state[index] == "Delayed"
-                // ? Colors.orange
-                // : state[index] == "Rejected from management side"
-                // ? Colors.red
-                // : state[index] == "Rejected from Customer end"
-                // ? Colors.red
-
-                // Colors.white.withOpacity(0.3),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(9.0, 9.0),
-                    blurRadius: 9,
-                  ),
-                  BoxShadow(
-                    color: Colors.white,
-                    offset: Offset(-10.0, -10.0),
-                    blurRadius: 10,
-                  ),
-                ],
-                borderRadius: BorderRadius.circular(15)),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                leadDetails("Name", "${name[index]}",Colors.black),
-                leadDetails("Phone", "${number[index]}",Colors.black),
-                leadDetails("Location", "${location[index]}",Colors.black),
-                leadDetails("Enquiry", "${enquiry[index]}",Colors.black),
-                leadDetails("Email", "${email[index]}",Colors.black),
-                leadDetails("createdDate", "${createdDate[index]}",Colors.black),
-                leadDetails("Data Fetched From", "${[index]}",Colors.black),
-                leadDetails('Status', '${state[index]}',state[index] == "Following Up"
-                    ? Colors.green
-                    : state[index] == "Delayed"
-                    ? Colors.orange
-                    : state[index] == "Rejected from management side"
-                    ? Colors.red
-                    : state[index] == "Rejected from Customer end"
-                    ? Colors.red
-                    : Color(0xffF7F9FC),),
-                leadDetails("Rating", "${rating[index]}",Colors.black),
-              ],
-            ),
-          );
-        });
-  }
-
-  leadDetails(String title, String address, color) {
+  Widget leadDetails(String title, String address, color) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return SizedBox(
@@ -203,16 +237,51 @@ class _ViewLeedsState extends State<ViewLeeds> {
                 fontSize: height*0.013,
                 color: Colors.black,
                 fontWeight: FontWeight.w800)),
-        trailing: SizedBox(
-          // width: 180,
-          // height: 80,
-          child: SingleChildScrollView(
-            child: Text(address,
-                style: TextStyle(
-                    fontFamily: 'Avenir', fontSize: height*0.013, color: color,fontWeight: FontWeight.w600)),
-          ),
+        trailing: SingleChildScrollView(
+          child: Text(address,
+              style: TextStyle(
+                  fontFamily: 'Avenir', fontSize: height*0.013, color: color,fontWeight: FontWeight.w600)),
         ),
       ),
     );
   }
+
+//
+// @override
+// Widget build(BuildContext context) {
+//   return Scaffold(
+//   body: GridView.builder (
+//     itemCount:name.length,
+//     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+//       crossAxisCount: 1,
+//       childAspectRatio: 3 / 1,
+//       crossAxisSpacing: 10,
+//       mainAxisSpacing: 10,
+//     ),
+//     itemBuilder: (BuildContext context, int index) {
+//       return Container(
+//         child: Column (
+//           children: [
+//             name.isEmpty? Text('Is loading'):
+//             Column(
+//               children: [
+//                 Text(name[index]),
+//                 Text(number[index]),
+//                 Text(email[index]),
+//                 Text(enquiry[index]),
+//                 Text(location[index]),
+//                 Text(createdDate[index]),
+//                 Text(fetched[index]),
+//                 Text(state[index]),
+//                 Text(rating[index].toString()),
+//
+//               ],
+//             )
+//           ],
+//         ),
+//       );
+//     },
+//   ),
+//   );
+// }
 }

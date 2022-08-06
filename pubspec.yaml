@@ -51,7 +51,11 @@ dependencies:
   location: ^4.3.0
   slide_to_act:
   email_validator:
-  
+  new_version:
+  flutter_rounded_date_picker:
+  flutter_localizations:
+    sdk: flutter
+
 
 
 dev_dependencies:

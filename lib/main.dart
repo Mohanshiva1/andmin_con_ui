@@ -1,14 +1,14 @@
-import 'package:andmin_con_ui/MainScreens/CEO/ceo_main_screeen.dart';
-import 'package:andmin_con_ui/MainScreens/PR/pr_main_screen.dart';
+import 'package:andmin_con_ui/MainScreens/home_page.dart';
 import 'package:andmin_con_ui/MainScreens/login_screen.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lottie/lottie.dart';
-import 'MainScreens/IT/it_screen.dart';
 
 // 2.0.0+5 older
 // version 2.0.0+6 23/07/2022 currently
@@ -31,6 +31,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
+
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: Locale('en', 'US'),
+      supportedLocales: [
+        const Locale('en', 'US'), // English
+        const Locale('th', 'TH'), // Thai
+      ],
+
       home: SplashScreen(),
     );
   }
@@ -90,51 +103,92 @@ class _HomePageState extends State<HomePage> {
   var dep;
 
   loadData() {
-    database.once().then((value) {
-      for (var element in value.snapshot.children) {
-        fbData = element.value;
-        if (fbData['email'] == CurrerntUser) {
-          if (fbData['department'] == "ADMIN") {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const CEOScreen()));
-          }
-          else if (fbData['department'] == "APP") {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const ITScreen()));
-          }
-          else if (fbData['department'] == "PR") {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const PRScreen()));
-          }
-          else if (fbData['department'] == "MEDIA") {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const ITScreen()));
-          }
-          else if (fbData['department'] == "WEB") {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const ITScreen()));
-          }
-          else if (fbData['department'] == "RND") {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const ITScreen()));
-          }
-        }
-      }
+    database.child(user!.uid).once().then((value) {
+      print(value.snapshot.value);
+      fbData = value.snapshot.value;
+      setState(() {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const TeamMainPage()));
+      });
+          // if (fbData['department'] == "ADMIN") {
+          //   Navigator.pushReplacement(context,
+          //       MaterialPageRoute(builder: (context) => const CEOScreen()));
+          // } else if (fbData['department'] == "APP") {
+          //   Navigator.pushReplacement(context,
+          //       MaterialPageRoute(builder: (context) => const ITScreen()));
+          // } else if (fbData['department'] == "PR") {
+          //   Navigator.pushReplacement(context,
+          //       MaterialPageRoute(builder: (context) => const PRScreen()));
+          // } else if (fbData['department'] == "MEDIA") {
+          //   Navigator.pushReplacement(context,
+          //       MaterialPageRoute(builder: (context) => const ITScreen()));
+          // } else if (fbData['department'] == "WEB") {
+          //   Navigator.pushReplacement(context,
+          //       MaterialPageRoute(builder: (context) => const ITScreen()));
+          // } else if (fbData['department'] == "RND") {
+          //   Navigator.pushReplacement(context,
+          //       MaterialPageRoute(builder: (context) => const ITScreen()));
+          // }
     });
   }
+  // loadData() {
+  //   database.child(user!.uid).once().then((value) {
+  //     for (var element in value.snapshot.children) {
+  //       fbData = element.value;
+  //       if (fbData['email'] == CurrerntUser) {
+  //         if (fbData['department'] == "ADMIN") {
+  //           Navigator.pushReplacement(context,
+  //               MaterialPageRoute(builder: (context) => const CEOScreen()));
+  //         } else if (fbData['department'] == "APP") {
+  //           Navigator.pushReplacement(context,
+  //               MaterialPageRoute(builder: (context) => const ITScreen()));
+  //         } else if (fbData['department'] == "PR") {
+  //           Navigator.pushReplacement(context,
+  //               MaterialPageRoute(builder: (context) => const PRScreen()));
+  //         } else if (fbData['department'] == "MEDIA") {
+  //           Navigator.pushReplacement(context,
+  //               MaterialPageRoute(builder: (context) => const ITScreen()));
+  //         } else if (fbData['department'] == "WEB") {
+  //           Navigator.pushReplacement(context,
+  //               MaterialPageRoute(builder: (context) => const ITScreen()));
+  //         } else if (fbData['department'] == "RND") {
+  //           Navigator.pushReplacement(context,
+  //               MaterialPageRoute(builder: (context) => const ITScreen()));
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
 
   // ....................Get Location........................................
 
-
   @override
   void initState() {
-    setState(()  {
+    setState(() {
+      // _checkVersion();
       CurrerntUser = user?.email;
       loadData();
-
     });
     super.initState();
   }
+  // void _checkVersion() async {
+  //   final newVersion = NewVersion(
+  //       androidId: 'com.onwords.admin_console');
+  //   final status = await newVersion.getVersionStatus();
+  //   newVersion.showUpdateDialog(context: context, versionStatus: status!,
+  //       dialogTitle: 'Update Available',
+  //       dismissButtonText: "Skip",
+  //       dialogText: "Please Update Latest Version to Use the App",
+  //       dismissAction: (){
+  //         SystemNavigator.pop();
+  //       }
+  //   );
+  //
+  //   print('Device :' +status.localVersion);
+  //   print('Store :' + status.storeVersion);
+  // }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -148,8 +202,6 @@ class _HomePageState extends State<HomePage> {
               Lottie.asset(
                 "assets/81778-loading.json",
               ),
-
-
             ],
           ),
         ),

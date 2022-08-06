@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
@@ -16,6 +17,8 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
   DateTime now = DateTime.now();
   var formatterDate = DateFormat('yyyy-MM-dd');
   String? selectedDate;
+  var selectedMonth;
+  var selectedYear;
 
   var fbData;
 
@@ -31,15 +34,29 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
 
   DatePicker() async {
     selectedDate = formatterDate.format(now);
-    DateTime? newDate = await showDatePicker(
+    DateTime? newDate = await showRoundedDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2015),
       lastDate: DateTime(2050),
+      borderRadius: 30,
+      height: 500,
+      theme: ThemeData(
+        primaryColor: Colors.orangeAccent[400],
+        accentColor: Colors.orangeAccent,
+        disabledColor: Colors.teal,
+      ),
+
+
     );
-    if (newDate == null) return;
+      if (newDate == null) return;
     setState(() {
       selectedDate = formatterDate.format(newDate);
+      selectedMonth = newDate.toString().substring(5,7);
+      selectedYear = newDate.toString().substring(0,4);
+      print(selectedYear);
+      
+
       if (selectedDate != null) {
         loadData();
       }
@@ -78,9 +95,9 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
             for (var element2 in element1.children) {
               // print(element2.key);
               for (var element3 in element2.children) {
-                if (element3.key == formattedYear) {
+                if (element3.key == selectedYear) {
                   for (var element4 in element3.children) {
-                    if (element4.key == formattedMonth) {
+                    if (element4.key == selectedMonth) {
                       for (var element5 in element4.children) {
                         if (element5.key == selectedDate) {
                           for (var element6 in element5.children) {
@@ -109,7 +126,6 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                               });
                             }
                             // print(fbData);
-
                           }
                         }
                       }
@@ -119,7 +135,6 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
               }
             }
           }
-
 
           // for (var element2 in element1.children) {
           //
@@ -154,128 +169,189 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
   @override
   void initState() {
     selectedDate = formatterDate.format(now);
+    // selectedMonth = formattedMonth.format(now);
+    // selectedYear = formattedYear.format(now);
     print(selectedDate);
     todayDate();
     loadData();
     super.initState();
   }
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Color(0xffF7F9FC),
+      key: _scaffoldKey,
       body: Stack(
         children: [
           Positioned(
-            top: height * 0.00,
-            left: width * 0.0,
-            right: width * 0.0,
-            child: Lottie.asset("assets/84668-background-animation.json"),
-          ),
-          Positioned(
-            top: height * 0.75,
-            left: width * 0.0,
-            right: width * 0.0,
-            child: Lottie.asset("assets/84669-background-animation.json"),
-          ),
-          Positioned(
-            top: height * 0.07,
-            left: 1,
-            right: 1,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: width * 0.25,
-                      ),
-                      Column(
-                        children: [
-                          Text(
-                            "Works History",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontFamily: "Nexa",
-                                fontSize: height * 0.03,
-                                color: Colors.black),
-                          ),
-                          Text('$selectedDate',style: TextStyle(
-                              fontFamily: 'Nexa',
-                              fontSize: 15,
-                              color: Colors.black)),
-
-                        ],
-                      ),
-                      SizedBox(
-                        width: width * 0.06,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            DatePicker();
-                            allData.clear();
-                            nameData.clear();
-                          });
-                        },
-                        child: Icon(Icons.calendar_month,
-                            color: Colors.white, size: height * 0.04),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                const Divider(
-                  thickness: 3,
-                  indent: 30,
-                  endIndent: 30,
-                  height: 4,
-                  color: Colors.black,
-                ),
-
-              ],
-            ),
-          ),
-          Positioned(
-            top: height * 0.18,
-            left: width * 0.0,
-            right: width * 0.0,
+            top: 0,
+            right: 0,
+            left: 0,
             bottom: 0,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: Container(
+              width: double.infinity,
+              height: 600,
+              decoration: BoxDecoration(
+                // color: Colors.orange.shade400,
+                gradient: LinearGradient(
+                    colors: [
+                      Color(0xff21409D),
+                      Color(0xff050851),
+                    ],
+                    stops: [
+                      0.0,
+                      11.0
+                    ],
+                    begin: FractionalOffset.topLeft,
+                    end: FractionalOffset.bottomRight,
+                    tileMode: TileMode.repeated),
+              ),
+              child: Stack(
                 children: [
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        // ElevatedButton(
-                        //     onPressed: () {
-                        //       setState(() {
-                        //         loadData();
-                        //       });
-                        //     },
-                        //     child: Text("print")),
-                        nameData.length == 0
-                            ? Text("${nameData == 0 ? 'Load Data' : 'No Data'}")
-                        // const Text("",
-                        //         style: TextStyle(
-                        //             fontFamily: 'Nexa',
-                        //             fontSize: 20,
-                        //             color: Colors.black))
-                            : buildGridView(height, width)
-                      ],
+                  Positioned(
+                    top: height*0.03,
+                    left: width*0.03,
+                    // right: 30,
+
+                    child: IconButton(
+
+                      color: Colors.orange.shade800,
+                      onPressed: () {
+                        setState(() {
+                          _scaffoldKey.currentState?.openDrawer();
+                        });
+                      },
+                      iconSize: height * 0.04,
+                      icon: Container(child: Image.asset('assets/menu.png')),
                     ),
                   ),
                 ],
               ),
             ),
           ),
+          Positioned(
+            top: height * 0.04,
+            left: 1,
+            right: 1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Works History",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontFamily: "Nexa",
+                      fontSize: height * 0.03,
+                      color: Colors.white),
+                ),
+                SizedBox(
+                  height: height * 0.03,
+                ),
+
+              ],
+            ),
+          ),
+          Positioned(
+            top: height*0.13,
+              left:  width*0.60,
+              right: 0,
+              child:   Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text('$selectedDate',style: TextStyle(
+                      fontFamily: 'Nexa',
+                      fontSize: 15,
+                      color: Colors.white)),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        DatePicker();
+                        allData.clear();
+                        nameData.clear();
+                      });
+                    },
+                    child: Icon(Icons.calendar_month,
+                        color: Colors.orange.shade800, size: height * 0.05),
+                  ),
+                ],
+              )),
+
+          Positioned(
+            top: height*0.2,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Color(0xffF7F9FC),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(30),
+                  topLeft: Radius.circular(30),
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+
+                          nameData.length == 0
+                              ? Text("${nameData == 0 ? 'Load Data' : 'No Data'}")
+                          // const Text("",
+                          //         style: TextStyle(
+                          //             fontFamily: 'Nexa',
+                          //             fontSize: 20,
+                          //             color: Colors.black))
+                              : buildGridView(height, width)
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // Positioned(
+          //   top: height * 0.18,
+          //   left: width * 0.0,
+          //   right: width * 0.0,
+          //   bottom: 0,
+          //   child: SingleChildScrollView(
+          //     child: Column(
+          //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //       children: [
+          //         SingleChildScrollView(
+          //           child: Column(
+          //             children: [
+          //               // ElevatedButton(
+          //               //     onPressed: () {
+          //               //       setState(() {
+          //               //         loadData();
+          //               //       });
+          //               //     },
+          //               //     child: Text("print")),
+          //               nameData.length == 0
+          //                   ? Text("${nameData == 0 ? 'Load Data' : 'No Data'}")
+          //               // const Text("",
+          //               //         style: TextStyle(
+          //               //             fontFamily: 'Nexa',
+          //               //             fontSize: 20,
+          //               //             color: Colors.black))
+          //                   : buildGridView(height, width)
+          //             ],
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -295,24 +371,33 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
         itemCount: nameData.length,
         itemBuilder: (BuildContext ctx, index) {
           return Container(
-            margin: EdgeInsets.all(10),
+            margin: EdgeInsets.all(25),
             decoration: BoxDecoration(
-                color: Color(0xffF7F9FC),
-                // Colors.white.withOpacity(0.3),
-                boxShadow: [
-                  BoxShadow(
+              boxShadow: [
+                BoxShadow(
                     color: Colors.black26,
-                    offset: Offset(9.0, 9.0),
-                    blurRadius: 9,
-                  ),
-                  // BoxShadow(
-                  //   color: Colors.white,
-                  //   offset: Offset(-10.0, -10.0),
-                  //   blurRadius: 10,
-                  //
-                  // ),
-                ],
-                borderRadius: BorderRadius.circular(30)),
+                    offset: Offset(-10, 10),
+                    blurRadius: 15,
+                    spreadRadius: 9),
+                BoxShadow(
+                  color: Colors.white12,
+                  offset: Offset(4, 4),
+                  blurRadius: 10,
+                )
+              ],
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                  bottomRight: Radius.circular(30)),
+              gradient: LinearGradient(
+                  colors: [
+                    Color(0xffEFA41C),
+                    Color(0xffD52A29),
+                  ],
+                  begin: FractionalOffset.topLeft,
+                  end: FractionalOffset.bottomRight,
+                  tileMode: TileMode.repeated),
+            ),
             padding: EdgeInsets.symmetric(
                 vertical: height * 0.005, horizontal: width * 0.03),
             child: Column(
@@ -326,6 +411,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                     color: Colors.black,
                   ),
                 ),
+
                 SizedBox(height: height * 0.01),
                 Container(
                   // color: Colors.blue,
@@ -351,12 +437,6 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                               left: width * 0.03),
                           child: Column(
                             children: [
-                              Divider(
-                                endIndent: 5,
-                                indent: 5,
-                                thickness: 2,
-                                color: Colors.black,
-                              ),
                               Row(
                                 mainAxisAlignment:
                                 MainAxisAlignment.spaceBetween,
