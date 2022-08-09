@@ -119,11 +119,11 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Positioned(
               top: height*0.2,
-              left: width*0.15,
-              right: width*0.15,
+              left: width*0.08,
+              right: width*0.08,
               child: Container(
                   height: height*0.5,
-                  width: width*0.3,
+                  // width: width*0.1,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       color: Colors.white,
@@ -146,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
 
                       Container(
-                        width: width * 0.50,
+                        width: width * 0.75,
                         height: height * 0.06,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -164,10 +164,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   spreadRadius: 1)
                             ]),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          // mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: width * 0.03,
+                              width: width * 0.01,
                             ),
                             const Icon(Icons.account_circle),
                             SizedBox(
@@ -175,10 +175,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Container(
                               height: height * 0.06,
-                              width: width * 0.40,
+                              width: width * 0.60,
                               padding: EdgeInsets.only(left: width * 0.02),
                               decoration:  BoxDecoration(
-                                // color: Colors.white.withOpacity(0.3),
+                                // color: Colors.black.withOpacity(0.3),
                                   borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10),
@@ -221,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         margin: EdgeInsets.only(
                           top: height * 0.05,
                         ),
-                        width: width * 0.50,
+                        width: width * 0.75,
                         height: height * 0.06,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -241,10 +241,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   spreadRadius: 1)
                             ]),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          // mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: width * 0.03,
+                              width: width * 0.01,
                             ),
                             const Icon(Icons.password),
                             SizedBox(
@@ -252,7 +252,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Container(
                               height: height * 0.06,
-                              width: width * 0.40,
+                              width: width * 0.60,
                               padding: EdgeInsets.only(left: width * 0.02),
                               decoration: const BoxDecoration(
                                 // color: Color(0xff202B3E),

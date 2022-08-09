@@ -99,7 +99,7 @@ class _ViewLeadsState extends State<ViewLeads> {
                       top: height * 0.03,
                       right: width*0.01,
                       // left: width*0.3,
-                      child: Image.asset('assets/searching-error.png',scale: 10.0,)
+                      child: Image.asset('assets/searching-error.png',scale: 12.0,)
                   ),
                   Positioned(
                     top: 30,
@@ -142,16 +142,16 @@ class _ViewLeadsState extends State<ViewLeads> {
           ),
 
           Positioned(
-            top: 300,
+            top: height*0.28,
             left: 0,
             right: 0,
             bottom: 0,
             child: Container(
-              width: double.infinity,
+              // width: double.infinity,
               decoration: BoxDecoration(
                 color: Color(0xffF7F9FC),
                 image:  DecorationImage(
-                  alignment: Alignment.bottomCenter,
+                  // alignment: Alignment.bottomCenter,
                   image:  AssetImage('assets/outdoor.png',),
                   fit: BoxFit.scaleDown,
                 ),
@@ -161,58 +161,52 @@ class _ViewLeadsState extends State<ViewLeads> {
                 ),
               ),
               child:
-              SingleChildScrollView(
+              number.isEmpty
+                  ? Lottie.asset(
+                "assets/81778-loading.json",
+                repeat: true,)
+                  : GridView.builder (
+                shrinkWrap: true,
+                itemCount:
+                name.length,
                 scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    number.isEmpty
-                        ? Lottie.asset(
-                      "assets/81778-loading.json",
-                      repeat: true,)
-                        : GridView.builder (
-                      shrinkWrap: true,
-                      itemCount:name.length,
-                      scrollDirection: Axis.vertical,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                        childAspectRatio: 3 / 1.8,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                      ),
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          child:
-                          Column(
-                            children: [
-                              leadDetails("Name", "${name[index]}",Colors.black),
-                              leadDetails("Phone", "${number[index]}",Colors.black),
-                              leadDetails("Location", "${location[index]}",Colors.black),
-                              leadDetails("Enquiry", "${enquiry[index]}",Colors.black),
-                              leadDetails("Email", "${email[index]}",Colors.black),
-                              leadDetails("createdDate", "${createdDate[index]}",Colors.black),
-                              leadDetails("Data Fetched From", "${[index]}",Colors.black),
-                              // leadDetails('Status', '${state[index]}',state[index] == "Following Up"
-                              //     ? Colors.green
-                              //     : state[index] == "Delayed"
-                              //     ? Colors.orange
-                              //     : state[index] == "Rejected from management side"
-                              //     ? Colors.red
-                              //     : state[index] == "Rejected from Customer end"
-                              //     ? Colors.red
-                              //     : Color(0xffF7F9FC),),
-                              Divider(
-                                endIndent: width*0.09,
-                                indent: width*0.09,
-                                thickness: 1,
-                                color: Colors.black26,
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                  childAspectRatio: 3 / 2.3,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 0,
                 ),
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    child:
+                    Column(
+                      children: [
+                        leadDetails("Name", "${name[index]}",Colors.black),
+                        leadDetails("Phone", "${number[index]}",Colors.black),
+                        leadDetails("Location", "${location[index]}",Colors.black),
+                        leadDetails("Enquiry", "${enquiry[index]}",Colors.black),
+                        leadDetails("Email", "${email[index]}",Colors.black),
+                        leadDetails("createdDate", "${createdDate[index]}",Colors.black),
+                        leadDetails("Data Fetched From", "${[index]}",Colors.black),
+                        leadDetails('Status', '${state[index]}',state[index] == "Following Up"
+                            ? Colors.green
+                            : state[index] == "Delayed"
+                            ? Colors.orange
+                            : state[index] == "Rejected from management side"
+                            ? Colors.red
+                            : state[index] == "Rejected from Customer end"
+                            ? Colors.red
+                            : Color(0xffF7F9FC),),
+                        Divider(
+                          endIndent: width*0.09,
+                          indent: width*0.09,
+                          thickness: 1,
+                          color: Colors.black26,
+                        )
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
           )

@@ -54,7 +54,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
       selectedDate = formatterDate.format(newDate);
       selectedMonth = newDate.toString().substring(5,7);
       selectedYear = newDate.toString().substring(0,4);
-      print(selectedYear);
+      // print(selectedYear);
       
 
       if (selectedDate != null) {
@@ -90,10 +90,10 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
       for (var element in value.snapshot.children) {
         // fbData = element.value;
         for (var element1 in element.children) {
-          // print(element1.key);
+          // // print(element1.key);
           if (element1.key == "workManager") {
             for (var element2 in element1.children) {
-              // print(element2.key);
+              // // print(element2.key);
               for (var element3 in element2.children) {
                 if (element3.key == selectedYear) {
                   for (var element4 in element3.children) {
@@ -101,12 +101,12 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                       for (var element5 in element4.children) {
                         if (element5.key == selectedDate) {
                           for (var element6 in element5.children) {
-                            // print(element6.key);
+                            // // print(element6.key);
                             // if(element6.key == 'totalWorkingTime'){
                             //   // for(var element7 in element6.children){
                             //   //   setState(() {
                             //   //     daytotalWork.add(element7.value);
-                            //   //     print(daytotalWork);
+                            // //   //     print(daytotalWork);
                             //   //   });
                             //   // }
                             // }
@@ -117,15 +117,15 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                                 allData.add(fbData);
                                 nameData.add(fbData['name']);
                                 nameData = nameData.toSet().toList();
-                                // print(nameData);
+                                // // print(nameData);
                                 name.add(fbData['name']);
                                 dayTotalWork.add(fbData['day']);
                                 to.add(fbData['to']);
                                 from.add(fbData['from']);
-                                print(name);
+                                // print(name);
                               });
                             }
-                            // print(fbData);
+                            // // print(fbData);
                           }
                         }
                       }
@@ -142,14 +142,14 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
           //
           //     // if (element3.key == selectedDate) {
           //     //   for (var element4 in element3.children) {
-          //     //     // print(element4.value);
+          // //     //     // print(element4.value);
           //     //     fbData = element4.value;
           //     //     setState(() {
           //     //       allData.add(fbData);
-          //     //       // print("allData......${allData}");
+          // //     //       // print("allData......${allData}");
           //     //       nameData.add(fbData['name']);
           //     //       nameData = nameData.toSet().toList();
-          //     //       // print('data2 ..................${nameData}');
+          // //     //       // print('data2 ..................${nameData}');
           //     //       name.add(fbData['name']);
           //     //       to.add(fbData['to']);
           //     //       from.add(fbData['from']);
@@ -171,7 +171,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
     selectedDate = formatterDate.format(now);
     // selectedMonth = formattedMonth.format(now);
     // selectedYear = formattedYear.format(now);
-    print(selectedDate);
+    // print(selectedDate);
     todayDate();
     loadData();
     super.initState();
@@ -336,7 +336,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
           //               //         loadData();
           //               //       });
           //               //     },
-          //               //     child: Text("print")),
+          // //               //     child: Text("print")),
           //               nameData.length == 0
           //                   ? Text("${nameData == 0 ? 'Load Data' : 'No Data'}")
           //               // const Text("",

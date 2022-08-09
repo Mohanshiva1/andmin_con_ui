@@ -185,7 +185,7 @@ class _SearchLeadsState extends State<SearchLeads> {
                                 left: width*0.05,
                                 right: width*0.05,
                                 child: Container(
-                                  height: height * 0.09,
+                                  height: height * 0.11,
 
                                   decoration: BoxDecoration(
                                     color: Color(0xffFFFFF),

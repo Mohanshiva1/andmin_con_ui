@@ -94,6 +94,7 @@ class _CreateLeedsState extends State<CreateLeeds> {
     Offset distance = isPressed ? Offset(5, 5) : Offset(-25, 15);
     double blur = isPressed ? 35 : 20.0;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Form(
         key: formKey,
         child: Stack(
@@ -122,6 +123,7 @@ class _CreateLeedsState extends State<CreateLeeds> {
                       tileMode: TileMode.repeated),
                 ),
                 child: Stack(
+
                   children: [
                     Positioned(
                         top: height * 0.03,
@@ -190,6 +192,7 @@ class _CreateLeedsState extends State<CreateLeeds> {
                   ),
                 ),
                 child: Stack(
+                  fit: StackFit.expand,
                   children: [
                     Positioned(
                         top: height * 0.0,
@@ -198,11 +201,14 @@ class _CreateLeedsState extends State<CreateLeeds> {
                         bottom: 0,
                         child: Image.asset('assets/outdoor.png',fit: BoxFit.fill,)),
                     Positioned(
+                      bottom: height * 0,
                       top: height * 0.04,
                       left: 0,
                       right: 0,
                       child: SingleChildScrollView(
-                        child: Column(
+                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                        reverse: true,
+                        child: Column (
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             buildListView("Name", name, TextInputType.name,
@@ -451,30 +457,33 @@ class _CreateLeedsState extends State<CreateLeeds> {
                       tileMode: TileMode.repeated),
                 ),
                 child: Center(
-                  child: TextFormField(
-                    controller: TextEditingController,
-                    keyboardType: textInputType,
-                    validator: (value) {
-                      if (value.toString().isEmpty) {
-                        return val;
-                      } else {
-                        return null;
-                      }
-                    },
-                    style: TextStyle(color: Colors.white, fontFamily: "Avenir"),
-                    decoration: InputDecoration(
-                      enabledBorder: InputBorder.none,
-                      hintText: "     ${name}",
-                      helperStyle: TextStyle(color: Colors.black),
-                      // enabledBorder: OutlineInputBorder(
-                      //   borderSide: BorderSide(width: 1, color: Colors.black54),
-                      //   borderRadius: BorderRadius.circular(20),
-                      // ),
-                      // hintText: hint,
-                      hintStyle: const TextStyle(
-                          color: Colors.black26,
-                          fontFamily: 'Nexa',
-                          fontSize: 13),
+                  child: SingleChildScrollView(
+                    reverse: true,
+                    child: TextFormField(
+                      controller: TextEditingController,
+                      keyboardType: textInputType,
+                      validator: (value) {
+                        if (value.toString().isEmpty) {
+                          return val;
+                        } else {
+                          return null;
+                        }
+                      },
+                      style: TextStyle(color: Colors.white, fontFamily: "Avenir"),
+                      decoration: InputDecoration(
+                        enabledBorder: InputBorder.none,
+                        hintText: "     ${name}",
+                        helperStyle: TextStyle(color: Colors.black),
+                        // enabledBorder: OutlineInputBorder(
+                        //   borderSide: BorderSide(width: 1, color: Colors.black54),
+                        //   borderRadius: BorderRadius.circular(20),
+                        // ),
+                        // hintText: hint,
+                        hintStyle: const TextStyle(
+                            color: Colors.black26,
+                            fontFamily: 'Nexa',
+                            fontSize: 13),
+                      ),
                     ),
                   ),
                 ),
@@ -517,7 +526,7 @@ class _CreateLeedsState extends State<CreateLeeds> {
                 ),
               )),
         ),
-      ],
+      ].reversed.toList(),
     );
   }
 

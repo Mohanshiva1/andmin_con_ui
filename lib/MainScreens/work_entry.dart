@@ -1199,18 +1199,24 @@ class WorkEntry extends StatefulWidget {
 
 class _WorkEntryState extends State<WorkEntry>
     with SingleTickerProviderStateMixin {
+
+
   TabController? _tabController;
 
-  final _auth = FirebaseDatabase.instance.reference().child("staff");
+  final staff = FirebaseDatabase.instance.reference().child("staff");
   final user = FirebaseAuth.instance.currentUser;
+  final fingerPrint =
+  FirebaseDatabase.instance.reference().child("fingerPrint");
+
+
   final formKey = GlobalKey<FormState>();
 
-  TextEditingController wrkdonefield = TextEditingController();
-  TextEditingController percentfield = TextEditingController();
+  TextEditingController workDoneField = TextEditingController();
+  TextEditingController percentField = TextEditingController();
 
   bool isStarted = true;
   bool isSubmit = false;
-  var timeDiffrence;
+  var timeDifference;
 
   var getFbTime;
   var startTime;
@@ -1240,14 +1246,14 @@ class _WorkEntryState extends State<WorkEntry>
   var wrkDone;
 
   createWrkDone() {
-    _auth.once().then((value) => {
+    staff.once().then((value) => {
       for (var element in value.snapshot.children)
         {
           fbData = element.value,
           if (fbData["email"] == user?.email)
             {
               wrkDone = element.key,
-              _auth
+              staff
                   .child(wrkDone)
                   .child(
                   "workManager/timeSheet/$formattedYear/$formattedMonth/$formattedDate/${getFbTime.toString().trim()} to ${endTime.toString().trim()}")
@@ -1255,16 +1261,16 @@ class _WorkEntryState extends State<WorkEntry>
                 "from": getFbTime.toString().trim(),
                 "to": endTime.toString().trim(),
                 "workDone": tempWrk[0],
-                "workPercentage": '${percentfield.text.trim()}%',
+                "workPercentage": '${percentField.text.trim()}%',
                 'name': fbData['name'],
-                'time_in_hours': timeDiffrence.toString().trim()
+                'time_in_hours': timeDifference.toString().trim()
               }).then((value) {
-                deletependingWrks();
+                deletePendingWorks();
                 temFromTime.clear();
                 endTime = '';
                 tempWrk.clear();
-                wrkdonefield.clear();
-                percentfield.clear();
+                workDoneField.clear();
+                percentField.clear();
                 viewData();
 
               })
@@ -1272,8 +1278,8 @@ class _WorkEntryState extends State<WorkEntry>
         }
     }).then((value)  {
       getDayWrkTime();
-      getMonthWrkTime();
-      getYearWorkingTime();
+      // getMonthWrkTime();
+      // getYearWorkingTime();
     });
   }
 
@@ -1294,7 +1300,7 @@ class _WorkEntryState extends State<WorkEntry>
     fromView.clear();
     workPercentageView.clear();
     workDoneView.clear();
-    _auth.once().then((value) {
+    staff.once().then((value) {
       for (var step1 in value.snapshot.children) {
         fbData = step1.value;
         if (fbData['email'] == CurrerntUser) {
@@ -1338,21 +1344,21 @@ class _WorkEntryState extends State<WorkEntry>
     });
   }
 
-  pendingWrks() {
-    _auth.once().then((value) => {
+  pendingWorks() {
+    staff.once().then((value) => {
       for (var element in value.snapshot.children)
         {
           fbData = element.value,
           if (fbData["email"] == user?.email)
             {
               wrkDone = element.key,
-              _auth
+              staff
                   .child(wrkDone)
                   .child(
                   "workManager/timeSheet/$formattedYear/$formattedMonth/$formattedDate/pendingWorks/${startTime.toString().trim()}")
                   .set({
                 "from": startTime.toString().trim(),
-                "workDone": wrkdonefield.text.trim(),
+                "workDone": workDoneField.text.trim(),
                 'name': fbData['name'],
               }).then((value) => viewPendingWrk())
             }
@@ -1360,8 +1366,8 @@ class _WorkEntryState extends State<WorkEntry>
     });
   }
 
-  deletependingWrks() {
-    _auth
+  deletePendingWorks() {
+    staff
         .once()
         .then((value) => {
       for (var element in value.snapshot.children)
@@ -1370,7 +1376,7 @@ class _WorkEntryState extends State<WorkEntry>
           if (fbData["email"] == user?.email)
             {
               wrkDone = element.key,
-              _auth
+              staff
                   .child(wrkDone)
                   .child(
                   "workManager/timeSheet/$formattedYear/$formattedMonth/$formattedDate/pendingWorks/")
@@ -1387,7 +1393,7 @@ class _WorkEntryState extends State<WorkEntry>
 
   viewPendingWrk() {
     tempWrk.clear();
-    _auth.once().then((value) {
+    staff.once().then((value) {
       for (var step1 in value.snapshot.children) {
         fbData = step1.value;
         if (fbData['email'] == CurrerntUser) {
@@ -1432,7 +1438,7 @@ class _WorkEntryState extends State<WorkEntry>
   List dayWrkTimingList = [];
 
   getDayWrkTime() {
-    _auth.once().then((value) {
+    staff.once().then((value) {
       for (var step1 in value.snapshot.children) {
         fbData = step1.value;
         if (fbData['email'] == CurrerntUser) {
@@ -1508,14 +1514,14 @@ class _WorkEntryState extends State<WorkEntry>
             .toString()
             .substring(10, 19);
 
-        _auth.once().then((value) => {
+        staff.once().then((value) => {
           for (var element in value.snapshot.children)
             {
               fbData = element.value,
               if (fbData["email"] == user?.email)
                 {
                   wrkDone = element.key,
-                  _auth
+                  staff
                       .child(wrkDone)
                       .child(
                       "workManager/timeSheet/$formattedYear/$formattedMonth/$formattedDate/totalWorkingTime")
@@ -1537,242 +1543,279 @@ class _WorkEntryState extends State<WorkEntry>
   }
 
 //...............................month,..............................
-  var fbDataMonthList;
-  List monthWrkTiminglist = [];
+//   var fbDataMonthList;
+//   List monthWrkTimingList = [];
+//
+//   getMonthWrkTime() {
+//     _auth.once().then((value) {
+//       for (var step1 in value.snapshot.children) {
+//         fbData = step1.value;
+//         if (fbData['email'] == CurrerntUser) {
+//           for (var step2 in step1.children) {
+//             if (step2.key == "workManager") {
+//               for (var step3 in step2.children) {
+//                 for (var step4 in step3.children) {
+//                   if (step4.key == formattedYear) {
+//                     for (var step5 in step4.children) {
+//                       if (step5.key == formattedMonth) {
+//                         for (var mwt in step5.children) {
+//                           if (mwt.key != 'totalWorkingTime') {
+//                             for (var mwt2 in mwt.children) {
+//                               if (mwt2.key != 'totalWorkingTime') {
+//                                 fbDataMonthList = mwt2.value;
+//                                 setState(() {
+//                                   monthWrkTimingList.add(fbDataMonthList['time_in_hours']);
+//                                   print("${monthWrkTimingList}...............getmonthwork time");
+//                                 });
+//                               }
+//                             }
+//                           }
+//                         }
+//                       }
+//                     }
+//                   }
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }).then((value) => {uploadMonthWorkingTime(),});
+//   }
+//
+//   int monthHours = 0;
+//   int finalMonthHours = 0;
+//
+//   int monthMinutes = 0;
+//   int finalMonthMinutes = 0;
+//   var finalmothTotalWorkingTime;
+//
+//   uploadMonthWorkingTime() {
+//     print("${monthWrkTimingList}month work time list");
+//     List monthTimeList = monthWrkTimingList;
+//
+//     for (var time in monthTimeList) {
+//
+//       var format = time;
+//       print("${format}..............format in time");
+//
+//       if(format != null){
+//         var timeFormat = DateFormat("HH:mm");
+//         var starTime = timeFormat.parse(format).toString().substring(10, 19);
+//
+//         var hours = starTime.substring(0, 3);
+//
+//         var minutes = starTime.substring(4, 6);
+//
+//         monthHours = int.parse(hours);
+//
+//         var addTime = finalMonthHours + monthHours;
+//         finalMonthHours = addTime;
+//
+//         monthMinutes = int.parse(minutes);
+//         var addMinutes = finalMonthMinutes + monthMinutes;
+//         finalMonthMinutes = addMinutes;
+//         // print(finalTestingMinutes);
+//
+//         var today = DateTime.utc(0);
+//         // print(today);
+//         finalmothTotalWorkingTime = today
+//             .add(Duration(hours: finalMonthHours, minutes: finalMonthMinutes))
+//             .toString()
+//             .substring(8, 19);
+//
+//         _auth.once().then((value) => {
+//           for (var element in value.snapshot.children)
+//             {
+//               fbData = element.value,
+//               if (fbData["email"] == user?.email)
+//                 {
+//                   wrkDone = element.key,
+//                   _auth
+//                       .child(wrkDone)
+//                       .child(
+//                       "workManager/timeSheet/$formattedYear/$formattedMonth/totalWorkingTime")
+//                       .set({'month': finalmothTotalWorkingTime})
+//                 }
+//             }
+//         }).then((value) {
+//           finalMonthHours = 0;
+//           finalMonthMinutes = 0;
+//
+//           monthWrkTimingList.clear();
+//           monthTimeList.clear();
+//         });
+//       }
+//
+//     }
+//
+//
+//   }
+//
+//   List yearWrkTimeList = [];
+//   var fbywt;
+//   getYearWorkingTime(){
+//     _auth.once().then((value) {
+//       for (var step1 in value.snapshot.children) {
+//         fbData = step1.value;
+//         if (fbData['email'] == CurrerntUser) {
+//           for (var step2 in step1.children) {
+//             if (step2.key == "workManager") {
+//               for (var step3 in step2.children) {
+//                 for (var step4 in step3.children) {
+//                   if (step4.key == formattedYear) {
+//                     for(var ywt in step4.children){
+//                       for(var ywt2 in ywt.children){
+//                         if(ywt2.key != 'totalWorkingTime'){
+//                           for (var ywt3 in ywt2.children){
+//                             if(ywt3.key != 'totalWorkingTime'){
+//                               // print(ywt3.value);
+//                               fbywt = ywt3.value;
+//                               setState(() {
+//                                 yearWrkTimeList.add(fbywt['time_in_hours']);
+//                                 print("${yearWrkTimeList}.........Get year");
+//                               });
+//
+//                             }
+//                           }
+//                         }
+//
+//                       }
+//                     }
+//                   }
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }).then((value) {uploadYearWorkTime();});
+//   }
+//
+//   int yearHours = 0;
+//   int finalYearHours = 0;
+//
+//   int yearMinutes = 0;
+//   int finalYearMinutes = 0;
+//   var finalYearTotalWorkingTime;
+//
+//   uploadYearWorkTime(){
+//     print("${yearWrkTimeList}year work time list in upload side");
+//     List yearTimeList = yearWrkTimeList;
+//
+//     for (var time in yearTimeList) {
+//
+//       var format = time;
+//       print("${format}..............format in time");
+//
+//       if(format != null){
+//         var timeFormat = DateFormat("HH:mm");
+//         var starTime = timeFormat.parse(format).toString().substring(10, 19);
+//
+//         var hours = starTime.substring(0, 3);
+//
+//         var minutes = starTime.substring(4, 6);
+//
+//         yearHours = int.parse(hours);
+//         var addTime = finalYearHours + yearHours;
+//         finalYearHours = addTime;
+//
+//         yearMinutes = int.parse(minutes);
+//         var addMinutes = finalYearMinutes + yearMinutes;
+//         finalYearMinutes = addMinutes;
+//         // print(finalTestingMinutes);
+//
+//         var today = DateTime.utc(0);
+//         // print(today);
+//         finalYearTotalWorkingTime = today
+//             .add(Duration(hours: finalYearHours, minutes: finalYearMinutes))
+//             .toString()
+//             .substring(8, 19);
+//
+//         _auth.once().then((value) => {
+//           for (var element in value.snapshot.children)
+//             {
+//               fbData = element.value,
+//               if (fbData["email"] == user?.email)
+//                 {
+//                   wrkDone = element.key,
+//                   _auth
+//                       .child(wrkDone)
+//                       .child(
+//                       "workManager/timeSheet/$formattedYear/totalWorkingTime")
+//                       .set({'year': finalYearTotalWorkingTime})
+//                 }
+//             }
+//         }).then((value) {
+//           finalYearHours = 0;
+//           finalYearMinutes = 0;
+//           yearWrkTimeList.clear();
+//           yearTimeList.clear();
+//           print('Year Working time uploaded successfully');
+//         });
+//       }
+//
+//     }
+//
+//   }
 
-  getMonthWrkTime() {
-    _auth.once().then((value) {
-      for (var step1 in value.snapshot.children) {
-        fbData = step1.value;
-        if (fbData['email'] == CurrerntUser) {
-          for (var step2 in step1.children) {
-            if (step2.key == "workManager") {
-              for (var step3 in step2.children) {
-                for (var step4 in step3.children) {
-                  if (step4.key == formattedYear) {
-                    for (var step5 in step4.children) {
-                      if (step5.key == formattedMonth) {
-                        for (var mwt in step5.children) {
-                          if (mwt.key != 'totalWorkingTime') {
-                            for (var mwt2 in mwt.children) {
-                              if (mwt2.key != 'totalWorkingTime') {
-                                fbDataMonthList = mwt2.value;
-                                setState(() {
-                                  monthWrkTiminglist.add(fbDataMonthList['time_in_hours']);
-                                  print("${monthWrkTiminglist}...............getmonthwork time");
-                                });
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }).then((value) => {uploadMonthWorkingTime(),});
-  }
+  // var a;
 
-  int monthHours = 0;
-  int finalMonthHours = 0;
+  // getStringValuesSF() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   //Return String
+  //   String? stringValue = prefs.getString('stringValue');
+  //   print(stringValue);
+  //   a = stringValue.toString();
+  //   return a;
+  //
+  // }
 
-  int monthMinutes = 0;
-  int finalMonthMinutes = 0;
-  var finalmothTotalWorkingTime;
-
-  uploadMonthWorkingTime() {
-    print("${monthWrkTiminglist}month work time list");
-    List monthTimeList = monthWrkTiminglist;
-
-    for (var time in monthTimeList) {
-
-      var format = time;
-      print("${format}..............format in time");
-
-      if(format != null){
-        var timeFormat = DateFormat("HH:mm");
-        var starTime = timeFormat.parse(format).toString().substring(10, 19);
-
-        var hours = starTime.substring(0, 3);
-
-        var minutes = starTime.substring(4, 6);
-
-        monthHours = int.parse(hours);
-
-        var addTime = finalMonthHours + monthHours;
-        finalMonthHours = addTime;
-
-        monthMinutes = int.parse(minutes);
-        var addMinutes = finalMonthMinutes + monthMinutes;
-        finalMonthMinutes = addMinutes;
-        // print(finalTestingMinutes);
-
-        var today = DateTime.utc(0);
-        // print(today);
-        finalmothTotalWorkingTime = today
-            .add(Duration(hours: finalMonthHours, minutes: finalMonthMinutes))
-            .toString()
-            .substring(8, 19);
-
-        _auth.once().then((value) => {
-          for (var element in value.snapshot.children)
+  String? nowUser;
+  var userName;
+  var dep;
+  bool fingerPrintStatus = false;
+  getFingerPrint() {
+    fingerPrint.child(user!.uid).once().then((value) => {
+      // print(value.snapshot.value),
+      for (var f1 in value.snapshot.children)
+        {
+          // print(f1.key),
+          if (f1.key == formattedDate)
             {
-              fbData = element.value,
-              if (fbData["email"] == user?.email)
-                {
-                  wrkDone = element.key,
-                  _auth
-                      .child(wrkDone)
-                      .child(
-                      "workManager/timeSheet/$formattedYear/$formattedMonth/totalWorkingTime")
-                      .set({'month': finalmothTotalWorkingTime})
-                }
+              setState(() {
+                fingerPrintStatus = true;
+                // print(fingerPrintStatus);
+              }),
             }
-        }).then((value) {
-          finalMonthHours = 0;
-          finalMonthMinutes = 0;
-
-          monthWrkTiminglist.clear();
-          monthTimeList.clear();
-        });
-      }
-
-    }
-
-
-  }
-
-  List yearWrkTimeList = [];
-  var fbywt;
-  getYearWorkingTime(){
-    _auth.once().then((value) {
-      for (var step1 in value.snapshot.children) {
-        fbData = step1.value;
-        if (fbData['email'] == CurrerntUser) {
-          for (var step2 in step1.children) {
-            if (step2.key == "workManager") {
-              for (var step3 in step2.children) {
-                for (var step4 in step3.children) {
-                  if (step4.key == formattedYear) {
-                    for(var ywt in step4.children){
-                      for(var ywt2 in ywt.children){
-                        if(ywt2.key != 'totalWorkingTime'){
-                          for (var ywt3 in ywt2.children){
-                            if(ywt3.key != 'totalWorkingTime'){
-                              // print(ywt3.value);
-                              fbywt = ywt3.value;
-                              setState(() {
-                                yearWrkTimeList.add(fbywt['time_in_hours']);
-                                print("${yearWrkTimeList}.........Get year");
-                              });
-
-                            }
-                          }
-                        }
-
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
         }
-      }
-    }).then((value) {uploadYearWorkTime();});
+    }).then((value) => loadData());
   }
-
-  int yearHours = 0;
-  int finalYearHours = 0;
-
-  int yearMinutes = 0;
-  int finalYearMinutes = 0;
-  var finalYearTotalWorkingTime;
-
-  uploadYearWorkTime(){
-    print("${yearWrkTimeList}year work time list in upload side");
-    List yearTimeList = yearWrkTimeList;
-
-    for (var time in yearTimeList) {
-
-      var format = time;
-      print("${format}..............format in time");
-
-      if(format != null){
-        var timeFormat = DateFormat("HH:mm");
-        var starTime = timeFormat.parse(format).toString().substring(10, 19);
-
-        var hours = starTime.substring(0, 3);
-
-        var minutes = starTime.substring(4, 6);
-
-        yearHours = int.parse(hours);
-        var addTime = finalYearHours + yearHours;
-        finalYearHours = addTime;
-
-        yearMinutes = int.parse(minutes);
-        var addMinutes = finalYearMinutes + yearMinutes;
-        finalYearMinutes = addMinutes;
-        // print(finalTestingMinutes);
-
-        var today = DateTime.utc(0);
-        // print(today);
-        finalYearTotalWorkingTime = today
-            .add(Duration(hours: finalYearHours, minutes: finalYearMinutes))
-            .toString()
-            .substring(8, 19);
-
-        _auth.once().then((value) => {
-          for (var element in value.snapshot.children)
-            {
-              fbData = element.value,
-              if (fbData["email"] == user?.email)
-                {
-                  wrkDone = element.key,
-                  _auth
-                      .child(wrkDone)
-                      .child(
-                      "workManager/timeSheet/$formattedYear/totalWorkingTime")
-                      .set({'year': finalYearTotalWorkingTime})
-                }
-            }
-        }).then((value) {
-          finalYearHours = 0;
-          finalYearMinutes = 0;
-          yearWrkTimeList.clear();
-          yearTimeList.clear();
-          print('Year Working time uploaded successfully');
-        });
-      }
-
-    }
-
+  loadData() {
+    staff.child(user!.uid).once().then((value) => {
+      // print(value.snapshot.value),
+      fbData = value.snapshot.value,
+      if (fbData["email"] == nowUser)
+        {
+          // // print(fbData),
+          setState(() {
+            userName = fbData['name'];
+            dep = fbData['department'];
+            // print(userName);
+            // print(dep);
+          }),
+        }
+    });
   }
-
-  var a;
-
-  getStringValuesSF() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    //Return String
-    String? stringValue = prefs.getString('stringValue');
-    print(stringValue);
-    a = stringValue.toString();
-    return a;
-
-  }
-
   @override
   void initState() {
     todayDate();
     setState(() {
-      getStringValuesSF();
+      getFingerPrint();
       _tabController = TabController(length: 2, vsync: this);
       viewPendingWrk();
       CurrerntUser = user?.email;
+      nowUser = user?.email;
       viewData();
     });
     super.initState();
@@ -1908,7 +1951,7 @@ class _WorkEntryState extends State<WorkEntry>
                       ),
                     ),
                     Expanded(
-                        child: TabBarView(
+                        child: fingerPrintStatus == true ? TabBarView(
                           controller: _tabController,
                           children: [
                             SingleChildScrollView(
@@ -1944,7 +1987,7 @@ class _WorkEntryState extends State<WorkEntry>
                                             style: const TextStyle(
                                                 color: Colors.black,
                                                 fontFamily: "Avenir"),
-                                            controller: wrkdonefield,
+                                            controller: workDoneField,
                                             keyboardType:
                                             TextInputType.multiline,
                                             maxLines: 5,
@@ -2022,7 +2065,7 @@ class _WorkEntryState extends State<WorkEntry>
                                                   .currentState
                                                   ?.validate();
                                               if (isValid!) {
-                                                pendingWrks();
+                                                pendingWorks();
                                               }
                                             });
                                           },
@@ -2187,7 +2230,7 @@ class _WorkEntryState extends State<WorkEntry>
                                                                   fontFamily:
                                                                   "Nexa"),
                                                               controller:
-                                                              percentfield,
+                                                              percentField,
                                                               textInputAction:
                                                               TextInputAction
                                                                   .done,
@@ -2345,10 +2388,10 @@ class _WorkEntryState extends State<WorkEntry>
 
                                                       if (end.isAfter(
                                                           start)) {
-                                                        timeDiffrence =
+                                                        timeDifference =
                                                             end.difference(
                                                                 start);
-                                                        timeDiffrence = timeDiffrence
+                                                        timeDifference = timeDifference
                                                             .toString()
                                                             .substring(
                                                             0,
@@ -2463,7 +2506,13 @@ class _WorkEntryState extends State<WorkEntry>
                               ),
                             ),
                           ],
-                        ))
+                        ) : Text(
+                          'FingerPrint Not Recognized',
+                          style: TextStyle(
+                              fontFamily: "Avenir",
+                              fontSize: height * 0.02,
+                              fontWeight: FontWeight.w600),
+                        ),)
                   ],
                 ),
               ),

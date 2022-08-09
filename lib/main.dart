@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:andmin_con_ui/MainScreens/home_page.dart';
 import 'package:andmin_con_ui/MainScreens/login_screen.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
@@ -9,10 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lottie/lottie.dart';
+import 'package:new_version/new_version.dart';
 
-// 2.0.0+5 older
-// version 2.0.0+6 23/07/2022 currently
+// 2.0.0+7 older
 
+// version 2.0.0+8 09/08/2022 currently Using...
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -104,31 +107,13 @@ class _HomePageState extends State<HomePage> {
 
   loadData() {
     database.child(user!.uid).once().then((value) {
-      print(value.snapshot.value);
+      // print(value.snapshot.value);
       fbData = value.snapshot.value;
       setState(() {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const TeamMainPage()));
       });
-          // if (fbData['department'] == "ADMIN") {
-          //   Navigator.pushReplacement(context,
-          //       MaterialPageRoute(builder: (context) => const CEOScreen()));
-          // } else if (fbData['department'] == "APP") {
-          //   Navigator.pushReplacement(context,
-          //       MaterialPageRoute(builder: (context) => const ITScreen()));
-          // } else if (fbData['department'] == "PR") {
-          //   Navigator.pushReplacement(context,
-          //       MaterialPageRoute(builder: (context) => const PRScreen()));
-          // } else if (fbData['department'] == "MEDIA") {
-          //   Navigator.pushReplacement(context,
-          //       MaterialPageRoute(builder: (context) => const ITScreen()));
-          // } else if (fbData['department'] == "WEB") {
-          //   Navigator.pushReplacement(context,
-          //       MaterialPageRoute(builder: (context) => const ITScreen()));
-          // } else if (fbData['department'] == "RND") {
-          //   Navigator.pushReplacement(context,
-          //       MaterialPageRoute(builder: (context) => const ITScreen()));
-          // }
+
     });
   }
   // loadData() {
@@ -178,7 +163,7 @@ class _HomePageState extends State<HomePage> {
   //   newVersion.showUpdateDialog(context: context, versionStatus: status!,
   //       dialogTitle: 'Update Available',
   //       dismissButtonText: "Skip",
-  //       dialogText: "Please Update Latest Version to Use the App",
+  //       dialogText: "Please Update Latest Version",
   //       dismissAction: (){
   //         SystemNavigator.pop();
   //       }
