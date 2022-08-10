@@ -60,16 +60,22 @@ class _RefreshmentState extends State<Refreshment> {
     formattedMonth = formatterMonth.format(now);
 
     var s = formattedTime.toString().substring(6, 8);
-    // print(s);
+    print(s);
     if (s == 'AM') {
-      timeZone = 'FN';
+      setState(() {
+        timeZone = 'FN';
+      });
+
       // print(timeZone);
     } else {
-      timeZone = 'AN';
+      setState(() {
+        timeZone = 'AN';
+      });
+
       // print(timeZone);
     }
-    // print(timeZone);
-    // print(formattedTime);
+    print(timeZone);
+    print(formattedTime);
   }
 
   var teaCount;
@@ -85,21 +91,24 @@ class _RefreshmentState extends State<Refreshment> {
         // print(e1.key);
         if (e1.key == formattedDate) {
           for (var e2 in e1.children) {
-            if (timeZone == "AM") {
+            print('sdsdsssdsdsd');
+            print(timeZone);
+            if (timeZone == "FN") {
+              print(timeZone);
               if (e2.key == 'FN') {
-                // print(e2.value);
+                print(e2.value);
                 for (var e3 in e2.children) {
                   if (e3.key == 'tea') {
-                    // print(e3.value);
+                    print(e3.value);
                     for(var e4 in e3.children){
                       // print(e4.value);
                       var t = e4.value;
-                      // print(t);
+                      print(t);
                       setState(() {
                         listOfTea.add(t);
-                        // print(listOfTea.length);
+                        print(listOfTea.length);
                         teaList = listOfTea.length;
-                        print("teaList");
+                        // print("teaList");
                         // print("load  ${teaList}");
                       });
                     }
@@ -133,6 +142,15 @@ class _RefreshmentState extends State<Refreshment> {
           }
         }
       }
+    }).then((value){
+      setState(() {
+        print('dfdsddssf');
+        teaList == null
+            ? teaList = 1
+            : teaList++;
+
+        drinkCountTeaDetails();
+      });
     });
   }
 
@@ -157,6 +175,7 @@ class _RefreshmentState extends State<Refreshment> {
       ScaffoldMessenger.of(context)
         ..hideCurrentMaterialBanner()
         ..showSnackBar(snackBar);
+      Navigator.pop(context);
     });
   }
 
@@ -173,7 +192,7 @@ class _RefreshmentState extends State<Refreshment> {
         // print(e1.key);
         if (e1.key == formattedDate) {
           for (var e2 in e1.children) {
-            if (timeZone == "AM") {
+            if (timeZone == "FN") {
               if (e2.key == 'FN') {
                 // print(e2.value);
                 for (var e3 in e2.children) {
@@ -187,7 +206,6 @@ class _RefreshmentState extends State<Refreshment> {
                         listOfCoffee.add(c);
                         // print(listOfTea.length);
                         coffeeList = listOfCoffee.length;
-
                         // print("load  ${teaList}");
                       });
                     }
@@ -221,6 +239,13 @@ class _RefreshmentState extends State<Refreshment> {
           }
         }
       }
+    }).then((value) {
+      setState(() {
+        coffeeList == null
+            ? coffeeList = 1
+            : coffeeList++;
+        drinkCountCoffee();
+      });
     });
   }
 
@@ -243,6 +268,7 @@ class _RefreshmentState extends State<Refreshment> {
       ScaffoldMessenger.of(context)
         ..hideCurrentMaterialBanner()
         ..showSnackBar(snackBar);
+      Navigator.pop(context);
     });
   }
 
@@ -259,7 +285,7 @@ class _RefreshmentState extends State<Refreshment> {
         // print(e1.key);
         if (e1.key == formattedDate) {
           for (var e2 in e1.children) {
-            if (timeZone == "AM") {
+            if (timeZone == "FN") {
               if (e2.key == 'FN') {
                 // print(e2.value);
                 for (var e3 in e2.children) {
@@ -303,6 +329,14 @@ class _RefreshmentState extends State<Refreshment> {
           }
         }
       }
+    }).then((value) {
+      setState(() {
+        nothingList == null
+            ? nothingList = 1
+            : nothingList++;
+        // print("${nothingList}////////////////////////");
+        drinkCountNothing();
+      });
     });
   }
 
@@ -326,17 +360,20 @@ class _RefreshmentState extends State<Refreshment> {
       ScaffoldMessenger.of(context)
         ..hideCurrentMaterialBanner()
         ..showSnackBar(snackBar);
+      Navigator.pop(context);
     });
   }
+
 
   @override
   void initState() {
     todayDate();
-    CurrerntUser = user?.email;
     readName();
-    loadCoffee();
-    loadTea();
-    loadNothing();
+    CurrerntUser = user?.email;
+
+    // loadCoffee();
+    // loadTea();
+    // loadNothing();
     super.initState();
   }
 
@@ -450,13 +487,14 @@ class _RefreshmentState extends State<Refreshment> {
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            // loadTea();
+
+                            loadTea();
                             // print(".....................${teaList.runtimeType}");
-                            teaList == null
-                                ? teaList = 1
-                                : teaList++;
+                            // teaList == null
+                            //     ? teaList = 1
+                            //     : teaList++;
                             // print("${teaList}////////////////////////");
-                            drinkCountTeaDetails();
+                            // drinkCountTeaDetails();
                           });
                         },
                         child: Container(
@@ -514,11 +552,11 @@ class _RefreshmentState extends State<Refreshment> {
                           setState(() {
                             loadCoffee();
                             // print(".....................${coffeeList.runtimeType}");
-                            coffeeList == null
-                                ? coffeeList = 1
-                                : coffeeList++;
-                            // print("${coffeeList}////////////////////////");
-                            drinkCountCoffee();
+                            // coffeeList == null
+                            //     ? coffeeList = 1
+                            //     : coffeeList++;
+                            // // print("${coffeeList}////////////////////////");
+                            // drinkCountCoffee();
                           });
                         },
                         child: Container(
@@ -576,11 +614,11 @@ class _RefreshmentState extends State<Refreshment> {
                           setState(() {
                             loadNothing();
                             // print(".....................${nothingList.runtimeType}");
-                            nothingList == null
-                                ? nothingList = 1
-                                : nothingList++;
-                            // print("${nothingList}////////////////////////");
-                            drinkCountNothing();
+                            // nothingList == null
+                            //     ? nothingList = 1
+                            //     : nothingList++;
+                            // // print("${nothingList}////////////////////////");
+                            // drinkCountNothing();
                           });
                         },
                         child: Container(

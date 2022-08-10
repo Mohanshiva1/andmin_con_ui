@@ -16,9 +16,12 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
 
   DateTime now = DateTime.now();
   var formatterDate = DateFormat('yyyy-MM-dd');
+  var formatterMonth = DateFormat('MM');
+  var formatterYear = DateFormat('yyyy');
+
   String? selectedDate;
-  var selectedMonth;
-  var selectedYear;
+  String? selectedMonth;
+  String? selectedYear;
 
   var fbData;
 
@@ -34,6 +37,9 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
 
   DatePicker() async {
     selectedDate = formatterDate.format(now);
+    selectedMonth = formatterDate.format(now);
+    selectedYear = formatterDate.format(now);
+
     DateTime? newDate = await showRoundedDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -55,8 +61,6 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
       selectedMonth = newDate.toString().substring(5,7);
       selectedYear = newDate.toString().substring(0,4);
       // print(selectedYear);
-      
-
       if (selectedDate != null) {
         loadData();
       }
@@ -169,8 +173,8 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
   @override
   void initState() {
     selectedDate = formatterDate.format(now);
-    // selectedMonth = formattedMonth.format(now);
-    // selectedYear = formattedYear.format(now);
+    selectedMonth = formatterMonth.format(now);
+    selectedYear = formatterYear.format(now);
     // print(selectedDate);
     todayDate();
     loadData();
@@ -303,7 +307,10 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                         children: [
 
                           nameData.length == 0
-                              ? Text("${nameData == 0 ? 'Load Data' : 'No Data'}")
+                              ? Text("${nameData == 0 ? 'NO DATA' : 'Loading'}",style: TextStyle(
+                                    fontFamily: 'Nexa',
+                                    fontSize: 20,
+                                    color: Colors.black))
                           // const Text("",
                           //         style: TextStyle(
                           //             fontFamily: 'Nexa',

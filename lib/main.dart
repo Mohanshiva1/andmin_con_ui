@@ -13,9 +13,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lottie/lottie.dart';
 import 'package:new_version/new_version.dart';
 
-// 2.0.0+7 older
+// 2.0.0+9 older
 
-// version 2.0.0+8 09/08/2022 currently Using...
+// version 2.0.0+10   10/08/2022 currently Using...
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -147,15 +147,19 @@ class _HomePageState extends State<HomePage> {
 
   // ....................Get Location........................................
 
+
   @override
   void initState() {
     setState(() {
       // _checkVersion();
+
       CurrerntUser = user?.email;
       loadData();
     });
     super.initState();
   }
+
+
   // void _checkVersion() async {
   //   final newVersion = NewVersion(
   //       androidId: 'com.onwords.admin_console');
@@ -193,4 +197,5 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
 }

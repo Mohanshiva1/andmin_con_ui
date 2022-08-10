@@ -1,11 +1,16 @@
+import 'dart:async';
+
 import 'package:andmin_con_ui/MainScreens/PR/create_leed.dart';
 import 'package:andmin_con_ui/MainScreens/PR/serarch_leads.dart';
 import 'package:andmin_con_ui/MainScreens/PR/view_leed.dart';
 import 'package:andmin_con_ui/MainScreens/refreshment.dart';
 import 'package:andmin_con_ui/MainScreens/work_entry.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'CEO/wrk_done_view.dart';
@@ -84,12 +89,37 @@ class _TeamMainPageState extends State<TeamMainPage> {
         });
   }
 
+  late StreamSubscription subscription;
+  var isDeviceConnected = false;
+  bool isAlertSet = false;
+
+  getConnectivity() {
+    subscription = Connectivity().onConnectivityChanged.listen(
+            (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if(!isDeviceConnected && isAlertSet == false){
+            showDialogBox();
+            setState(() {
+              isAlertSet = true;
+            });
+          }
+        });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
+    getConnectivity();
     nowUser = user?.email;
     loadData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -294,6 +324,16 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                         //         color: Colors.amber,
                                         //       )),
                                         // ),
+                                        Container(
+                                          child: Buttons(
+                                              "Refreshment",
+                                              const Refreshment(),
+                                              Icon(
+                                                Icons.refresh,
+                                                size: height * 0.05,
+                                                color: Colors.amber,
+                                              )),
+                                        ),
 
                                         Container(
                                           child: Buttons(
@@ -484,6 +524,16 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                                         // ),
                                                         Container(
                                                           child: Buttons(
+                                                              "Refreshment",
+                                                              const Refreshment(),
+                                                              Icon(
+                                                                Icons.refresh,
+                                                                size: height * 0.05,
+                                                                color: Colors.amber,
+                                                              )),
+                                                        ),
+                                                        Container(
+                                                          child: Buttons(
                                                               "Work Manager",
                                                               WorkEntry(),
                                                               Icon(
@@ -509,6 +559,31 @@ class _TeamMainPageState extends State<TeamMainPage> {
         ],
       ),
     );
+  }
+  showDialogBox() {
+    showCupertinoDialog(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: Text("No Connection"),
+          content: Text("Please check your internet connection"),
+          actions: [
+            TextButton(
+                onPressed: () async{
+                  Navigator.pop(context,'Cancel');
+                  setState(() {
+                    isAlertSet = false;
+                  });
+                  isDeviceConnected = await InternetConnectionChecker().hasConnection;
+                  if(!isDeviceConnected){
+                    showDialogBox();
+                    setState(() {
+                      isAlertSet = true;
+                    });
+                  }
+                },
+                child: Text("OK"))
+          ],
+        ));
   }
 
   // addStringToSF() async {

@@ -107,7 +107,8 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
               }
             }
           }
-        }}
+        }
+      }
     });
   }
 
@@ -207,7 +208,6 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
                     // right: 30,
 
                     child: IconButton(
-
                       color: Colors.orange.shade800,
                       onPressed: () {
                         setState(() {
@@ -218,7 +218,6 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
                       icon: Container(child: Image.asset('assets/menu.png')),
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -242,23 +241,21 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
                 SizedBox(
                   height: height * 0.03,
                 ),
-
               ],
             ),
           ),
-
-
           Positioned(
-              top: height*0.13,
-              left:  width*0.60,
+              top: height * 0.13,
+              left: width * 0.60,
               right: 0,
-              child:   Row(
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('$selectedDate',style: TextStyle(
-                      fontFamily: 'Nexa',
-                      fontSize: 15,
-                      color: Colors.white)),
+                  Text('$selectedDate',
+                      style: TextStyle(
+                          fontFamily: 'Nexa',
+                          fontSize: 15,
+                          color: Colors.white)),
                   GestureDetector(
                     onTap: () {
                       setState(() {
@@ -271,11 +268,8 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
                   ),
                 ],
               )),
-
-
-
           Positioned(
-            top: height*0.2,
+            top: height * 0.2,
             left: 0,
             right: 0,
             bottom: 0,
@@ -299,43 +293,50 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
                           children: [
                             notEntry.length == 0
                                 ? Text(
-                                "${notEntry.length == 0 ? 'No Data' : 'Load Data'}")
-                            // const Text("Select Date to View Details",
-                            //         style: TextStyle(
-                            //             fontFamily: 'Nexa',
-                            //             fontSize: 20,
-                            //             color: Colors.black))
+                                    "${notEntry.length == 0 ? 'No Data' : 'Load Data'}",
+                                    style: TextStyle(
+                                        fontFamily: 'Nexa',
+                                        fontSize: 20,
+                                        color: Colors.black))
+                                // const Text("Select Date to View Details",
+                                //         style: TextStyle(
+                                //             fontFamily: 'Nexa',
+                                //             fontSize: 20,
+                                //             color: Colors.black))
                                 : ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: notEntry.length,
-                              itemBuilder: (BuildContext context, int ind) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    color: Color(0xffF7F9FC),
-                                    borderRadius: BorderRadius.circular(20),
+                                    scrollDirection: Axis.vertical,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: notEntry.length,
+                                    itemBuilder:
+                                        (BuildContext context, int ind) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          color: Color(0xffF7F9FC),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        margin: EdgeInsets.all(5),
+                                        padding: EdgeInsets.all(9),
+                                        // height: height*0.0,
+                                        width: width * 0.9,
+                                        child: Column(
+                                          children: [
+                                            notEntry != 0
+                                                ? Text("${notEntry[ind]}",
+                                                    style: TextStyle(
+                                                        fontFamily: 'Nexa',
+                                                        fontSize: 18,
+                                                        color: Colors.black))
+                                                : Text(
+                                                    "No Absents in This Date")
+                                          ],
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                        ),
+                                      );
+                                    },
                                   ),
-                                  margin: EdgeInsets.all(5),
-                                  padding: EdgeInsets.all(9),
-                                  // height: height*0.0,
-                                  width: width * 0.9,
-                                  child: Column(
-                                    children: [
-                                      notEntry != 0
-                                          ? Text("${notEntry[ind]}",
-                                          style: TextStyle(
-                                              fontFamily: 'Nexa',
-                                              fontSize: 18,
-                                              color: Colors.black))
-                                          : Text("No Absents in This Date")
-                                    ],
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.center,
-                                  ),
-                                );
-                              },
-                            ),
                           ],
                         ),
                       ),
@@ -345,7 +346,6 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
               ),
             ),
           ),
-
         ],
         //  Column(
         //   children: [
