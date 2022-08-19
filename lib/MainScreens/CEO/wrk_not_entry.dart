@@ -2,7 +2,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
+
+import '../Drawer.dart';
 
 class AbsentAndPresent extends StatefulWidget {
   const AbsentAndPresent({Key? key}) : super(key: key);
@@ -35,8 +36,7 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
       height: 500,
       theme: ThemeData(
         primaryColor: Colors.orangeAccent[400],
-        accentColor: Colors.orangeAccent,
-        disabledColor: Colors.teal,
+        disabledColor: Colors.teal, colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.orangeAccent),
       ),
     );
     if (newDate == null) return;
@@ -175,6 +175,9 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       key: _scaffoldKey,
+      drawer: Drawer(
+        child: NavigationDrawer(),
+      ),
       body: Stack(
         children: [
           Positioned(

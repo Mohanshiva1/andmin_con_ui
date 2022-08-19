@@ -4,7 +4,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
@@ -18,7 +17,7 @@ class AddNotes extends StatefulWidget {
 }
 
 class _AddNotesState extends State<AddNotes> {
-  final _auth = FirebaseDatabase.instance.reference().child("customer");
+  final _auth = FirebaseDatabase.instance.ref().child("customer");
   final user = FirebaseAuth.instance.currentUser;
 
   bool button1 = false;

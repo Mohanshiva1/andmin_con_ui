@@ -1,10 +1,8 @@
-import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
 class CreateLeeds extends StatefulWidget {
@@ -15,7 +13,7 @@ class CreateLeeds extends StatefulWidget {
 }
 
 class _CreateLeedsState extends State<CreateLeeds> {
-  final _auth = FirebaseDatabase.instance.reference().child("customer");
+  final _auth = FirebaseDatabase.instance.ref().child("customer");
   final user = FirebaseAuth.instance.currentUser;
 
   String? userEmail;
@@ -192,7 +190,7 @@ class _CreateLeedsState extends State<CreateLeeds> {
                   ),
                 ),
                 child: Stack(
-                  fit: StackFit.expand,
+                  // fit: StackFit.expand,
                   children: [
                     Positioned(
                         top: height * 0.0,
@@ -201,88 +199,95 @@ class _CreateLeedsState extends State<CreateLeeds> {
                         bottom: 0,
                         child: Image.asset('assets/outdoor.png',fit: BoxFit.fill,)),
                     Positioned(
-                      bottom: height * 0,
                       top: height * 0.04,
                       left: 0,
                       right: 0,
-                      child: SingleChildScrollView(
-                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                        reverse: true,
-                        child: Column (
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            buildListView("Name", name, TextInputType.name,
-                                'Enter the name'),
-                            buildListView("Phone", phone, TextInputType.number,
-                                'Enter the Phone Number'),
-                            buildListView("Location", loc, TextInputType.name,
-                                'Enter the Location'),
-                            buildListView("Enquiry For", enq,
-                                TextInputType.name, 'Enter the name'),
-                            buildListView("Email", email,
-                                TextInputType.emailAddress, 'Enter the Email'),
-                            buildListView("Data Fetched By", fetch,
-                                TextInputType.name, 'Enter Data Fetched By'),
-                            SizedBox(
-                              height: height * 0.09,
-                            ),
-                            GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    isPressed = !isPressed;
-                                    final isValid =
-                                        formKey.currentState?.validate();
-                                    if (isValid!) {
-                                      createLeads();
-                                    }
-                                    // print(formattedTime);
-                                    // print(formattedDate);
-                                  });
-                                },
-                                child: Listener(
-                                  onPointerUp: (_) => setState(() {
-                                    isPressed = true;
-                                  }),
-                                  onPointerDown: (_) => setState(() {
-                                    isPressed = true;
-                                  }),
-                                  child: AnimatedContainer(
-                                    margin: const EdgeInsets.only(top: 1),
-                                    width: width * 0.3,
-                                    height: height * 0.06,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(30),
-                                      color: const Color(0xffF7F9FC),
-                                      // Colors.white.withOpacity(0.3),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black26,
-                                          offset: distance,
-                                          blurRadius: blur,
-                                          inset: isPressed,
-                                        ),
-                                        BoxShadow(
-                                          color: Colors.white,
-                                          offset: -distance,
-                                          blurRadius: blur,
-                                          inset: isPressed,
-                                        ),
-                                      ],
-                                    ),
-                                    duration: Duration(milliseconds: 250),
-                                    child: const Center(
-                                      child: Text("Submit",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontFamily: "Nexa",
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w800)),
-                                    ),
-                                  ),
-                                )),
-                          ],
+                      // bottom: 0,
+                      child: SizedBox(
+                        height: height*0.45,
+                        // color: Colors.blue,
+                        child: SingleChildScrollView(
+                          child: Column (
+                            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              buildListView("Name", name, TextInputType.name,
+                                  'Enter the name'),
+                              buildListView("Phone", phone, TextInputType.number,
+                                  'Enter the Phone Number'),
+                              buildListView("Location", loc, TextInputType.name,
+                                  'Enter the Location'),
+                              buildListView("Enquiry For", enq,
+                                  TextInputType.name, 'Enter the name'),
+                              buildListView("Email", email,
+                                  TextInputType.emailAddress, 'Enter the Email'),
+                              buildListView("Data Fetched By", fetch,
+                                  TextInputType.name, 'Enter Data Fetched By'),
+                              SizedBox(
+                                height: height * 0.03,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
+                    ),
+                    Positioned(
+                      top: height*0.5,
+                      left: width*0.2,
+                      right: width*0.2,
+                      child:  GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isPressed = !isPressed;
+                              final isValid =
+                              formKey.currentState?.validate();
+                              if (isValid!) {
+                                createLeads();
+                              }
+                              // print(formattedTime);
+                              // print(formattedDate);
+                            });
+                          },
+                          child: Listener(
+                            onPointerUp: (_) => setState(() {
+                              isPressed = true;
+                            }),
+                            onPointerDown: (_) => setState(() {
+                              isPressed = true;
+                            }),
+                            child: AnimatedContainer(
+                              margin: const EdgeInsets.only(top: 1),
+                              width: width * 0.3,
+                              height: height * 0.06,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                color: const Color(0xffF7F9FC),
+                                // Colors.white.withOpacity(0.3),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    offset: distance,
+                                    blurRadius: blur,
+                                    inset: isPressed,
+                                  ),
+                                  BoxShadow(
+                                    color: Colors.white,
+                                    offset: -distance,
+                                    blurRadius: blur,
+                                    inset: isPressed,
+                                  ),
+                                ],
+                              ),
+                              duration: Duration(milliseconds: 250),
+                              child: const Center(
+                                child: Text("Submit",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: "Nexa",
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800)),
+                              ),
+                            ),
+                          )),
                     ),
                   ],
                 ),

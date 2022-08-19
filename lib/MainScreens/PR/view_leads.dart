@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+
+import '../Drawer.dart';
 
 class ViewLeads extends StatefulWidget {
   const ViewLeads({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class ViewLeads extends StatefulWidget {
 
 class _ViewLeadsState extends State<ViewLeads> {
 
-  final customer = FirebaseDatabase.instance.reference().child("customer");
+  final customer = FirebaseDatabase.instance.ref().child("customer");
   final user = FirebaseAuth.instance.currentUser;
   List name = [];
   List number = [];
@@ -30,34 +31,35 @@ class _ViewLeadsState extends State<ViewLeads> {
     customer.once().then((value) {
       for(var lead in value.snapshot.children){
         fbData = lead.value;
-        print(fbData);
+        // print(fbData);
         setState(() {
           number.add(fbData['phone_number']);
-          print('step 1');
+          // print('step 1');
           name.add(fbData['name']);
-          print('step 2');
+          // print('step 2');
           location.add(fbData['city']);
-          print('step 3');
+          // print('step 3');
           state.add(fbData['customer_state']);
-          print('step 4');
+          // print('step 4');
           createdDate.add(fbData['created_date']);
-          print('step 5');
+          // print('step 5');
           rating.add(fbData['rating']);
-          print('step 6');
+          // print('step 6');
           enquiry.add(fbData['inquired_for']);
-          print('step 7');
+          // print('step 7');
           email.add(fbData['email_id']);
-          print('step 8');
+          // print('step 8');
           fetched.add(fbData['data_fetched_by']);
-          print('step 9');
+          // print('step 9');
         });
       }
     });
   }
+
   @override
   void initState() {
-    // TODO: implement initState
     details();
+    super.initState();
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -68,7 +70,12 @@ class _ViewLeadsState extends State<ViewLeads> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color(0xffF7F9FC),
+      key: _scaffoldKey,
+      drawer: Drawer(
+        child: NavigationDrawer(),
+      ),
       body: Stack(
+
         children: [
           Positioned(
             top: 0,
@@ -129,13 +136,11 @@ class _ViewLeadsState extends State<ViewLeads> {
                             fontSize: height*0.02,
                             color: Color(0xffffffff),
                             fontFamily: "Nexa",
-                            fontWeight: FontWeight.w900),
+                            fontWeight: FontWeight.w900,
+                        ),
                       ),
                     ),
                   ),
-
-
-
                 ],
               ),
             ),
@@ -163,7 +168,7 @@ class _ViewLeadsState extends State<ViewLeads> {
               child:
               number.isEmpty
                   ? Lottie.asset(
-                "assets/81778-loading.json",
+                "assets/loading_2.json",
                 repeat: true,)
                   : GridView.builder (
                 shrinkWrap: true,
@@ -196,7 +201,8 @@ class _ViewLeadsState extends State<ViewLeads> {
                             ? Colors.red
                             : state[index] == "Rejected from Customer end"
                             ? Colors.red
-                            : Color(0xffF7F9FC),),
+                            : Color(0xffF7F9FC),
+                        ),
                         Divider(
                           endIndent: width*0.09,
                           indent: width*0.09,
@@ -221,7 +227,7 @@ class _ViewLeadsState extends State<ViewLeads> {
 
   Widget leadDetails(String title, String address, color) {
     final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    // final width = MediaQuery.of(context).size.width;
     return SizedBox(
       height: height * 0.04,
       child: ListTile(
@@ -234,7 +240,7 @@ class _ViewLeadsState extends State<ViewLeads> {
         trailing: SingleChildScrollView(
           child: Text(address,
               style: TextStyle(
-                  fontFamily: 'Avenir', fontSize: height*0.013, color: color,fontWeight: FontWeight.w600)),
+                  fontFamily: 'Avenir', fontSize: height*0.013, color: color, fontWeight: FontWeight.w600)),
         ),
       ),
     );

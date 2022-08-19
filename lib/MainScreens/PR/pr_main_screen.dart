@@ -1,8 +1,8 @@
 // import 'dart:ui';
 //
 // import 'package:andmin_con_ui/MainScreens/PR/create_leed.dart';
-// import 'package:andmin_con_ui/MainScreens/PR/serarch_leads.dart';
-// import 'package:andmin_con_ui/MainScreens/PR/view_leed.dart';
+// import 'package:andmin_con_ui/MainScreens/PR/search_leads.dart';
+// import 'package:andmin_con_ui/MainScreens/PR/view_leads.dart';
 // import 'package:andmin_con_ui/main.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_database/firebase_database.dart';

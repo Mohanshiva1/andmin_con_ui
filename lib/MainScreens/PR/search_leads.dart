@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter/services.dart';
-import 'package:lottie/lottie.dart';
 
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
@@ -16,7 +15,7 @@ class SearchLeads extends StatefulWidget {
 }
 
 class _SearchLeadsState extends State<SearchLeads> {
-  final _auth = FirebaseDatabase.instance.reference().child("customer");
+  final _auth = FirebaseDatabase.instance.ref().child("customer");
   final user = FirebaseAuth.instance.currentUser;
 
   final formKey = GlobalKey<FormState>();
@@ -598,7 +597,7 @@ class _SearchLeadsState extends State<SearchLeads> {
 
   leadDetails(String title, String address, color) {
     final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    // final width = MediaQuery.of(context).size.width;
     return SizedBox(
       height: height * 0.04,
       child: ListTile(

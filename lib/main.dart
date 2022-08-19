@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
       locale: Locale('en', 'US'),
       supportedLocales: [
         const Locale('en', 'US'), // English
-        const Locale('th', 'TH'), // Thai
+        // const Locale('th', 'TH'), // Thai
       ],
 
       home: SplashScreen(),
@@ -152,7 +152,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     setState(() {
       // _checkVersion();
-
       CurrerntUser = user?.email;
       loadData();
     });
@@ -189,7 +188,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Lottie.asset(
-                "assets/81778-loading.json",
+                "assets/loading_2.json",
               ),
             ],
           ),

@@ -2,7 +2,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
+
+import '../Drawer.dart';
 
 class ViewWrkDone extends StatefulWidget {
   const ViewWrkDone({Key? key}) : super(key: key);
@@ -19,6 +21,8 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
   var formatterMonth = DateFormat('MM');
   var formatterYear = DateFormat('yyyy');
 
+
+  double percent = 0;
   String? selectedDate;
   String? selectedMonth;
   String? selectedYear;
@@ -49,8 +53,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
       height: 500,
       theme: ThemeData(
         primaryColor: Colors.orangeAccent[400],
-        accentColor: Colors.orangeAccent,
-        disabledColor: Colors.teal,
+        disabledColor: Colors.teal, colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.orangeAccent),
       ),
 
 
@@ -109,8 +112,8 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                             // if(element6.key == 'totalWorkingTime'){
                             //   // for(var element7 in element6.children){
                             //   //   setState(() {
-                            //   //     daytotalWork.add(element7.value);
-                            // //   //     print(daytotalWork);
+                            //   //     dayTotalWork.add(element7.value);
+                            // //   //     print(dayTotalWork);
                             //   //   });
                             //   // }
                             // }
@@ -188,6 +191,9 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       key: _scaffoldKey,
+      drawer: Drawer(
+        child: NavigationDrawer(),
+      ),
       body: Stack(
         children: [
           Positioned(
@@ -307,10 +313,11 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                         children: [
 
                           nameData.length == 0
-                              ? Text("${nameData == 0 ? 'NO DATA' : 'Loading'}",style: TextStyle(
+                              ? Text("${nameData.length == 0 ? 'NO DATA' : 'Loading'}",style: TextStyle(
                                     fontFamily: 'Nexa',
                                     fontSize: 20,
-                                    color: Colors.black))
+                                    color: Colors.black),
+                          )
                           // const Text("",
                           //         style: TextStyle(
                           //             fontFamily: 'Nexa',
@@ -459,11 +466,13 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                                       '${allData[ind]['workPercentage']}'),
                                 ],
                               ),
-                              Divider(
-                                endIndent: 5,
-                                indent: 5,
-                                thickness: 2,
-                                color: Colors.black,
+                              LinearPercentIndicator(
+                                animation: true,
+                                animationDuration: 1000,
+                                lineHeight: height*0.005,
+                                percent: percent = double.parse(allData[ind]['workPercentage'].replaceAll(RegExp(r'.$'), ""))/100,
+                                backgroundColor: Colors.black12,
+                                progressColor: Colors.blue,
                               ),
                               Text(
                                 '${allData[ind]['workDone']}',

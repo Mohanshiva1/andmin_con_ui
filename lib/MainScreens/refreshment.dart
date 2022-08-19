@@ -13,12 +13,12 @@ class Refreshment extends StatefulWidget {
 }
 
 class _RefreshmentState extends State<Refreshment> {
-  final staff = FirebaseDatabase.instance.reference().child("staff");
+  final staff = FirebaseDatabase.instance.ref().child("staff");
   final user = FirebaseAuth.instance.currentUser;
   final refreshments =
-      FirebaseDatabase.instance.reference().child('refreshments');
+      FirebaseDatabase.instance.ref().child('refreshments');
 
-  String? CurrerntUser;
+  String? NowUser;
   var formattedTime;
   var formattedDate;
   var formattedMonth;
@@ -32,17 +32,17 @@ class _RefreshmentState extends State<Refreshment> {
   readName() {
     staff.once().then((value) {
       for (var element in value.snapshot.children) {
-        // print(element.value);
+        // // print(element.value);
         fbData = element.value;
         // setState(() {
         //   userEmail.add(fbData['email']);
-        //   // print(user?.email);
+        // //   // print(user?.email);
         // });
         if (user?.email == fbData['email']) {
           setState(() {
             fbData.toString();
             staffName = fbData['name'];
-            // print(staffName);
+            // // print(staffName);
           });
         }
       }
@@ -60,22 +60,22 @@ class _RefreshmentState extends State<Refreshment> {
     formattedMonth = formatterMonth.format(now);
 
     var s = formattedTime.toString().substring(6, 8);
-    print(s);
+    // print(s);
     if (s == 'AM') {
       setState(() {
         timeZone = 'FN';
       });
 
-      // print(timeZone);
+      // // print(timeZone);
     } else {
       setState(() {
         timeZone = 'AN';
       });
 
-      // print(timeZone);
+      // // print(timeZone);
     }
-    print(timeZone);
-    print(formattedTime);
+    // print(timeZone);
+    // print(formattedTime);
   }
 
   var teaCount;
@@ -85,31 +85,30 @@ class _RefreshmentState extends State<Refreshment> {
 
   loadTea() {
     listOfTea.clear();
-    print(listOfTea);
+    // print(listOfTea);
     refreshments.once().then((value) {
       for (var e1 in value.snapshot.children) {
-        // print(e1.key);
+        // // print(e1.key);
         if (e1.key == formattedDate) {
           for (var e2 in e1.children) {
-            print('sdsdsssdsdsd');
-            print(timeZone);
+            // print(timeZone);
             if (timeZone == "FN") {
-              print(timeZone);
+              // print(timeZone);
               if (e2.key == 'FN') {
-                print(e2.value);
+                // print(e2.value);
                 for (var e3 in e2.children) {
                   if (e3.key == 'tea') {
-                    print(e3.value);
+                    // print(e3.value);
                     for(var e4 in e3.children){
-                      // print(e4.value);
+                      // // print(e4.value);
                       var t = e4.value;
-                      print(t);
+                      // print(t);
                       setState(() {
                         listOfTea.add(t);
-                        print(listOfTea.length);
+                        // print(listOfTea.length);
                         teaList = listOfTea.length;
-                        // print("teaList");
-                        // print("load  ${teaList}");
+                        // // print("teaList");
+                        // // print("load  ${teaList}");
                       });
                     }
 
@@ -118,20 +117,20 @@ class _RefreshmentState extends State<Refreshment> {
               }
             } else {
               if (e2.key == 'AN') {
-                // print(e2.value);
+                // // print(e2.value);
                 for (var e3 in e2.children) {
                   if (e3.key == 'tea') {
-                    // print(e3.value);
+                    // // print(e3.value);
                     for(var e4 in e3.children){
-                      // print(e4.value);
+                      // // print(e4.value);
                       var t = e4.value;
-                      // print(t);
+                      // // print(t);
                       setState(() {
                         listOfTea.add(t);
-                        // print(listOfTea.length);
+                        // // print(listOfTea.length);
                         teaList = listOfTea.length;
-                        print("teaList");
-                        // print("load  ${teaList}");
+                        // print("teaList");
+                        // // print("load  ${teaList}");
                       });
                     }
 
@@ -144,7 +143,7 @@ class _RefreshmentState extends State<Refreshment> {
       }
     }).then((value){
       setState(() {
-        print('dfdsddssf');
+
         teaList == null
             ? teaList = 1
             : teaList++;
@@ -155,7 +154,7 @@ class _RefreshmentState extends State<Refreshment> {
   }
 
   drinkCountTeaDetails() {
-    print(' drink count${teaList}');
+    // print(' drink count${teaList}');
     refreshments
         .child('${formattedDate.toString().trim()}/${timeZone}/tea')
         .update({
@@ -186,27 +185,27 @@ class _RefreshmentState extends State<Refreshment> {
 
   loadCoffee() {
     listOfCoffee.clear();
-    // print(listOfCoffee);
+    // // print(listOfCoffee);
     refreshments.once().then((value) {
       for (var e1 in value.snapshot.children) {
-        // print(e1.key);
+        // // print(e1.key);
         if (e1.key == formattedDate) {
           for (var e2 in e1.children) {
             if (timeZone == "FN") {
               if (e2.key == 'FN') {
-                // print(e2.value);
+                // // print(e2.value);
                 for (var e3 in e2.children) {
                   if (e3.key == 'coffee') {
-                    // print(e3.value);
+                    // // print(e3.value);
                     for(var e4 in e3.children){
-                      // print(e4.value);
+                      // // print(e4.value);
                       var c = e4.value;
-                      // print(t);
+                      // // print(t);
                       setState(() {
                         listOfCoffee.add(c);
-                        // print(listOfTea.length);
+                        // // print(listOfTea.length);
                         coffeeList = listOfCoffee.length;
-                        // print("load  ${teaList}");
+                        // // print("load  ${teaList}");
                       });
                     }
 
@@ -215,20 +214,20 @@ class _RefreshmentState extends State<Refreshment> {
               }
             } else {
               if (e2.key == 'AN') {
-                // print(e2.value);
+                // // print(e2.value);
                 for (var e3 in e2.children) {
                   if (e3.key == 'coffee') {
-                    // print(e3.value);
+                    // // print(e3.value);
                     for(var e4 in e3.children){
-                      // print(e4.value);
+                      // // print(e4.value);
                       var t = e4.value;
-                      // print(t);
+                      // // print(t);
                       setState(() {
                         listOfCoffee.add(t);
-                        // print(listOfTea.length);
+                        // // print(listOfTea.length);
                         coffeeList = listOfCoffee.length;
 
-                        // print("load  ${teaList}");
+                        // // print("load  ${teaList}");
                       });
                     }
 
@@ -279,25 +278,25 @@ class _RefreshmentState extends State<Refreshment> {
 
   loadNothing() {
     listOfNothing.clear();
-    print(listOfNothing);
+    // print(listOfNothing);
     refreshments.once().then((value) {
       for (var e1 in value.snapshot.children) {
-        // print(e1.key);
+        // // print(e1.key);
         if (e1.key == formattedDate) {
           for (var e2 in e1.children) {
             if (timeZone == "FN") {
               if (e2.key == 'FN') {
-                // print(e2.value);
+                // // print(e2.value);
                 for (var e3 in e2.children) {
                   if (e3.key == 'nothing') {
-                    // print(e3.value);
+                    // // print(e3.value);
                     for(var e4 in e3.children){
-                      // print(e4.value);
+                      // // print(e4.value);
                       var t = e4.value;
-                      // print(t);
+                      // // print(t);
                       setState(() {
                         listOfNothing.add(t);
-                        // print(listOfTea.length);
+                        // // print(listOfTea.length);
                         nothingList = listOfNothing.length;
                       });
                     }
@@ -307,14 +306,14 @@ class _RefreshmentState extends State<Refreshment> {
               }
             } else {
               if (e2.key == 'AN') {
-                // print(e2.value);
+                // // print(e2.value);
                 for (var e3 in e2.children) {
                   if (e3.key == 'nothing') {
-                    // print(e3.value);
+                    // // print(e3.value);
                     for(var e4 in e3.children){
-                      // print(e4.value);
+                      // // print(e4.value);
                       var n = e4.value;
-                      // print(t);
+                      // // print(t);
                       setState(() {
                         listOfNothing.add(n);
                         nothingList = listOfNothing.length;
@@ -334,7 +333,7 @@ class _RefreshmentState extends State<Refreshment> {
         nothingList == null
             ? nothingList = 1
             : nothingList++;
-        // print("${nothingList}////////////////////////");
+        // // print("${nothingList}////////////////////////");
         drinkCountNothing();
       });
     });
@@ -369,7 +368,7 @@ class _RefreshmentState extends State<Refreshment> {
   void initState() {
     todayDate();
     readName();
-    CurrerntUser = user?.email;
+    NowUser = user?.email;
 
     // loadCoffee();
     // loadTea();
@@ -489,11 +488,11 @@ class _RefreshmentState extends State<Refreshment> {
                           setState(() {
 
                             loadTea();
-                            // print(".....................${teaList.runtimeType}");
+                            // // print(".....................${teaList.runtimeType}");
                             // teaList == null
                             //     ? teaList = 1
                             //     : teaList++;
-                            // print("${teaList}////////////////////////");
+                            // // print("${teaList}////////////////////////");
                             // drinkCountTeaDetails();
                           });
                         },
@@ -551,11 +550,11 @@ class _RefreshmentState extends State<Refreshment> {
                         onTap: () {
                           setState(() {
                             loadCoffee();
-                            // print(".....................${coffeeList.runtimeType}");
+                            // // print(".....................${coffeeList.runtimeType}");
                             // coffeeList == null
                             //     ? coffeeList = 1
                             //     : coffeeList++;
-                            // // print("${coffeeList}////////////////////////");
+                            // // // print("${coffeeList}////////////////////////");
                             // drinkCountCoffee();
                           });
                         },
@@ -613,11 +612,11 @@ class _RefreshmentState extends State<Refreshment> {
                         onTap: () {
                           setState(() {
                             loadNothing();
-                            // print(".....................${nothingList.runtimeType}");
+                            // // print(".....................${nothingList.runtimeType}");
                             // nothingList == null
                             //     ? nothingList = 1
                             //     : nothingList++;
-                            // // print("${nothingList}////////////////////////");
+                            // // // print("${nothingList}////////////////////////");
                             // drinkCountNothing();
                           });
                         },

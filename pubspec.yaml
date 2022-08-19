@@ -54,6 +54,8 @@ dependencies:
   new_version:
   internet_connection_checker:
   connectivity_plus: ^2.3.5
+  percent_indicator: ^3.4.0
+
 
 
 

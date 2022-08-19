@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
               title: Text("Error"),
               content: Text("Wrong Email or Password"),
               actions: [
-                FlatButton(
+                TextButton(
                   child: Text("Ok"),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -273,6 +273,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     if (value!.isEmpty) {
                                       return ('Password required');
                                     }
+                                    return null;
                                   },
                                   onSaved: (value) {
                                     password.text = value!;
