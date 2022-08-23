@@ -1,6 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -44,19 +43,11 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
     selectedMonth = formatterDate.format(now);
     selectedYear = formatterDate.format(now);
 
-    DateTime? newDate = await showRoundedDatePicker(
+    DateTime? newDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2015),
       lastDate: DateTime(2050),
-      borderRadius: 30,
-      height: 500,
-      theme: ThemeData(
-        primaryColor: Colors.orangeAccent[400],
-        disabledColor: Colors.teal, colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.orangeAccent),
-      ),
-
-
     );
       if (newDate == null) return;
     setState(() {

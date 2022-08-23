@@ -9,9 +9,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lottie/lottie.dart';
-import 'package:new_version/new_version.dart';
 
 // 2.0.0+9 older
 
@@ -32,20 +30,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
-
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        DefaultCupertinoLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      locale: Locale('en', 'US'),
-      supportedLocales: [
-        const Locale('en', 'US'), // English
-        // const Locale('th', 'TH'), // Thai
-      ],
 
       home: SplashScreen(),
     );

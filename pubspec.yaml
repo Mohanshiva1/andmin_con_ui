@@ -55,14 +55,8 @@ dependencies:
   internet_connection_checker:
   connectivity_plus: ^2.3.5
   percent_indicator: ^3.4.0
-
-
-
-
-  flutter_rounded_date_picker:
-  flutter_localizations:
-    sdk: flutter
-
+  provider:
+  simple_gradient_text:
 
 
 dev_dependencies:
