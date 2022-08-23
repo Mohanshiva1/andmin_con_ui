@@ -108,16 +108,15 @@ class _SearchLeadsState extends State<SearchLeads> {
                 child: Stack(
                   children: [
                     Positioned(
-                        top: height * 0.03,
+                        top: height * 0.01,
                         right: width*0.01,
                         // left: width*0.3,
-                        child: Image.asset('assets/searching-error.png',scale: 10.0,)
+                        child: Image.asset('assets/searching-error.png',scale: 14.0,)
                     ),
                     Positioned(
-                      top: 30,
-                      left: 20,
+                      top: height*0.03,
+                      left: width*0.0,
                       // right: 30,
-
                       child: IconButton(
                         color: Colors.orange.shade800,
                         onPressed: () {
@@ -130,14 +129,14 @@ class _SearchLeadsState extends State<SearchLeads> {
                       ),
                     ),
                     Positioned(
-                      top: height * 0.13,
+                      top: height * 0.12,
                       // right: 0,
                       left: width*0.04,
                       child: Center(
                         child: Text(
                           'Search Leads . . .',
                           style: TextStyle(
-                              fontSize: height*0.02,
+                              fontSize: height*0.03,
                               color: Color(0xffffffff),
                               fontFamily: "Nexa",
                               fontWeight: FontWeight.w900),
@@ -145,7 +144,7 @@ class _SearchLeadsState extends State<SearchLeads> {
                       ),
                     ),
                     Positioned(
-                      top: 300,
+                      top: height*0.25,
                       left: 0,
                       right: 0,
                       bottom: 0,
@@ -173,7 +172,7 @@ class _SearchLeadsState extends State<SearchLeads> {
                                       color: Colors.black,
                                       fontFamily: 'Nexa',
                                       fontWeight: FontWeight.bold,
-                                      fontSize: height * 0.015),
+                                      fontSize: height * 0.03),
                                 )
                                     : buildGridView(width, height),
                               ],
@@ -184,8 +183,7 @@ class _SearchLeadsState extends State<SearchLeads> {
                                 left: width*0.05,
                                 right: width*0.05,
                                 child: Container(
-                                  height: height * 0.11,
-
+                                  height: height * 0.15,
                                   decoration: BoxDecoration(
                                     color: Color(0xffFFFFF),
                                     borderRadius: BorderRadius.only(
@@ -230,7 +228,7 @@ class _SearchLeadsState extends State<SearchLeads> {
                                                 contentPadding: const EdgeInsets.all(20),
                                                 hintText: 'Entre Number',
                                                 filled: true,
-                                                fillColor:  Color(0xffFBF8FF),
+                                                fillColor:  Color(0xffF7F9FC),
                                                 border: OutlineInputBorder(
                                                   borderRadius: BorderRadius.circular(40),
                                                   borderSide: BorderSide.none,
@@ -300,7 +298,7 @@ class _SearchLeadsState extends State<SearchLeads> {
                                                       style: TextStyle(
                                                           fontWeight: FontWeight.w500,
                                                           fontFamily: "Nexa",
-                                                          fontSize: height * 0.013,
+                                                          fontSize: height * 0.02,
                                                           color: Colors.black),
                                                     ),
                                                   ],
@@ -506,34 +504,10 @@ class _SearchLeadsState extends State<SearchLeads> {
               });
             },
             child: Container(
-              height: height*0.4,
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.symmetric(horizontal: width * 0.05),
-              // decoration: BoxDecoration(
-              //     color: Color(0xffF7F9FC),
-              //     // status[index] == "Following Up"
-              //     //     ? Colors.green
-              //     //     : status[index] == "Delayed"
-              //     //         ? Colors.orange
-              //     //         : status[index] == "Rejected from management side"
-              //     //             ? Colors.red
-              //     //             : status[index] == "Rejected from Customer end"
-              //     //                 ? Colors.red
-              //     //                 : Color(0xffF7F9FC),
-              //     // Colors.white.withOpacity(0.3),
-              //     boxShadow: [
-              //       BoxShadow(
-              //         color: Colors.black26,
-              //         offset: Offset(9.0, 9.0),
-              //         blurRadius: 9,
-              //       ),
-              //       BoxShadow(
-              //         color: Colors.white,
-              //         offset: Offset(-10.0, -10.0),
-              //         blurRadius: 10,
-              //       ),
-              //     ],
-              //     borderRadius: BorderRadius.circular(15)),
+              height: height*0.5,
+              // padding: EdgeInsets.all(10),
+              margin: EdgeInsets.symmetric(horizontal: width * 0.02),
+
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -554,8 +528,8 @@ class _SearchLeadsState extends State<SearchLeads> {
                 ),
                 gradient: LinearGradient(
                     colors: [
-                      Color(0xffEFA41C),
-                      Color(0xffD52A29),
+                      Color(0xff1A2980),
+                      Color(0xff26D0CE),
                     ],
                     begin: FractionalOffset.topLeft,
                     end: FractionalOffset.bottomRight,
@@ -604,7 +578,7 @@ class _SearchLeadsState extends State<SearchLeads> {
         title: Text(title,
             style: TextStyle(
                 fontFamily: 'Avenir',
-                fontSize: height * 0.013,
+                fontSize: height * 0.02,
                 color: Colors.black,
                 fontWeight: FontWeight.w800)),
         trailing: SizedBox(
@@ -614,7 +588,7 @@ class _SearchLeadsState extends State<SearchLeads> {
             child: Text(address,
                 style: TextStyle(
                     fontFamily: 'Avenir',
-                    fontSize: height * 0.013,
+                    fontSize: height * 0.02,
                     color: color,
                     fontWeight: FontWeight.w600)),
           ),

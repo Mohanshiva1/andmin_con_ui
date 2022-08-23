@@ -124,6 +124,7 @@ class _TeamMainPageState extends State<TeamMainPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
@@ -138,37 +139,39 @@ class _TeamMainPageState extends State<TeamMainPage> {
             bottom: 0,
             child: Container(
               width: double.infinity,
-              height: 600,
+              height: height * 0.0,
               decoration: BoxDecoration(
                 // color: Colors.orange.shade400,
                 gradient: LinearGradient(
                   colors: [
-                    Color(0xff21409D),
-                    Color(0xff050851),
+                    Color(0xff1A2980),
+                    Color(0xff26D0CE),
+                    // Color(0xff21409D),
+                    // Color(0xff050851),
                   ],
-                  stops: [
-                    0.0,
-                    11.0,
-                  ],
-                  begin: FractionalOffset.topLeft,
-                  end: FractionalOffset.bottomRight,
-                  tileMode: TileMode.repeated,
+                  // stops: [
+                  //   0.0,
+                  //   11.0,
+                  // ],
+                  begin: FractionalOffset.centerLeft,
+                  end: FractionalOffset.centerRight,
+                  // tileMode: TileMode.repeated,
                 ),
               ),
               child: Stack(
                 children: [
                   Positioned(
-                    top: height * 0.06,
+                    top: height * 0.05,
                     right: width * 0.0,
                     // left: width*0.3,
                     child: Image.asset(
                       'assets/business-team-doing-creative-brainstorming.png',
-                      scale: 10.0,
+                      scale: 13.0,
                     ),
                   ),
                   Positioned(
-                    top: 30,
-                    left: 20,
+                    top: height * 0.03,
+                    left: width * 0.0,
                     // right: 30,
                     child: IconButton(
                       color: Colors.orange.shade800,
@@ -189,8 +192,8 @@ class _TeamMainPageState extends State<TeamMainPage> {
                       child: Text(
                         'Hi...  \n${userName}',
                         style: TextStyle(
-                          fontSize: height * 0.02,
-                          color: Color(0xffffffff),
+                          fontSize: height * 0.03,
+                          color: Color(0xffffffff).withOpacity(1.0),
                           fontFamily: "Nexa",
                           fontWeight: FontWeight.w900,
                         ),
@@ -209,6 +212,7 @@ class _TeamMainPageState extends State<TeamMainPage> {
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
+                // color: Colors.black.withOpacity(0.9),
                 color: Color(0xffF7F9FC),
                 image: DecorationImage(
                   alignment: Alignment.bottomCenter,
@@ -222,86 +226,86 @@ class _TeamMainPageState extends State<TeamMainPage> {
                   topLeft: Radius.circular(30),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      dep == 'PR'
-                          ? GridView(
-                              physics: const NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    dep == 'PR'
+                        ? GridView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                            ),
+                            children: [
+                              //...........REFRESHMENT....................
+                              Container(
+                                child: Buttons(
+                                  "Refreshment",
+                                  const Refreshment(),
+                                  Icon(
+                                    Icons.refresh,
+                                    size: height * 0.05,
+                                    color: Colors.amber,
+                                  ),
+                                ),
                               ),
-                              children: [
-                                //...........REFRESHMENT....................
-                                Container(
-                                  child: Buttons(
-                                    "Refreshment",
-                                    const Refreshment(),
-                                    Icon(
-                                      Icons.refresh,
-                                      size: height * 0.05,
-                                      color: Colors.amber,
-                                    ),
+                              //...........VIEW LEADS....................
+                              Container(
+                                child: Buttons(
+                                  "View Leads",
+                                  const ViewLeads(),
+                                  Icon(
+                                    Icons.view_day,
+                                    size: height * 0.05,
+                                    color: Colors.amber,
                                   ),
                                 ),
-                                //...........VIEW LEADS....................
-                                Container(
-                                  child: Buttons(
-                                    "View Leads",
-                                    const ViewLeads(),
-                                    Icon(
-                                      Icons.view_day,
-                                      size: height * 0.05,
-                                      color: Colors.amber,
-                                    ),
+                              ),
+                              //...........INVOICE....................
+                              Container(
+                                child: Buttons(
+                                  "Create invoice",
+                                  const Invoice(),
+                                  Icon(
+                                    Icons.price_change_rounded,
+                                    size: height * 0.05,
+                                    color: Colors.amber,
                                   ),
                                 ),
-                                //...........INVOICE....................
-                                Container(
-                                  child: Buttons(
-                                    "Create invoice",
-                                    const Invoice(),
-                                    Icon(
-                                      Icons.price_change_rounded,
-                                      size: height * 0.05,
-                                      color: Colors.amber,
-                                    ),
+                              ),
+                              //...........WORK MANAGER....................
+                              Container(
+                                child: Buttons(
+                                  "Work Manager",
+                                  WorkEntry(),
+                                  Icon(
+                                    Icons.work_outline_rounded,
+                                    size: height * 0.05,
+                                    color: Colors.amber,
                                   ),
                                 ),
-                                //...........WORK MANAGER....................
-                                Container(
-                                  child: Buttons(
-                                    "Work Manager",
-                                    WorkEntry(),
-                                    Icon(
-                                      Icons.work_outline_rounded,
-                                      size: height * 0.05,
-                                      color: Colors.amber,
-                                    ),
+                              ),
+                              //...........SEARCH LEADS....................
+                              Container(
+                                child: Buttons(
+                                  "Search Leads",
+                                  SearchLeads(),
+                                  Icon(
+                                    Icons.view_day,
+                                    size: height * 0.05,
+                                    color: Colors.amber,
                                   ),
                                 ),
-                                //...........SEARCH LEADS....................
-                                Container(
-                                  child: Buttons(
-                                    "Search Leads",
-                                    SearchLeads(),
-                                    Icon(
-                                      Icons.view_day,
-                                      size: height * 0.05,
-                                      color: Colors.amber,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : dep == 'ADMIN'
-                              ? GridView(
+                              ),
+                            ],
+                          )
+                        : dep == 'ADMIN'
+                            ? Container(
+                                height: height * 0.8,
+                                child: GridView(
                                   physics: const NeverScrollableScrollPhysics(),
                                   scrollDirection: Axis.vertical,
                                   shrinkWrap: true,
@@ -379,172 +383,169 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                     //       )),
                                     // ),
                                   ],
-                                )
-                              : dep == 'APP'
-                                  ? GridView(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        // childAspectRatio: 3 / 2,
-                                        // crossAxisSpacing: 20,
-                                        // mainAxisSpacing: 20,
+                                ),
+                              )
+                            : dep == 'APP'
+                                ? GridView(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      // childAspectRatio: 3 / 2,
+                                      // crossAxisSpacing: 20,
+                                      // mainAxisSpacing: 20,
+                                    ),
+                                    children: [
+                                      //...........REFRESHMENT....................
+                                      Container(
+                                        child: Buttons(
+                                          "Refreshment",
+                                          const Refreshment(),
+                                          Icon(
+                                            Icons.refresh,
+                                            size: height * 0.05,
+                                            color: Colors.amber,
+                                          ),
+                                        ),
                                       ),
-                                      children: [
-
-                                        //...........REFRESHMENT....................
-                                        Container(
-                                          child: Buttons(
-                                            "Refreshment",
-                                            const Refreshment(),
-                                            Icon(
-                                              Icons.refresh,
-                                              size: height * 0.05,
-                                              color: Colors.amber,
-                                            ),
+                                      //...........WORK MANAGER....................
+                                      Container(
+                                        child: Buttons(
+                                          "Work Manager",
+                                          WorkEntry(),
+                                          Icon(
+                                            Icons.work_outline_rounded,
+                                            size: height * 0.05,
+                                            color: Colors.amber,
                                           ),
                                         ),
-                                        //...........WORK MANAGER....................
-                                        Container(
-                                          child: Buttons(
-                                            "Work Manager",
-                                            WorkEntry(),
-                                            Icon(
-                                              Icons.work_outline_rounded,
-                                              size: height * 0.05,
-                                              color: Colors.amber,
-                                            ),
-                                          ),
+                                      ),
+                                    ],
+                                  )
+                                : dep == 'WEB'
+                                    ? GridView(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          // childAspectRatio: 3 / 2,
+                                          // crossAxisSpacing: 20,
+                                          // mainAxisSpacing: 20,
                                         ),
-                                      ],
-                                    )
-                                  : dep == 'WEB'
-                                      ? GridView(
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          scrollDirection: Axis.vertical,
-                                          shrinkWrap: true,
-                                          gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 2,
-                                            // childAspectRatio: 3 / 2,
-                                            // crossAxisSpacing: 20,
-                                            // mainAxisSpacing: 20,
+                                        children: [
+                                          Container(
+                                            child: Buttons(
+                                              "Refreshment",
+                                              const Refreshment(),
+                                              Icon(
+                                                Icons.refresh,
+                                                size: height * 0.05,
+                                                color: Colors.amber,
+                                              ),
+                                            ),
                                           ),
-                                          children: [
-                                            Container(
-                                              child: Buttons(
-                                                "Refreshment",
-                                                const Refreshment(),
-                                                Icon(
-                                                  Icons.refresh,
-                                                  size: height * 0.05,
-                                                  color: Colors.amber,
-                                                ),
+                                          //...........WORK MANAGER....................
+                                          Container(
+                                            child: Buttons(
+                                              "Work Manager",
+                                              WorkEntry(),
+                                              Icon(
+                                                Icons.work_outline_rounded,
+                                                size: height * 0.05,
+                                                color: Colors.amber,
                                               ),
                                             ),
-                                            //...........WORK MANAGER....................
-                                            Container(
-                                              child: Buttons(
-                                                "Work Manager",
-                                                WorkEntry(),
-                                                Icon(
-                                                  Icons.work_outline_rounded,
-                                                  size: height * 0.05,
-                                                  color: Colors.amber,
-                                                ),
-                                              ),
+                                          ),
+                                        ],
+                                      )
+                                    : dep == 'RND'
+                                        ? GridView(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            scrollDirection: Axis.vertical,
+                                            shrinkWrap: true,
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              // childAspectRatio: 3 / 2,
+                                              // crossAxisSpacing: 20,
+                                              // mainAxisSpacing: 20,
                                             ),
-                                          ],
-                                        )
-                                      : dep == 'RND'
-                                          ? GridView(
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
-                                              scrollDirection: Axis.vertical,
-                                              shrinkWrap: true,
-                                              gridDelegate:
-                                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 2,
-                                                // childAspectRatio: 3 / 2,
-                                                // crossAxisSpacing: 20,
-                                                // mainAxisSpacing: 20,
+                                            children: [
+                                              Container(
+                                                child: Buttons(
+                                                  "Refreshment",
+                                                  const Refreshment(),
+                                                  Icon(
+                                                    Icons.refresh,
+                                                    size: height * 0.05,
+                                                    color: Colors.amber,
+                                                  ),
+                                                ),
                                               ),
-                                              children: [
-                                                Container(
-                                                  child: Buttons(
-                                                    "Refreshment",
-                                                    const Refreshment(),
-                                                    Icon(
-                                                      Icons.refresh,
-                                                      size: height * 0.05,
-                                                      color: Colors.amber,
-                                                    ),
+                                              //...........WORK MANAGER....................
+                                              Container(
+                                                child: Buttons(
+                                                  "Work Manager",
+                                                  WorkEntry(),
+                                                  Icon(
+                                                    Icons.work_outline_rounded,
+                                                    size: height * 0.05,
+                                                    color: Colors.amber,
                                                   ),
                                                 ),
-                                                //...........WORK MANAGER....................
-                                                Container(
-                                                  child: Buttons(
-                                                    "Work Manager",
-                                                    WorkEntry(),
-                                                    Icon(
-                                                      Icons
-                                                          .work_outline_rounded,
-                                                      size: height * 0.05,
-                                                      color: Colors.amber,
-                                                    ),
-                                                  ),
+                                              ),
+                                            ],
+                                          )
+                                        : dep == 'MEDIA'
+                                            ? GridView(
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
+                                                scrollDirection: Axis.vertical,
+                                                shrinkWrap: true,
+                                                gridDelegate:
+                                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 2,
+                                                  // childAspectRatio: 3 / 2,
+                                                  // crossAxisSpacing: 20,
+                                                  // mainAxisSpacing: 20,
                                                 ),
-                                              ],
-                                            )
-                                          : dep == 'MEDIA'
-                                              ? GridView(
-                                                  physics:
-                                                      const NeverScrollableScrollPhysics(),
-                                                  scrollDirection:
-                                                      Axis.vertical,
-                                                  shrinkWrap: true,
-                                                  gridDelegate:
-                                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                                    crossAxisCount: 2,
-                                                    // childAspectRatio: 3 / 2,
-                                                    // crossAxisSpacing: 20,
-                                                    // mainAxisSpacing: 20,
+                                                children: [
+                                                  Container(
+                                                    child: Buttons(
+                                                      "Refreshment",
+                                                      const Refreshment(),
+                                                      Icon(
+                                                        Icons.refresh,
+                                                        size: height * 0.05,
+                                                        color: Colors.amber,
+                                                      ),
+                                                    ),
                                                   ),
-                                                  children: [
-                                                    Container(
-                                                      child: Buttons(
-                                                        "Refreshment",
-                                                        const Refreshment(),
-                                                        Icon(
-                                                          Icons.refresh,
-                                                          size: height * 0.05,
-                                                          color: Colors.amber,
-                                                        ),
+                                                  //...........WORK MANAGER....................
+                                                  Container(
+                                                    child: Buttons(
+                                                      "Work Manager",
+                                                      WorkEntry(),
+                                                      Icon(
+                                                        Icons
+                                                            .work_outline_rounded,
+                                                        size: height * 0.05,
+                                                        color: Colors.amber,
                                                       ),
                                                     ),
-                                                    //...........WORK MANAGER....................
-                                                    Container(
-                                                      child: Buttons(
-                                                        "Work Manager",
-                                                        WorkEntry(),
-                                                        Icon(
-                                                          Icons
-                                                              .work_outline_rounded,
-                                                          size: height * 0.05,
-                                                          color: Colors.amber,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              : Lottie.asset(
-                                                  'assets/loading_2.json'),
-                    ],
-                  ),
+                                                  ),
+                                                ],
+                                              )
+                                            : Lottie.asset(
+                                                'assets/loading_2.json'),
+                  ],
                 ),
               ),
             ),
@@ -600,23 +601,24 @@ class _TeamMainPageState extends State<TeamMainPage> {
           );
         });
       },
-      child: AnimatedContainer(
-        margin: EdgeInsets.all(40),
-        height: height * 0.15,
+      child: Container(
+        margin: EdgeInsets.all(15),
+        height: height * 0.50,
         width: width * 0.4,
-        duration: Duration(milliseconds: 100),
         decoration: BoxDecoration(
+          // color: Colors.blue.shade300,
           boxShadow: [
             BoxShadow(
               color: Colors.black26,
               offset: Offset(-10, 10),
-              blurRadius: 15,
-              spreadRadius: 9,
+              blurRadius: 5,
+              // spreadRadius: 1,
             ),
             BoxShadow(
               color: Colors.white12,
-              offset: Offset(4, 4),
-              blurRadius: 10,
+              offset: Offset(10, 10),
+              blurRadius: 5,
+
             ),
           ],
           borderRadius: BorderRadius.only(
@@ -626,8 +628,11 @@ class _TeamMainPageState extends State<TeamMainPage> {
           ),
           gradient: LinearGradient(
             colors: [
-              Color(0xffEFA41C),
-              Color(0xffD52A29),
+
+              Color(0xff26D0CE),
+              Color(0xff1A2980),
+              // Color(0xffEFA41C),
+              // Color(0xffD52A29),
             ],
             begin: FractionalOffset.topLeft,
             end: FractionalOffset.bottomRight,
@@ -647,7 +652,7 @@ class _TeamMainPageState extends State<TeamMainPage> {
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
                   fontFamily: 'Nexa',
-                  fontSize: height * 0.013,
+                  fontSize: height * 0.02,
                   color: Color(0xffF7F9FC),
                 ),
               ),

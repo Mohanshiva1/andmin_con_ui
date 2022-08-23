@@ -13,7 +13,10 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Color(0xffF7F9FC),
+      // Color(0xff1A2980),
+      // Color(0xff26D0CE),
+      backgroundColor: Colors.black.withOpacity(0.8),
+      // backgroundColor: Color(0xffF7F9FC),
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -22,10 +25,11 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               height: 20,
             ),
             Divider(
-              height: 4,
+              height: 2,
               indent: 25,
               endIndent: 25,
-              thickness: 5,
+              thickness: 2,
+              color: Colors.white,
             ),
             buildMenuItem(),
           ],
@@ -35,70 +39,58 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   }
 
   buildHeader() => Container(
-    padding: EdgeInsets.only(top: 35),
-    child: Column(
-      children: [
-        CircleAvatar(
-          foregroundColor: Colors.transparent,
-          backgroundColor: Colors.transparent,
-          child: Icon(
-            Icons.account_circle,
-            color: Colors.black,
-            size: 100,
-          ),
-          radius: 50,
+        padding: EdgeInsets.only(top: 35),
+        child: Column(
+          children: [
+            CircleAvatar(
+              foregroundColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
+              child: Image.asset('assets/ic_launcher.png'),
+              // Icon(
+              //   Icons.account_circle,
+              //   color: Colors.orange.shade300,
+              //   size: 100,
+              // ),
+              radius: 50,
+            ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
 
   buildMenuItem() => Container(
-    padding: EdgeInsets.all(24),
-    child: Column(
-      children: [
-        GestureDetector(
-          onTap: (){
-            setState(() {
-              FirebaseAuth.instance.signOut();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MainPage(),
-                ),
-              );
-            });
-          },
-          child: ListTile(
-            leading: IconButton(
-              onPressed: () {
-                // setState(() {
-                //   FirebaseAuth.instance.signOut();
-                //   Navigator.pushReplacement(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => const MainPage(),
-                //     ),
-                //   );
-                // });
+        padding: EdgeInsets.all(24),
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainPage(),
+                    ),
+                  );
+                });
               },
-              icon: Icon(
-                Icons.logout,
-                size: 30,
-                color: Color(0xffEFA41C),
+              child: ListTile(
+                leading: Icon(
+                  Icons.logout,
+                  size: 30,
+                  color: Color(0xffEFA41C),
+                ),
+                title: Text(
+                  'Log Out',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontFamily: 'Nexa',
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
-            title: Text(
-              'Log Out',
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontFamily: 'Nexa',
-                fontSize: 15,
-                color: Colors.black,
-              ),
-            ),
-          ),
-        )
-      ],
-    ),
-  );
+          ],
+        ),
+      );
 }

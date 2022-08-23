@@ -206,10 +206,9 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
               child: Stack(
                 children: [
                   Positioned(
-                    top: 30,
-                    left: 20,
+                    top: height * 0.03,
+                    left: width * 0.0,
                     // right: 30,
-
                     child: IconButton(
                       color: Colors.orange.shade800,
                       onPressed: () {

@@ -222,12 +222,10 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
               child: Stack(
                 children: [
                   Positioned(
-                    top: height*0.03,
-                    left: width*0.03,
+                    top: height * 0.03,
+                    left: width * 0.0,
                     // right: 30,
-
                     child: IconButton(
-
                       color: Colors.orange.shade800,
                       onPressed: () {
                         setState(() {
@@ -400,13 +398,15 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                 )
               ],
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                  bottomRight: Radius.circular(30)),
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomRight: Radius.circular(20)),
               gradient: LinearGradient(
                   colors: [
-                    Color(0xffEFA41C),
-                    Color(0xffD52A29),
+                    Color(0xff1A2980),
+                    Color(0xff26D0CE),
+                    // Color(0xffEFA41C),
+                    // Color(0xffD52A29),
                   ],
                   begin: FractionalOffset.topLeft,
                   end: FractionalOffset.bottomRight,
@@ -422,7 +422,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                   style: const TextStyle(
                     fontFamily: 'Nexa',
                     fontSize: 18,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
 
@@ -472,7 +472,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                                 lineHeight: height*0.005,
                                 percent: percent = double.parse(allData[ind]['workPercentage'].replaceAll(RegExp(r'.$'), ""))/100,
                                 backgroundColor: Colors.black12,
-                                progressColor: Colors.blue,
+                                progressColor: Colors.orange.shade500,
                               ),
                               Text(
                                 '${allData[ind]['workDone']}',
@@ -480,7 +480,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                                     fontFamily: 'Avenir',
                                     fontWeight: FontWeight.w500,
                                     fontSize: 17,
-                                    color: Colors.black),
+                                    color: Colors.white),
                               ),
                               SizedBox(
                                 height: height * 0.05,
@@ -508,6 +508,6 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
         fontFamily: 'Avenir',
         fontWeight: FontWeight.w500,
         fontSize: 15,
-        color: Colors.black),
+        color: Colors.white),
   );
 }

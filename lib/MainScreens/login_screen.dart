@@ -56,27 +56,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Stack(
         children: [
+
           Positioned(
             top: height * 0.26,
             left: 0,
             right: 0,
             bottom: 0,
             child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Color(0xffF7F9FC),
-                image: DecorationImage(
-                  alignment: Alignment.bottomCenter,
-                  image: AssetImage(
-                    'assets/outdoor.png',
-                  ),
-                  fit: BoxFit.scaleDown,
-                ),
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(30),
-                  topLeft: Radius.circular(30),
-                ),
-              ),
             ),
           ),
           Positioned(
@@ -96,6 +82,43 @@ class _LoginScreenState extends State<LoginScreen> {
                       Colors.orangeAccent
                       // Color(0xff21409D),
                       // Color(0xff050851),
+                    ],
+                    stops: [
+                      0.0,
+                      11.0
+                    ],
+                    begin: FractionalOffset.topLeft,
+                    end: FractionalOffset.bottomRight,
+                    tileMode: TileMode.repeated),
+              ),
+              child: Stack(
+                children: [
+                  Positioned(
+                      top: height * 0.08,
+                      right: width*0.3,
+                      left:  width*0.3,
+                      child: Text("",style: TextStyle(fontFamily: 'Nexa',fontSize: height*0.03,fontWeight: FontWeight.w900))),
+
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            top: height*0.6,
+            right: 0,
+            left: 0,
+            bottom: 0,
+            child: Container(
+              width: double.infinity,
+              height: height * 0.3,
+              decoration: BoxDecoration(
+                // color: Colors.orange.shade400,
+                borderRadius:
+                BorderRadius.only(topRight: Radius.circular(150)),
+                gradient: LinearGradient(
+                    colors: [
+                      Color(0xff1A2980),
+                      Color(0xff26D0CE),
                     ],
                     stops: [
                       0.0,

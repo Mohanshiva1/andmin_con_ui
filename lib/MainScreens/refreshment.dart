@@ -401,33 +401,36 @@ class _RefreshmentState extends State<Refreshment> {
               decoration: BoxDecoration(
                 // color: Colors.orange.shade400,
                 gradient: LinearGradient(
-                    colors: [
-                      Color(0xff21409D),
-                      Color(0xff050851),
-                    ],
-                    stops: [
-                      0.0,
-                      11.0,
-                    ],
-                    begin: FractionalOffset.topLeft,
-                    end: FractionalOffset.bottomRight,
-                    tileMode: TileMode.repeated),
+                  colors: [
+                    Color(0xff1A2980),
+                    Color(0xff26D0CE),
+                    // Color(0xff21409D),
+                    // Color(0xff050851),
+                  ],
+                  // stops: [
+                  //   0.0,
+                  //   11.0,
+                  // ],
+                  begin: FractionalOffset.centerLeft,
+                  end: FractionalOffset.centerRight,
+                  // tileMode: TileMode.repeated,
+                ),
               ),
               child: Stack(
                 children: [
                   Positioned(
-                      top: height * 0.06,
-                      right: width * 0.0,
-                      // left: width*0.3,
-                      child: Image.asset(
-                        'assets/business-team-doing-creative-brainstorming.png',
-                        scale: 10.0,
-                      )),
+                    top: height * 0.05,
+                    right: width * 0.0,
+                    // left: width*0.3,
+                    child: Image.asset(
+                      'assets/business-team-doing-creative-brainstorming.png',
+                      scale: 13.0,
+                    ),
+                  ),
                   Positioned(
-                    top: 30,
-                    left: 20,
+                    top: height*0.03,
+                    left: width*0.0,
                     // right: 30,
-
                     child: IconButton(
                       color: Colors.orange.shade800,
                       onPressed: () {
@@ -440,17 +443,24 @@ class _RefreshmentState extends State<Refreshment> {
                     ),
                   ),
                   Positioned(
-                    top: height * 0.13,
+                    top: height * 0.18,
                     // right: 0,
                     left: width * 0.04,
                     child: Center(
-                      child: Text(
-                        'Choose your drink...',
-                        style: TextStyle(
-                            fontSize: height * 0.02,
-                            color: Color(0xffffffff),
-                            fontFamily: "Nexa",
-                            fontWeight: FontWeight.w900),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: Text(
+                              'Choose your drink...',
+                              style: TextStyle(
+                                  fontSize: height * 0.03,
+                                  color: Color(0xffffffff).withOpacity(1.0),
+                                  fontFamily: "Nexa",
+                                  fontWeight: FontWeight.w900),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -459,7 +469,7 @@ class _RefreshmentState extends State<Refreshment> {
             ),
           ),
           Positioned(
-            top: height * 0.26,
+            top: height * 0.25,
             left: 0,
             right: 0,
             bottom: 0,
@@ -481,196 +491,198 @@ class _RefreshmentState extends State<Refreshment> {
               ),
               child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
 
-                            loadTea();
-                            // // print(".....................${teaList.runtimeType}");
-                            // teaList == null
-                            //     ? teaList = 1
-                            //     : teaList++;
-                            // // print("${teaList}////////////////////////");
-                            // drinkCountTeaDetails();
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(40),
-                          height: height * 0.15,
-                          width: width * 0.4,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black26,
-                                  offset: Offset(-10, 10),
-                                  blurRadius: 15,
-                                  spreadRadius: 9),
-                              BoxShadow(
-                                color: Colors.white12,
-                                offset: Offset(4, 4),
-                                blurRadius: 10,
-                              )
-                            ],
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(20)),
-                            gradient: LinearGradient(
-                                colors: [
-                                  Color(0xffEFA41C),
-                                  Color(0xffD52A29),
-                                ],
-                                begin: FractionalOffset.topLeft,
-                                end: FractionalOffset.bottomRight,
-                                tileMode: TileMode.repeated),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.coffee),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Text(
-                                'Tea',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontFamily: 'Nexa',
-                                  fontSize: height * 0.013,
-                                  color: Color(0xffF7F9FC),
+                              loadTea();
+                              // // print(".....................${teaList.runtimeType}");
+                              // teaList == null
+                              //     ? teaList = 1
+                              //     : teaList++;
+                              // // print("${teaList}////////////////////////");
+                              // drinkCountTeaDetails();
+                            });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(40),
+                            height: height * 0.15,
+                            width: width * 0.4,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black26,
+                                    offset: Offset(-10, 10),
+                                    blurRadius: 15,
+                                    spreadRadius: 9),
+                                BoxShadow(
+                                  color: Colors.white12,
+                                  offset: Offset(4, 4),
+                                  blurRadius: 10,
+                                )
+                              ],
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20)),
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xffEFA41C),
+                                    Color(0xffD52A29),
+                                  ],
+                                  begin: FractionalOffset.topLeft,
+                                  end: FractionalOffset.bottomRight,
+                                  tileMode: TileMode.repeated),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.coffee),
+                                SizedBox(
+                                  height: height * 0.02,
                                 ),
-                              )
-                            ],
+                                Text(
+                                  'Tea',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontFamily: 'Nexa',
+                                    fontSize: height * 0.02,
+                                    color: Color(0xffF7F9FC),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            loadCoffee();
-                            // // print(".....................${coffeeList.runtimeType}");
-                            // coffeeList == null
-                            //     ? coffeeList = 1
-                            //     : coffeeList++;
-                            // // // print("${coffeeList}////////////////////////");
-                            // drinkCountCoffee();
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(40),
-                          height: height * 0.15,
-                          width: width * 0.4,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black26,
-                                  offset: Offset(-10, 10),
-                                  blurRadius: 15,
-                                  spreadRadius: 9),
-                              BoxShadow(
-                                color: Colors.white12,
-                                offset: Offset(4, 4),
-                                blurRadius: 10,
-                              )
-                            ],
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(20)),
-                            gradient: LinearGradient(
-                                colors: [
-                                  Color(0xffEFA41C),
-                                  Color(0xffD52A29),
-                                ],
-                                begin: FractionalOffset.topLeft,
-                                end: FractionalOffset.bottomRight,
-                                tileMode: TileMode.repeated),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.coffee),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Text(
-                                'Coffee',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontFamily: 'Avenir',
-                                  fontSize: height * 0.013,
-                                  color: Color(0xffF7F9FC),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              loadCoffee();
+                              // // print(".....................${coffeeList.runtimeType}");
+                              // coffeeList == null
+                              //     ? coffeeList = 1
+                              //     : coffeeList++;
+                              // // // print("${coffeeList}////////////////////////");
+                              // drinkCountCoffee();
+                            });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(40),
+                            height: height * 0.15,
+                            width: width * 0.4,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black26,
+                                    offset: Offset(-10, 10),
+                                    blurRadius: 15,
+                                    spreadRadius: 9),
+                                BoxShadow(
+                                  color: Colors.white12,
+                                  offset: Offset(4, 4),
+                                  blurRadius: 10,
+                                )
+                              ],
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20)),
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xffEFA41C),
+                                    Color(0xffD52A29),
+                                  ],
+                                  begin: FractionalOffset.topLeft,
+                                  end: FractionalOffset.bottomRight,
+                                  tileMode: TileMode.repeated),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.coffee),
+                                SizedBox(
+                                  height: height * 0.02,
                                 ),
-                              )
-                            ],
+                                Text(
+                                  'Coffee',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontFamily: 'Avenir',
+                                    fontSize: height * 0.02,
+                                    color: Color(0xffF7F9FC),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            loadNothing();
-                            // // print(".....................${nothingList.runtimeType}");
-                            // nothingList == null
-                            //     ? nothingList = 1
-                            //     : nothingList++;
-                            // // // print("${nothingList}////////////////////////");
-                            // drinkCountNothing();
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(40),
-                          height: height * 0.15,
-                          width: width * 0.4,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black26,
-                                  offset: Offset(-10, 10),
-                                  blurRadius: 15,
-                                  spreadRadius: 9),
-                              BoxShadow(
-                                color: Colors.white12,
-                                offset: Offset(4, 4),
-                                blurRadius: 10,
-                              )
-                            ],
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(20)),
-                            gradient: LinearGradient(
-                                colors: [
-                                  Color(0xffEFA41C),
-                                  Color(0xffD52A29),
-                                ],
-                                begin: FractionalOffset.topLeft,
-                                end: FractionalOffset.bottomRight,
-                                tileMode: TileMode.repeated),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.no_drinks),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Text(
-                                'Nothing',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontFamily: 'Avenir',
-                                  fontSize: height * 0.013,
-                                  color: Color(0xffF7F9FC),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              loadNothing();
+                              // // print(".....................${nothingList.runtimeType}");
+                              // nothingList == null
+                              //     ? nothingList = 1
+                              //     : nothingList++;
+                              // // // print("${nothingList}////////////////////////");
+                              // drinkCountNothing();
+                            });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(40),
+                            height: height * 0.15,
+                            width: width * 0.4,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black26,
+                                    offset: Offset(-10, 10),
+                                    blurRadius: 15,
+                                    spreadRadius: 9),
+                                BoxShadow(
+                                  color: Colors.white12,
+                                  offset: Offset(4, 4),
+                                  blurRadius: 10,
+                                )
+                              ],
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20)),
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xffEFA41C),
+                                    Color(0xffD52A29),
+                                  ],
+                                  begin: FractionalOffset.topLeft,
+                                  end: FractionalOffset.bottomRight,
+                                  tileMode: TileMode.repeated),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.no_drinks),
+                                SizedBox(
+                                  height: height * 0.02,
                                 ),
-                              )
-                            ],
+                                Text(
+                                  'Nothing',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontFamily: 'Avenir',
+                                    fontSize: height * 0.02,
+                                    color: Color(0xffF7F9FC),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   )),
             ),
           )

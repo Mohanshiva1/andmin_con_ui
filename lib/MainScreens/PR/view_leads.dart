@@ -13,7 +13,6 @@ class ViewLeads extends StatefulWidget {
 }
 
 class _ViewLeadsState extends State<ViewLeads> {
-
   final customer = FirebaseDatabase.instance.ref().child("customer");
   final user = FirebaseAuth.instance.currentUser;
   List name = [];
@@ -27,9 +26,9 @@ class _ViewLeadsState extends State<ViewLeads> {
   List fetched = [];
   var fbData;
 
-  details(){
+  details() {
     customer.once().then((value) {
-      for(var lead in value.snapshot.children){
+      for (var lead in value.snapshot.children) {
         fbData = lead.value;
         // print(fbData);
         setState(() {
@@ -56,6 +55,7 @@ class _ViewLeadsState extends State<ViewLeads> {
     });
   }
 
+
   @override
   void initState() {
     details();
@@ -75,7 +75,6 @@ class _ViewLeadsState extends State<ViewLeads> {
         child: NavigationDrawer(),
       ),
       body: Stack(
-
         children: [
           Positioned(
             top: 0,
@@ -89,8 +88,10 @@ class _ViewLeadsState extends State<ViewLeads> {
                 // color: Colors.orange.shade400,
                 gradient: LinearGradient(
                     colors: [
-                      Color(0xff21409D),
-                      Color(0xff050851),
+                      Color(0xff1A2980),
+                      Color(0xff26D0CE),
+                      // Color(0xff21409D),
+                      // Color(0xff050851),
                     ],
                     stops: [
                       0.0,
@@ -103,18 +104,18 @@ class _ViewLeadsState extends State<ViewLeads> {
               child: Stack(
                 children: [
                   Positioned(
-                      top: height * 0.03,
-                      right: width*0.01,
+                      top: height * 0.01,
+                      right: width * 0.01,
                       // left: width*0.3,
-                      child: Image.asset('assets/searching-error.png',scale: 12.0,)
-                  ),
+                      child: Image.asset(
+                        'assets/searching-error.png',
+                        scale: 13.0,
+                      )),
                   Positioned(
-                    top: 30,
-                    left: 20,
+                    top: height * 0.03,
+                    left: width * 0.0,
                     // right: 30,
-
                     child: IconButton(
-
                       color: Colors.orange.shade800,
                       onPressed: () {
                         setState(() {
@@ -126,17 +127,17 @@ class _ViewLeadsState extends State<ViewLeads> {
                     ),
                   ),
                   Positioned(
-                    top: height * 0.13,
+                    top: height * 0.15,
                     // right: 0,
-                    left: width*0.04,
+                    left: width * 0.03,
                     child: Center(
                       child: Text(
-                        'Lead Info',
+                        'Lead Info . . .',
                         style: TextStyle(
-                            fontSize: height*0.02,
-                            color: Color(0xffffffff),
-                            fontFamily: "Nexa",
-                            fontWeight: FontWeight.w900,
+                          fontSize: height * 0.04,
+                          color: Color(0xffffffff),
+                          fontFamily: "Nexa",
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
                     ),
@@ -145,9 +146,8 @@ class _ViewLeadsState extends State<ViewLeads> {
               ),
             ),
           ),
-
           Positioned(
-            top: height*0.28,
+            top: height * 0.28,
             left: 0,
             right: 0,
             bottom: 0,
@@ -155,92 +155,128 @@ class _ViewLeadsState extends State<ViewLeads> {
               // width: double.infinity,
               decoration: BoxDecoration(
                 color: Color(0xffF7F9FC),
-                image:  DecorationImage(
+                image: DecorationImage(
                   // alignment: Alignment.bottomCenter,
-                  image:  AssetImage('assets/outdoor.png',),
+                  image: AssetImage(
+                    'assets/outdoor.png',
+                  ),
                   fit: BoxFit.scaleDown,
                 ),
                 borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(30),
-                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(10),
+                  topLeft: Radius.circular(10),
                 ),
               ),
-              child:
-              number.isEmpty
+              child: number.isEmpty
                   ? Lottie.asset(
-                "assets/loading_2.json",
-                repeat: true,)
-                  : GridView.builder (
-                shrinkWrap: true,
-                itemCount:
-                name.length,
-                scrollDirection: Axis.vertical,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  childAspectRatio: 3 / 2.3,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 0,
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    child:
-                    Column(
-                      children: [
-                        leadDetails("Name", "${name[index]}",Colors.black),
-                        leadDetails("Phone", "${number[index]}",Colors.black),
-                        leadDetails("Location", "${location[index]}",Colors.black),
-                        leadDetails("Enquiry", "${enquiry[index]}",Colors.black),
-                        leadDetails("Email", "${email[index]}",Colors.black),
-                        leadDetails("createdDate", "${createdDate[index]}",Colors.black),
-                        leadDetails("Data Fetched From", "${[index]}",Colors.black),
-                        leadDetails('Status', '${state[index]}',state[index] == "Following Up"
-                            ? Colors.green
-                            : state[index] == "Delayed"
-                            ? Colors.orange
-                            : state[index] == "Rejected from management side"
-                            ? Colors.red
-                            : state[index] == "Rejected from Customer end"
-                            ? Colors.red
-                            : Color(0xffF7F9FC),
+                      "assets/loading_2.json",
+                      repeat: true,
+                    )
+                  : Theme(
+                      data: Theme.of(context).copyWith(
+                        scrollbarTheme: ScrollbarThemeData(
+                          radius: Radius.circular(20),
+                          thumbColor: MaterialStateProperty.all(Colors.black),
                         ),
-                        Divider(
-                          endIndent: width*0.09,
-                          indent: width*0.09,
-                          thickness: 1,
-                          color: Colors.black26,
-                        )
-                      ],
+                      ),
+                      child: Scrollbar(
+                        isAlwaysShown: true,
+                        showTrackOnHover: true,
+                        hoverThickness: 10,
+                        thickness: 10,
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          itemCount: name.length,
+                          scrollDirection: Axis.vertical,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 1,
+                            childAspectRatio: 2 / 2.8,
+                            crossAxisSpacing: 0,
+                            mainAxisSpacing: 0,
+                          ),
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  leadDetails(
+                                      "Name", "${name[index]}", Colors.black),
+                                  leadDetails("Phone", "${number[index]}",
+                                      Colors.black),
+                                  leadDetails("Location", "${location[index]}",
+                                      Colors.black),
+                                  leadDetails("Enquiry", "${enquiry[index]}",
+                                      Colors.black),
+                                  leadDetails(
+                                      "Email", "${email[index]}", Colors.black),
+                                  leadDetails("createdDate",
+                                      "${createdDate[index]}", Colors.black),
+                                  leadDetails("Data Fetched From", "${[index]}",
+                                      Colors.black),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.blue.shade100,
+                                      borderRadius: BorderRadius.circular(10)
+                                    ),
+
+                                    child: leadDetails(
+                                      'Status',
+                                      '${state[index]}',
+                                      state[index] == "Following Up"
+                                          ? Colors.green
+                                          : state[index] == "Delayed"
+                                              ? Colors.orange
+                                              : state[index] ==
+                                                      "Rejected from management side"
+                                                  ? Colors.red
+                                                  : state[index] ==
+                                                          "Rejected from Customer end"
+                                                      ? Colors.red
+                                                      : Color(0xffF7F9FC),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height*0.03,
+                                  ),
+                                  Divider(
+                                    endIndent: width * 0.09,
+                                    indent: width * 0.09,
+                                    thickness: 3,
+                                    color: Colors.black,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ),
-                  );
-                },
-              ),
             ),
-          )
-
-
+          ),
         ],
       ),
     );
-
-
   }
 
   Widget leadDetails(String title, String address, color) {
     final height = MediaQuery.of(context).size.height;
     // final width = MediaQuery.of(context).size.width;
-    return SizedBox(
-      height: height * 0.04,
+    return Container(
       child: ListTile(
         title: Text(title,
-            style:  TextStyle(
+            style: TextStyle(
                 fontFamily: 'Avenir',
-                fontSize: height*0.013,
+                fontSize: height * 0.02,
                 color: Colors.black,
                 fontWeight: FontWeight.w800)),
         trailing: SingleChildScrollView(
           child: Text(address,
               style: TextStyle(
-                  fontFamily: 'Avenir', fontSize: height*0.013, color: color, fontWeight: FontWeight.w600)),
+                  fontFamily: 'Avenir',
+                  fontSize: height * 0.02,
+                  color: color,
+                  fontWeight: FontWeight.w600)),
         ),
       ),
     );
