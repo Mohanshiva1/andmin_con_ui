@@ -41,7 +41,6 @@ dependencies:
   flutter_inset_box_shadow:
   intl:
   animated_splash_screen:
-  shared_preferences:
   flutter_spinkit:
   clay_containers:
   rename:
@@ -55,8 +54,15 @@ dependencies:
   internet_connection_checker:
   connectivity_plus: ^2.3.5
   percent_indicator: ^3.4.0
-  provider:
   simple_gradient_text:
+
+  shared_preferences:
+  provider:
+  sqflite:
+  image_picker:
+  path_provider:
+  open_file:
+  pdf:
 
 
 dev_dependencies:

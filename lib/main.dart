@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:andmin_con_ui/MainScreens/PR/invoice/provider_page.dart';
 import 'package:andmin_con_ui/MainScreens/home_page.dart';
 import 'package:andmin_con_ui/MainScreens/login_screen.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
@@ -10,6 +11,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+
+import 'MainScreens/PR/invoice/image_saving/user_preference.dart';
 
 // 2.0.0+9 older
 
@@ -17,6 +21,7 @@ import 'package:lottie/lottie.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await UserPreferences.init();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
@@ -30,10 +35,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      debugShowCheckedModeBanner: false,
-
-      home: SplashScreen(),
+    return  ChangeNotifierProvider(
+      create: (context) => TaskData(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen(),
+      ),
     );
   }
 }

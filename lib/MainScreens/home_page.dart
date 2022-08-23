@@ -15,6 +15,7 @@ import 'package:lottie/lottie.dart';
 import 'CEO/wrk_done_view.dart';
 import 'CEO/wrk_not_entry.dart';
 import 'Drawer.dart';
+import 'PR/invoice/Screens/splash_screen.dart';
 
 class TeamMainPage extends StatefulWidget {
   const TeamMainPage({Key? key}) : super(key: key);
@@ -268,7 +269,7 @@ class _TeamMainPageState extends State<TeamMainPage> {
                               Container(
                                 child: Buttons(
                                   "Create invoice",
-                                  const Invoice(),
+                                  SplashScreenPage(),
                                   Icon(
                                     Icons.price_change_rounded,
                                     size: height * 0.05,
