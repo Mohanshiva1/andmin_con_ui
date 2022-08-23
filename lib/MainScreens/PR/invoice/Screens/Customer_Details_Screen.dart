@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider_page.dart';
 import 'Account_Screen.dart';
-import 'Add_iterms_Screen.dart';
+import 'Add_items_Screen.dart';
 
 class CustomerDetails extends StatefulWidget {
   const CustomerDetails({Key? key}) : super(key: key);
@@ -185,7 +184,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                              Provider.of<TaskData>(context,listen: false).addTask(
                                  clientName.text,clientStreet.text,
                                  clientAddress.text,int.parse(clientPhone.text));
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => const AddIterm()));
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => const AddItem()));
                              // Navigator.push(context, MaterialPageRoute(builder: (context) => const ProductListOutPage()));
                            });
                          }

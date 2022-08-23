@@ -95,7 +95,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         child: Ink.image(
                           image: image as ImageProvider,
                           width: 200,
-                          height: 200,
+                          height: height*0.2,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -126,7 +126,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 ),
                                 // suffixIcon: IconButton(
                                 //   onPressed: () => number.clear(),
-                                //   icon: Image.asset('assets/etit1.png',scale: 2.5,),
+                                //   icon: Image.asset('assets/edit1.png',scale: 2.5,),
                                 // ),
                                 hintText: 'Name',
                                 hintStyle: const TextStyle(
@@ -151,7 +151,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 ),
                                 // suffixIcon: IconButton(
                                 //   onPressed: () => number.clear(),
-                                //   icon: Image.asset('assets/etit1.png',scale: 2.5,),
+                                //   icon: Image.asset('assets/edit1.png',scale: 2.5,),
                                 // ),
                                 hintText: 'Phone Number',
                                 hintStyle: const TextStyle(
@@ -176,7 +176,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 ),
                                 // suffixIcon: IconButton(
                                 //   onPressed: () => number.clear(),
-                                //   icon: Image.asset('assets/etit1.png',scale: 2.5,),
+                                //   icon: Image.asset('assets/edit1.png',scale: 2.5,),
                                 // ),
                                 hintText: 'E mail',
                                 hintStyle: const TextStyle(

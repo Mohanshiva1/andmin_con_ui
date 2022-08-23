@@ -90,7 +90,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final database = FirebaseDatabase.instance.reference().child("staff");
+  final database = FirebaseDatabase.instance.ref().child("staff");
   final user = FirebaseAuth.instance.currentUser;
 
   String? CurrerntUser;

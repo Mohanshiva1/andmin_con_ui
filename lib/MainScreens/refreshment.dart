@@ -530,8 +530,8 @@ class _RefreshmentState extends State<Refreshment> {
                                   bottomRight: Radius.circular(20)),
                               gradient: LinearGradient(
                                   colors: [
-                                    Color(0xffEFA41C),
-                                    Color(0xffD52A29),
+                                    Color(0xff26D0CE),
+                                    Color(0xff1A2980),
                                   ],
                                   begin: FractionalOffset.topLeft,
                                   end: FractionalOffset.bottomRight,
@@ -592,8 +592,8 @@ class _RefreshmentState extends State<Refreshment> {
                                   bottomRight: Radius.circular(20)),
                               gradient: LinearGradient(
                                   colors: [
-                                    Color(0xffEFA41C),
-                                    Color(0xffD52A29),
+                                    Color(0xff26D0CE),
+                                    Color(0xff1A2980),
                                   ],
                                   begin: FractionalOffset.topLeft,
                                   end: FractionalOffset.bottomRight,
@@ -654,8 +654,8 @@ class _RefreshmentState extends State<Refreshment> {
                                   bottomRight: Radius.circular(20)),
                               gradient: LinearGradient(
                                   colors: [
-                                    Color(0xffEFA41C),
-                                    Color(0xffD52A29),
+                                    Color(0xff26D0CE),
+                                    Color(0xff1A2980),
                                   ],
                                   begin: FractionalOffset.topLeft,
                                   end: FractionalOffset.bottomRight,

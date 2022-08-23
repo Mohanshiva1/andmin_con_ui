@@ -288,7 +288,7 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
                           children: [
                             notEntry.length == 0
                                 ? Text(
-                                    "${notEntry.length == 0 ? 'No Data' : 'Load Data'}",
+                                    "${notEntry.length == 0 ? 'Loading' : 'No Data'}",
                                     style: TextStyle(
                                         fontFamily: 'Nexa',
                                         fontSize: 20,

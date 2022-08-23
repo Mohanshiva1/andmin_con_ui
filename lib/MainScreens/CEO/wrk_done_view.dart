@@ -302,7 +302,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                         children: [
 
                           nameData.length == 0
-                              ? Text("${nameData.length == 0 ? 'NO DATA' : 'Loading'}",style: TextStyle(
+                              ? Text("${nameData.length == 0 ? 'Loading' : 'No Data'}",style: TextStyle(
                                     fontFamily: 'Nexa',
                                     fontSize: 20,
                                     color: Colors.black),

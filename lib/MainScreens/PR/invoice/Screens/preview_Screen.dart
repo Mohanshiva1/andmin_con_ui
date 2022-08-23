@@ -1,6 +1,3 @@
-
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -87,7 +84,6 @@ class _PreviewScreenState extends State<PreviewScreen> {
           final invoice = taskData.invoiceListData;
           final val = taskData.subTotalValue;
           if(val.isEmpty){
-            // print("aasswipe");
           }else{
             amount = val.map((e) => e.quantity*e.amount).reduce((value, element) => value + element);
             // print(subTotal);

@@ -183,7 +183,7 @@ class _AnnouncementState extends State<Announcement> {
                         ),
                       ),
                       SizedBox(
-                        height: height * 0.4,
+                        height: height * 0.45,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -226,14 +226,18 @@ class _AnnouncementState extends State<Announcement> {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   // Icon(Icons.search_rounded,size: height*0.02,color: Colors.blueGrey,),
-                                  Text(
-                                    'Announce',
+                                  GradientText(
+                                    "Announce",
                                     style: TextStyle(
-                                      fontWeight: FontWeight.w800,
+                                      fontWeight: FontWeight.w900,
                                       fontFamily: "Nexa",
                                       fontSize: height * 0.03,
-                                      color: Colors.black,
                                     ),
+                                    colors: [
+                                      Colors.blue,
+                                      Colors.pink,
+                                      Colors.yellow,
+                                    ],
                                   ),
                                 ],
                               ),

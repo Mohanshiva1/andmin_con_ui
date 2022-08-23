@@ -6,14 +6,14 @@ import '../provider_page.dart';
 import 'Account_Screen.dart';
 import 'preview_Screen.dart';
 
-class AddIterm extends StatefulWidget {
-  const AddIterm({Key? key}) : super(key: key);
+class AddItem extends StatefulWidget {
+  const AddItem({Key? key}) : super(key: key);
 
   @override
-  State<AddIterm> createState() => _AddItermState();
+  State<AddItem> createState() => _AddItemState();
 }
 
-class _AddItermState extends State<AddIterm> {
+class _AddItemState extends State<AddItem> {
   final date = DateTime.now();
   TextEditingController itermNameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
@@ -48,7 +48,7 @@ class _AddItermState extends State<AddIterm> {
         final task = taskData.tasks[0];
         // final val = taskData.subTotalValue;
         // if(val.isEmpty){
-        //   // print("aasswipe");
+        //
         // }else{
         //   subTotal = val.map((e) => e.quantity*e.amount).reduce((value, element) => value + element);
         // }
@@ -163,7 +163,7 @@ class _AddItermState extends State<AddIterm> {
                             IconButton(
                                 onPressed: () {},
                                 icon: Image.asset(
-                                  'assets/etit1.png',
+                                  'assets/edit_1.png',
                                   scale: 3.5,
                                 ))
                           ],
