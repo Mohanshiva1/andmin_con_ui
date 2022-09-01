@@ -14,16 +14,16 @@ class ButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) => GestureDetector(
           onTap: onClicked,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            width: 120,
-            height: 70,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            width: 100,
+            height: 50,
             decoration: BoxDecoration(
               color: const Color(0xffFF7E44),
               borderRadius: BorderRadius.circular(15),
               boxShadow: [
                 BoxShadow(
                     color: Colors.black.withOpacity(0.3),
-                    offset: const Offset(-8, 8),
+                    offset: const Offset(8, 8),
                     blurRadius: 10,
                     spreadRadius: 0)
               ],

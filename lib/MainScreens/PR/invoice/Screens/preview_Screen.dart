@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../login_screen.dart';
 import '../api/pdf_api.dart';
 import '../api/pdf_invoice_api.dart';
 import '../image_saving/user.dart';
@@ -10,6 +14,7 @@ import '../model/customer.dart';
 import '../model/invoice.dart';
 import '../model/supplier.dart';
 import '../provider_page.dart';
+import '../utils.dart';
 import '../widget/button_widget.dart';
 import 'Account_Screen.dart';
 
@@ -19,8 +24,16 @@ class PreviewScreen extends StatefulWidget {
   final int advanceAmt;
   final int labAndInstall;
   final bool gstValue;
+  final bool labValue;
 
-  const PreviewScreen({Key? key, required this.doctype, required this.category, required this.advanceAmt, required this.labAndInstall, required this.gstValue}) : super(key: key);
+  const PreviewScreen({Key? key,
+    required this.doctype,
+    required this.category,
+    required this.advanceAmt,
+    required this.labAndInstall,
+    required this.gstValue,
+    required this.labValue,
+  }) : super(key: key);
 
   @override
   State<PreviewScreen> createState() => _PreviewScreenState();
@@ -44,7 +57,12 @@ class _PreviewScreenState extends State<PreviewScreen> {
   String supplierWebsite = " ";
   String supplierGst= " ";
   late User user;
+  late DateTime currentPhoneDate;
+  var dataJson;
   final formKey = GlobalKey<FormState>();
+  List quotLength = [];
+  int quotLen = 0;
+  NumberFormat formatter = NumberFormat("000");
 
 
   readData() async {
@@ -65,10 +83,34 @@ class _PreviewScreenState extends State<PreviewScreen> {
     });
   }
 
+  Future<void> fireData() async {
+    final databaseReference = FirebaseDatabase.instance.ref();
+      databaseReference.child('QuotationAndInvoice').once().then((snap) async {
+        try{
+          for (var element in snap.snapshot.children){
+            // print("dataJson ${element.key} ");
+            if(widget.doctype == element.key){
+              // print("dataJson ${widget.doctype} ");
+              for(var elem in element.children){
+                for(var ele in elem.children){
+                  for(var el in ele.children){
+                    quotLength.add(el.key);
+                    // print('lenght ${quotLength.length}');
+                  }
+                }
+              }
+            }
+          }
+        }catch(e){
+          print(e);
+        }
 
+      });
+  }
 
   @override
   void initState() {
+    fireData();
     readData();
     super.initState();
   }
@@ -80,10 +122,11 @@ class _PreviewScreenState extends State<PreviewScreen> {
     final width = MediaQuery.of(context).size.width;
     return  Consumer<TaskData>(
         builder: (context, taskData,child) {
-          final task = taskData.tasks[0];
+          final task = taskData.tasks.length == 2 ? taskData.tasks[1]: taskData.tasks[0];
           final invoice = taskData.invoiceListData;
           final val = taskData.subTotalValue;
           if(val.isEmpty){
+            // print("aasswipe");
           }else{
             amount = val.map((e) => e.quantity*e.amount).reduce((value, element) => value + element);
             // print(subTotal);
@@ -124,7 +167,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AccountScreen()));
+                              builder: (context) => const AccountScreen()));
                     });
                   },
                 ),
@@ -141,6 +184,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 width: width*1.0,
                 padding: EdgeInsets.symmetric(horizontal: width*0.05),
                 child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -189,49 +233,19 @@ class _PreviewScreenState extends State<PreviewScreen> {
                           Column(
                             children: [
                               widget.doctype =='INVOICE'?Text(
-                                'INVOICE No :',
+                                '#INVOICE ',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: height * 0.014,
                                     fontFamily: 'Avenir',
                                     color: Colors.black),
                               ):Text(
-                                'QUOTATION No :',
+                                '#QUOTATION ',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: height * 0.014,
                                     fontFamily: 'Avenir',
                                     color: Colors.black),
-                              ),
-                              Container(
-                                height: height*0.050,
-                                width: width*0.2,
-                                child: Center(
-                                  child: TextFormField(
-                                    controller: quotNo,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter QUO-INV No';
-                                      }
-                                      return null;
-                                    },
-                                    keyboardType: TextInputType.number,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: height * 0.012,
-                                      fontFamily: 'Avenir',
-                                    ),
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: 'QUO-INV No',
-                                      hintStyle: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: height * 0.012,
-                                        fontFamily: 'Nexa',
-                                      ),
-                                    ),
-                                  ),
-                                ),
                               ),
                             ],
                           ),
@@ -277,6 +291,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                           child: Table(
                             children: [
                               buildRow([
+                                's.no',
                                 'Items',
                                 'Qty',
                                 'Rate',
@@ -293,18 +308,19 @@ class _PreviewScreenState extends State<PreviewScreen> {
                         width: width * 0.9,
                         height: height * 0.4,
                         decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.1),
+                          border: Border.all(color: Colors.deepOrange,width: 1.0),
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(20)),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 12.0),
+                          padding: const EdgeInsets.symmetric(vertical: 15.0,horizontal: 5.0),
                           child: ListView.builder(
                             shrinkWrap: true,
                             itemCount: invoice.length,
                             itemBuilder: (BuildContext context, int index) {
                               return Table(
-                                // border: TableBorder.all(),
+                                // border: TableBorder.symmetric(inside: BorderSide.none,outside: BorderSide(width: 1.0)),
                                 children: [
-                                  buildRow([(invoice[index].description),'${invoice[index].quantity}','${invoice[index].unitPrice}',
+                                  buildRow(['${index + 1}.',(invoice[index].description),'${invoice[index].quantity}','${invoice[index].unitPrice}',
                                     '${invoice[index].quantity *invoice[index].unitPrice}']
                                   ),
                                 ],
@@ -331,7 +347,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                           fontWeight: FontWeight.w400, fontFamily: 'Nexa',fontSize: height*0.013),
                                     ),
                                     SizedBox(
-                                      // height: height*0.060,
+                                      height: height*0.060,
                                       width: width*0.4,
                                       child: Center(
                                         child: TextFormField(
@@ -348,7 +364,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                           maxLines: 4,
                                           style: TextStyle(
                                             fontWeight: FontWeight.normal,
-                                            fontSize: height * 0.013,
+                                            fontSize: height * 0.012,
                                             fontFamily: 'Avenir',
                                           ),
                                           decoration: InputDecoration(
@@ -356,7 +372,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                             hintText: ' name',
                                             hintStyle: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: height * 0.013,
+                                              fontSize: height * 0.012,
                                               fontFamily: 'Nexa',
                                             ),
                                           ),
@@ -370,8 +386,8 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                     Text('Acc.No: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w400, fontFamily: 'Nexa',fontSize: height*0.013),),
-                                    Container(
-                                      // height: height*0.060,
+                                    SizedBox(
+                                      height: height*0.050,
                                       width: width*0.4,
                                       child: Center(
                                         child: TextFormField(
@@ -385,7 +401,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                           },
                                           style: TextStyle(
                                             fontWeight: FontWeight.normal,
-                                            fontSize: height * 0.013,
+                                            fontSize: height * 0.012,
                                             fontFamily: 'Avenir',
                                           ),
                                           decoration: InputDecoration(
@@ -393,7 +409,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                             hintText: ' Number',
                                             hintStyle: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: height * 0.013,
+                                              fontSize: height * 0.012,
                                               fontFamily: 'Nexa',
                                             ),
                                           ),
@@ -408,7 +424,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.w400, fontFamily: 'Nexa',fontSize: height*0.013),),
                                     SizedBox(
-                                      // height: height*0.050,
+                                      height: height*0.050,
                                       width: width*0.4,
                                       child: Center(
                                         child: TextFormField(
@@ -430,7 +446,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                             hintText: ' code',
                                             hintStyle: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: height * 0.013,
+                                              fontSize: height * 0.012,
                                               fontFamily: 'Nexa',
                                             ),
                                           ),
@@ -445,7 +461,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.w400, fontFamily: 'Nexa',fontSize: height*0.013),),
                                     SizedBox(
-                                      // height: height*0.080,
+                                      height: height*0.080,
                                       width: width*0.4,
                                       child: Center(
                                         child: TextFormField(
@@ -462,7 +478,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                           },
                                           style: TextStyle(
                                             fontWeight: FontWeight.normal,
-                                            fontSize: height * 0.013,
+                                            fontSize: height * 0.012,
                                             fontFamily: 'Avenir',
                                           ),
                                           decoration: InputDecoration(
@@ -486,10 +502,14 @@ class _PreviewScreenState extends State<PreviewScreen> {
                               text: 'Save as',
                               onClicked: () async {
                                 final date = DateTime.now();
+                                setState((){
+                                  quotLen = quotLength.length + 1;
+                                });
                                 // final dueDate = date.add(Duration(days: 7));
                                 final invoice = Invoice(
+                                  labNeed: widget.labValue,
                                   gstNeed: widget.gstValue,
-                                  quotNo: quotNo.text,
+                                  quotNo: formatter.format(quotLen),
                                   fileName: fileName.text,
                                   supplier: Supplier(
                                     gst: supplierGst,
@@ -522,60 +542,51 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                   ifscCode: ifsc.text,
                                   bankName: bank.text,
                                 );
-                                 // print(invoice.supplier.runtimeType);
-                                final pdfFile = await PdfInvoiceApi.generate(invoice,user);
 
-                                PdfApi.openFile(pdfFile).then((value){
+
+
+                                currentPhoneDate = DateTime.now();
+                                Timestamp myTimeStamp = Timestamp.fromDate(currentPhoneDate);
+                                final databaseReference = FirebaseDatabase.instance.ref();
+                                final firebaseStorage = FirebaseStorage.instance;
+
+                                final pdfFile = await PdfInvoiceApi.generate(invoice,user);
+                                PdfApi.openFile(pdfFile).then((value) async {
                                   logData.setString('accountNameSaved', accountName.text);
                                   logData.setString('accountNoSaved', accountNo.text);
                                   logData.setString('ifscCodeSaved', ifsc.text);
                                   logData.setString('bankNameSaved', bank.text);
+
+                                  if(widget.doctype == "INVOICE"){
+                                    var snapshot = await firebaseStorage.ref().child('INVOICE/INV${widget.category}-${Utils.formatDummyDate(date)}${formatter.format(quotLen)}').putFile(pdfFile);
+                                    var downloadUrl = await snapshot.ref.getDownloadURL();
+                                    var da = {
+                                      'TimeStamp': myTimeStamp.millisecondsSinceEpoch,
+                                      'CreatedBy' : auth.currentUser?.email,
+                                      'mobile_number' : task.phone,
+                                      'document_link': downloadUrl,
+                                    };
+                                    databaseReference.child('QuotationAndInvoice').child('INVOICE').child('${Utils.formatYear(date)}').child('${Utils.formatMonth(date)}').child('INV${widget.category}-${Utils.formatDummyDate(date)}${formatter.format(quotLen)}').set(da);
+                                  }else{
+                                    var snapshot = await firebaseStorage.ref().child('QUOTATION/EST${widget.category}-${Utils.formatDummyDate(date)}${formatter.format(quotLen)}').putFile(pdfFile);
+                                    var downloadUrl = await snapshot.ref.getDownloadURL();
+                                    var da = {
+                                      'TimeStamp': myTimeStamp.millisecondsSinceEpoch,
+                                      'CreatedBy' : auth.currentUser?.email,
+                                      'mobile_number' : task.phone,
+                                      'document_link': downloadUrl,
+                                    };
+                                    databaseReference.child('QuotationAndInvoice').child('QUOTATION').child('${Utils.formatYear(date)}').child('${Utils.formatMonth(date)}').child('EST${widget.category}-${Utils.formatDummyDate(date)}${formatter.format(quotLen)}').set(da);
+                                  }
                                   fileName.clear();
                                   quotNo.clear();
                                   // accountName.clear();
                                   // accountNo.clear();
                                   // ifsc.clear();
                                   // bank.clear();
-
                                 });
                               },
                             ),
-                            // GestureDetector(
-                            //   onTap: () {
-                            //     _addItem(taskData);
-                            //   },
-                            //   child: Container(
-                            //     padding: EdgeInsets.symmetric(horizontal: width*0.02),
-                            //     width: width * 0.30,
-                            //     height: height * 0.06,
-                            //     decoration: BoxDecoration(
-                            //       color: Color(0xffFF7E44),
-                            //       borderRadius: BorderRadius.circular(15),
-                            //       boxShadow: [
-                            //         BoxShadow(
-                            //             color: Colors.black.withOpacity(0.3),
-                            //             offset: const Offset(8, 8),
-                            //             blurRadius: 10,
-                            //             spreadRadius: 0)
-                            //       ],
-                            //     ),
-                            //     child: Row(
-                            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //       children: [
-                            //         Text(
-                            //           "Save as",
-                            //           style: TextStyle(
-                            //               fontWeight: FontWeight.bold,
-                            //               fontSize: height * 0.013,
-                            //               fontFamily: 'Nexa',
-                            //               color: Colors.white),
-                            //         ),
-                            //         Image.asset('assets/pdf.png',scale: 3.0,),
-                            //
-                            //       ],
-                            //     ),
-                            //   ),
-                            // )
                           ],
                         ),
                       ),
@@ -608,174 +619,4 @@ class _PreviewScreenState extends State<PreviewScreen> {
           },
         ).toList(),
       );
-  // showFileNameDialog(BuildContext context,task,height,width,taskData) {
-  //   // Create button
-  //   Widget okButton =  ButtonWidget(
-  //     text: 'GENERATE PDF',
-  //     onClicked: () async {
-  //       final date = DateTime.now();
-  //       // final dueDate = date.add(Duration(days: 7));
-  //       final invoice = Invoice(
-  //         quotNo: int.parse(quotNo.text),
-  //         fileName: fileName.text,
-  //         supplier: Supplier(
-  //           name: supplierName,
-  //           street: supplierStreet,
-  //           address: supplierAddress,
-  //           phone: supplierPhone,
-  //           email: supplierEmail,
-  //           website: supplierWebsite,
-  //         ),
-  //         customer: Customer(
-  //           name: task.name,
-  //           street: task.street,
-  //           address: task.address,
-  //           phone: task.phone,
-  //         ),
-  //         info: InvoiceInfo(
-  //           date: date,
-  //           // dueDate: dueDate,
-  //           // description: 'Description...',
-  //           // number: '${DateTime.now().year}-9999',
-  //         ),
-  //         items: taskData.invoiceListData,
-  //         docType: dropdownValue, cat: category, advancePaid: advanceAmt, labAndInstall: labCharge,
-  //       );
-  //
-  //       final pdfFile = await PdfInvoiceApi.generate(invoice);
-  //
-  //       PdfApi.openFile(pdfFile).then((value){
-  //         fileName.clear();
-  //         quotNo.clear();
-  //         // labAndInstall.clear();
-  //         // advancePaid.clear();
-  //       });
-  //     },
-  //   );
-  //   Widget cancelButton = TextButton(
-  //     child: const Text(" Cancel "),
-  //     onPressed: () {
-  //       Navigator.pop(context, false);
-  //     },
-  //   );
-  //   // Create AlertDialog
-  //   final alert = StatefulBuilder(
-  //       builder: (context, setState) => AlertDialog(
-  //         backgroundColor: Colors.white,
-  //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-  //         content: Container(
-  //           height: height*0.30,
-  //           width: width*1.0,
-  //           child: SingleChildScrollView(
-  //             child: Column(
-  //               mainAxisAlignment: MainAxisAlignment.start,
-  //               children: [
-  //                 Row(
-  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                   children: [
-  //                     DropdownButton<String>(
-  //                       value: dropdownValue,
-  //                       icon: const Icon(Icons.arrow_downward),
-  //                       elevation: 16,
-  //                       style: const TextStyle(color: Colors.black),
-  //                       underline: Container(
-  //                         height: 2,
-  //                         color: Colors.black,
-  //                       ),
-  //                       onChanged: (String? newValue) {
-  //                         setState(() {
-  //                           dropdownValue = newValue!;
-  //                         });
-  //                       },
-  //                       items: <String>['QUOTATION','INVOICE']
-  //                           .map<DropdownMenuItem<String>>((String value) {
-  //                         return DropdownMenuItem<String>(
-  //                           value: value,
-  //                           child: Text(value),
-  //                         );
-  //                       }).toList(),
-  //                     ),
-  //                     DropdownButton<String>(
-  //                       value: category,
-  //                       icon: const Icon(Icons.arrow_downward),
-  //                       elevation: 16,
-  //                       style: const TextStyle(color: Colors.black),
-  //                       underline: Container(
-  //                         height: 2,
-  //                         color: Colors.black,
-  //                       ),
-  //                       onChanged: (String? newValue) {
-  //                         setState(() {
-  //                           category = newValue!;
-  //                         });
-  //                       },
-  //                       items: <String>['GA','SH','IT','DL','SS','WTA']
-  //                           .map<DropdownMenuItem<String>>((String value) {
-  //                         return DropdownMenuItem<String>(
-  //                           value: value,
-  //                           child: Text(value),
-  //                         );
-  //                       }).toList(),
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 Container(
-  //                   padding: const EdgeInsets.all(20.0),
-  //                   child: TextFormField(
-  //                     decoration: const InputDecoration(hintText: 'file name'),
-  //                     controller: fileName,
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   padding: const EdgeInsets.all(20.0),
-  //                   child: TextFormField(
-  //                     keyboardType: TextInputType.number,
-  //                     decoration: const InputDecoration(hintText: 'Quotation no'),
-  //                     controller: quotNo,
-  //                   ),
-  //                 ),
-  //                 dropdownValue=="INVOICE"? Container(
-  //                   padding: const EdgeInsets.all(20.0),
-  //                   child: TextFormField(
-  //                     onChanged: (val){
-  //                       setState((){
-  //                         labCharge = int.parse(val);
-  //                         print(labCharge);
-  //                       });
-  //                     },
-  //                     keyboardType: TextInputType.number,
-  //                     decoration: const InputDecoration(hintText: 'Labour and Installation Amount'),
-  //                     controller: labAndInstall,
-  //                   ),
-  //                 ):Container(),
-  //                 dropdownValue=="INVOICE"? Container(
-  //                   padding: const EdgeInsets.all(20.0),
-  //                   child: TextFormField(
-  //                     onChanged: (val){
-  //                       setState(() {
-  //                         advanceAmt = int.parse(val);
-  //                         print(advanceAmt);
-  //                       });
-  //                     },
-  //                     keyboardType: TextInputType.number,
-  //                     decoration: const InputDecoration(hintText: 'Advance Paid'),
-  //                     controller: advancePaid,
-  //                   ),
-  //                 ):Container(),
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //         actions: [
-  //           okButton,
-  //           cancelButton,
-  //         ],
-  //       ));
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return alert;
-  //     },
-  //   );
-  // }
 }

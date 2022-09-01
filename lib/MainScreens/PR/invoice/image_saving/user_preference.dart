@@ -6,7 +6,7 @@ class UserPreferences {
   static late SharedPreferences logData;
 
   static const _keyUser = 'user';
-  static const myUser = User(imagePath: 'images/blank.png',);
+  static const myUser = User(imagePath: 'assets/blank.png');
 
   static Future init() async =>
       logData = await SharedPreferences.getInstance();

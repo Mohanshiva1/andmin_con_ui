@@ -15,9 +15,9 @@ import 'package:provider/provider.dart';
 
 import 'MainScreens/PR/invoice/image_saving/user_preference.dart';
 
-// 2.0.0+9 older
+// 2.0.0+10 older
 
-// version 2.0.0+10   10/08/2022 currently Using...
+// version 2.0.0+11   1/09/2022 currently Using...
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -26,7 +26,7 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
   ]);
-  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   runApp(const MyApp());
 }
 

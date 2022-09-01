@@ -113,21 +113,7 @@ class _SearchLeadsState extends State<SearchLeads> {
                         // left: width*0.3,
                         child: Image.asset('assets/searching-error.png',scale: 14.0,)
                     ),
-                    Positioned(
-                      top: height*0.03,
-                      left: width*0.0,
-                      // right: 30,
-                      child: IconButton(
-                        color: Colors.orange.shade800,
-                        onPressed: () {
-                          setState(() {
-                            _scaffoldKey.currentState?.openDrawer();
-                          });
-                        },
-                        iconSize: height * 0.04,
-                        icon: Container(child: Image.asset('assets/menu.png')),
-                      ),
-                    ),
+
                     Positioned(
                       top: height * 0.12,
                       // right: 0,

@@ -16,6 +16,8 @@ class ProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final color = Theme.of(context).colorScheme.primary;
+
     return Center(
       child: Stack(
         children: [
@@ -26,11 +28,13 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
-    final image = imagePath.contains('images/blank.png')
+
+    final image = imagePath.contains('assets/blank.png')
         ? AssetImage(imagePath)
         : FileImage(File(imagePath));
 
     return Container(
+
       padding: const EdgeInsets.all(10.0),
       width: 200,
       height: 200,

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../login_screen.dart';
 import '../image_saving/user.dart';
 import '../image_saving/user_preference.dart';
-import 'intro_Screen.dart';
+import '../provider_page.dart';
 import 'dart:io';
+import 'Customer_Details_Screen.dart';
+
+
 
 
 class AccountScreen extends StatefulWidget {
@@ -44,12 +49,11 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final image = user.imagePath.contains('images/blank.png') ? AssetImage(user.imagePath) : FileImage(File(user.imagePath));
+    final image = user.imagePath.contains('assets/blank.png') ? AssetImage(user.imagePath) : FileImage(File(user.imagePath));
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-
         leading:   GestureDetector(
           child: Image.asset(
             'assets/back arrow.png',
@@ -70,6 +74,7 @@ class _AccountScreenState extends State<AccountScreen> {
               fontSize: height * 0.015),
         ),
 
+
       ),
       backgroundColor: Colors.white,
       body: Form(
@@ -79,7 +84,7 @@ class _AccountScreenState extends State<AccountScreen> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: height * 0.09),
-                height: height * 0.7,
+                height: height * 0.8,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -95,11 +100,19 @@ class _AccountScreenState extends State<AccountScreen> {
                         child: Ink.image(
                           image: image as ImageProvider,
                           width: 200,
-                          height: height*0.2,
+                          height: 200,
                           fit: BoxFit.contain,
                         ),
                       ),
                     ),
+                    SizedBox(
+                      height: height*0.010,
+                    ),
+                    const Text("edited by"),
+                    SizedBox(
+                      height: height*0.010,
+                    ),
+                    Text("${auth.currentUser?.email}"),
                     Container(
                       margin: EdgeInsets.symmetric(
                           horizontal: width * 0.08,),
@@ -108,6 +121,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           TextFormField(
+                            readOnly: true,
                             controller: name,
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.name,
@@ -119,21 +133,24 @@ class _AccountScreenState extends State<AccountScreen> {
                               }
                             },
                             decoration: InputDecoration(
+                                focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                                enabledBorder : const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
                                 prefixIcon: Icon(
                                   Icons.account_circle_outlined,
                                   color: Colors.deepOrangeAccent,
                                   size: height * 0.023,
                                 ),
-                                // suffixIcon: IconButton(
-                                //   onPressed: () => number.clear(),
-                                //   icon: Image.asset('assets/edit1.png',scale: 2.5,),
-                                // ),
                                 hintText: 'Name',
                                 hintStyle: const TextStyle(
                                     fontWeight: FontWeight.w400,
                                     fontFamily: 'Nexa')),
                           ),
                           TextFormField(
+                            readOnly: true,
                             controller: number,
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.number,
@@ -145,20 +162,24 @@ class _AccountScreenState extends State<AccountScreen> {
                               }
                             },
                             decoration: InputDecoration(
+                                focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                                enabledBorder : const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
                                 prefixIcon: Image.asset(
                                   'assets/number.png',
                                   scale: 2.5,
                                 ),
-                                // suffixIcon: IconButton(
-                                //   onPressed: () => number.clear(),
-                                //   icon: Image.asset('assets/edit1.png',scale: 2.5,),
-                                // ),
+
                                 hintText: 'Phone Number',
                                 hintStyle: const TextStyle(
                                     fontWeight: FontWeight.w400,
                                     fontFamily: 'Nexa')),
                           ),
                           TextFormField(
+                            readOnly: true,
                             controller: email,
                             textInputAction: TextInputAction.done,
                             keyboardType: TextInputType.name,
@@ -170,14 +191,16 @@ class _AccountScreenState extends State<AccountScreen> {
                               }
                             },
                             decoration: InputDecoration(
+                                focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                                enabledBorder : const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
                                 prefixIcon: Image.asset(
                                   'assets/mail.png',
                                   scale: 2.5,
                                 ),
-                                // suffixIcon: IconButton(
-                                //   onPressed: () => number.clear(),
-                                //   icon: Image.asset('assets/edit1.png',scale: 2.5,),
-                                // ),
                                 hintText: 'E mail',
                                 hintStyle: const TextStyle(
                                     fontWeight: FontWeight.w400,
@@ -186,34 +209,12 @@ class _AccountScreenState extends State<AccountScreen> {
                         ],
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          logData.setBool('login', false);
-                          logData.clear();
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const IntroScreen()));
-                        });
-                      },
-                      child: Container(
-                        width: width * 0.2,
-                        height: height * 0.05,
-
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Logout",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: height * 0.015,
-                                  fontFamily: 'Nexa',
-                                  color: Colors.black),
-                            ),
-                            Image.asset('assets/sign-out.png',scale: 2.8,)
-                          ],
-                        ),
-                      ),
-                    )
+                    ElevatedButton(onPressed: (){
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const CustomerDetails()));
+                      Provider.of<TaskData>(context,listen: false).invoiceListData.clear();
+                      Provider.of<TaskData>(context,listen: false).value.clear();
+                      Provider.of<TaskData>(context,listen: false).deleteCustomerDetails(1);
+                    }, child: const Text("Generate new Pdf "))
                   ],
                 ),
               )

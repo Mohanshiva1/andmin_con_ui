@@ -34,6 +34,7 @@ class _AddItemState extends State<AddItem> {
   int labCharge = 0;
   double subTotal = 0.0;
   bool gstNeed = false;
+  bool labNeed = false;
   final formKey = GlobalKey<FormState>();
 
 
@@ -45,14 +46,9 @@ class _AddItemState extends State<AddItem> {
     final width = MediaQuery.of(context).size.width;
     return Consumer<TaskData>(
       builder: (context, taskData,child) {
-        final task = taskData.tasks[0];
-        // final val = taskData.subTotalValue;
-        // if(val.isEmpty){
-        //
-        // }else{
-        //   subTotal = val.map((e) => e.quantity*e.amount).reduce((value, element) => value + element);
-        // }
-        // final netTotal = val.map((item) => item.amount * item.quantity).reduce((item1, item2) => item1 + item2);
+        // print("taskData.tasks ${taskData.tasks.length}");
+        final task = taskData.tasks.length == 2 ? taskData.tasks[1]: taskData.tasks[0];
+
 
        return Scaffold(
         appBar: AppBar(
@@ -104,7 +100,7 @@ class _AddItemState extends State<AddItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: height * 0.85,
+                height: height * 0.90,
                 margin: EdgeInsets.symmetric(
                     vertical: height * 0.01, horizontal: width * 0.05),
                 child: SingleChildScrollView(
@@ -153,19 +149,10 @@ class _AddItemState extends State<AddItem> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'To : ${task.name}',
-                              // style: TextStyle(
-                              //     fontWeight: FontWeight.bold,
-                              //     fontSize: height * 0.012,
-                              //     fontFamily: 'Avenir',
-                              //     color: Colors.black),
+                              'To :   ${task.name}',
+
                             ),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Image.asset(
-                                  'assets/edit_1.png',
-                                  scale: 3.5,
-                                ))
+
                           ],
                         ),
                       ),
@@ -296,14 +283,6 @@ class _AddItemState extends State<AddItem> {
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: (){
-                                // setState((){
-                                //   productName.removeAt(index);
-                                //   productQuantity.removeAt(index);
-                                //   productVat.removeAt(index);
-                                //   productPrice.removeAt(index);
-                                //   Provider.of<TaskData>(context,listen: false).deleteTask(index);
-                                //   Provider.of<TaskData>(context,listen: false).clearSubtotal(index);
-                                // });
                                 showDeleteDialog(context,index);
                               },
                               child: Padding(
@@ -348,10 +327,6 @@ class _AddItemState extends State<AddItem> {
                                     icon: const Icon(Icons.arrow_downward),
                                     elevation: 16,
                                     style: const TextStyle(color: Colors.black),
-                                    // underline: Container(
-                                    //   height: 0.5,
-                                    //   color: Colors.black,
-                                    // ),
                                     onChanged: (String? newValue) {
                                       setState(() {
                                         dropdownValue = newValue!;
@@ -385,7 +360,7 @@ class _AddItemState extends State<AddItem> {
                                         category = newValue!;
                                       });
                                     },
-                                    items: <String>['GA','SH','IT','DL','SS','WTA']
+                                    items: <String>['GA','SH','IT','DL','SS','WTA','AG']
                                         .map<DropdownMenuItem<String>>((String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
@@ -416,13 +391,31 @@ class _AddItemState extends State<AddItem> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  dropdownValue=="INVOICE"? Text("Labour and installation",
+                                  Text("Labour Need : ",style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: height * 0.012,
+                                      fontFamily: 'Nexa',
+                                      color: Colors.black),),
+                                  Checkbox(
+                                      value: labNeed,
+                                      onChanged: (val){
+                                        setState((){
+                                          labNeed = val!;
+                                        });
+                                      }
+                                  )
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ((dropdownValue=="INVOICE")||(labNeed))? Text("Labour and installation",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: height * 0.012,
                                       fontFamily: 'Nexa',
                                       color: Colors.black),):const Text(""),
-                                  dropdownValue=="INVOICE"? Container(
+                                  ((dropdownValue=="INVOICE")||(labNeed))? Container(
                                     width: width*0.40,
                                     child: TextFormField(
                                       onChanged: (val){
@@ -500,80 +493,6 @@ class _AddItemState extends State<AddItem> {
                       SizedBox(
                         height: height * 0.01,
                       ),
-                      // Container(
-                      //   padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                      //   height: height * 0.06,
-                      //   width: width * 0.9,
-                      //   decoration: BoxDecoration(
-                      //     color: Colors.black.withOpacity(0.1),
-                      //     borderRadius: BorderRadius.circular(20),
-                      //   ),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     children: [
-                      //       Text(
-                      //         'Sub Total',
-                      //         style: TextStyle(
-                      //             fontWeight: FontWeight.bold,
-                      //             fontSize: height * 0.012,
-                      //             fontFamily: 'Nexa',
-                      //             color: Colors.black),
-                      //       ),
-                      //       VerticalDivider(
-                      //         color: Colors.black.withOpacity(0.4),
-                      //         endIndent: 25,
-                      //         indent: 25,
-                      //         thickness: 3,
-                      //       ),
-                      //       // productName.isEmpty?Text(" "):subTotalData(val),
-                      //       Text(
-                      //         subTotal.toString(),
-                      //         style: TextStyle(
-                      //             fontWeight: FontWeight.bold,
-                      //             fontSize: height * 0.012,
-                      //             fontFamily: 'Nexa',
-                      //             color: Colors.black),
-                      //       )
-                      //     ],
-                      //   ),
-                      // ),
-                      ///pending concept
-                      // Container(
-                      //   padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                      //   height: height * 0.06,
-                      //   width: width * 0.9,
-                      //   decoration: BoxDecoration(
-                      //     color: Colors.black.withOpacity(0.1),
-                      //     borderRadius: BorderRadius.circular(20),
-                      //   ),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //     children: [
-                      //       Text(
-                      //         'Pending Payment',
-                      //         style: TextStyle(
-                      //             fontWeight: FontWeight.bold,
-                      //             fontSize: height * 0.012,
-                      //             fontFamily: 'Nexa',
-                      //             color: Colors.black),
-                      //       ),
-                      //       VerticalDivider(
-                      //         color: Colors.black.withOpacity(0.4),
-                      //         endIndent: 25,
-                      //         indent: 25,
-                      //         thickness: 3,
-                      //       ),
-                      //       Text(
-                      //         '4500',
-                      //         style: TextStyle(
-                      //             fontWeight: FontWeight.bold,
-                      //             fontSize: height * 0.012,
-                      //             fontFamily: 'Nexa',
-                      //             color: Colors.black),
-                      //       )
-                      //     ],
-                      //   ),
-                      // ),
                       SizedBox(
                         height: height * 0.01,
                       ),
@@ -596,8 +515,15 @@ class _AddItemState extends State<AddItem> {
                                          MaterialPageRoute(
                                              builder: (context) => PreviewScreen(doctype: dropdownValue,
                                                category: category,advanceAmt: advanceAmt,labAndInstall: labCharge,
-                                              gstValue: gstNeed,
-                                             )));
+                                              gstValue: gstNeed, labValue: labNeed,
+                                             ))).then((value){
+                                               setState(() {
+                                                 labAndInstall.clear();
+                                                 advancePaid.clear();
+                                                 advanceAmt = 0;
+                                                 labCharge = 0;
+                                               });
+                                             });
                                    }
                                  });
                               },
@@ -806,175 +732,4 @@ class _AddItemState extends State<AddItem> {
       },
     );
   }
-
-  // showFileNameDialog(BuildContext context,task,height,width,taskData) {
-  //   // Create button
-  //   Widget okButton =  ButtonWidget(
-  //     text: 'GENERATE PDF',
-  //     onClicked: () async {
-  //       final date = DateTime.now();
-  //       // final dueDate = date.add(Duration(days: 7));
-  //       final invoice = Invoice(
-  //         quotNo: int.parse(quotNo.text),
-  //         fileName: fileName.text,
-  //         supplier: Supplier(
-  //           name: supplierName,
-  //           street: supplierStreet,
-  //           address: supplierAddress,
-  //           phone: supplierPhone,
-  //           email: supplierEmail,
-  //           website: supplierWebsite,
-  //         ),
-  //         customer: Customer(
-  //           name: task.name,
-  //           street: task.street,
-  //           address: task.address,
-  //           phone: task.phone,
-  //         ),
-  //         info: InvoiceInfo(
-  //           date: date,
-  //           // dueDate: dueDate,
-  //           // description: 'Description...',
-  //           // number: '${DateTime.now().year}-9999',
-  //         ),
-  //         items: taskData.invoiceListData,
-  //         docType: dropdownValue, cat: category, advancePaid: advanceAmt, labAndInstall: labCharge,
-  //       );
-  //
-  //       final pdfFile = await PdfInvoiceApi.generate(invoice);
-  //
-  //       PdfApi.openFile(pdfFile).then((value){
-  //         fileName.clear();
-  //         quotNo.clear();
-  //         labAndInstall.clear();
-  //         advancePaid.clear();
-  //       });
-  //     },
-  //   );
-  //   Widget cancelButton = TextButton(
-  //     child: const Text(" Cancel "),
-  //     onPressed: () {
-  //       Navigator.pop(context, false);
-  //     },
-  //   );
-  //   // Create AlertDialog
-  //   final alert = StatefulBuilder(
-  //       builder: (context, setState) => AlertDialog(
-  //         backgroundColor: Colors.white,
-  //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-  //         content: Container(
-  //           height: height*0.30,
-  //           width: width*1.0,
-  //           child: SingleChildScrollView(
-  //             child: Column(
-  //               mainAxisAlignment: MainAxisAlignment.start,
-  //               children: [
-  //                 Row(
-  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                   children: [
-  //                     DropdownButton<String>(
-  //                       value: dropdownValue,
-  //                       icon: const Icon(Icons.arrow_downward),
-  //                       elevation: 16,
-  //                       style: const TextStyle(color: Colors.black),
-  //                       underline: Container(
-  //                         height: 2,
-  //                         color: Colors.black,
-  //                       ),
-  //                       onChanged: (String? newValue) {
-  //                         setState(() {
-  //                           dropdownValue = newValue!;
-  //                         });
-  //                       },
-  //                       items: <String>['QUOTATION','INVOICE']
-  //                           .map<DropdownMenuItem<String>>((String value) {
-  //                         return DropdownMenuItem<String>(
-  //                           value: value,
-  //                           child: Text(value),
-  //                         );
-  //                       }).toList(),
-  //                     ),
-  //                     DropdownButton<String>(
-  //                       value: category,
-  //                       icon: const Icon(Icons.arrow_downward),
-  //                       elevation: 16,
-  //                       style: const TextStyle(color: Colors.black),
-  //                       underline: Container(
-  //                         height: 2,
-  //                         color: Colors.black,
-  //                       ),
-  //                       onChanged: (String? newValue) {
-  //                         setState(() {
-  //                           category = newValue!;
-  //                         });
-  //                       },
-  //                       items: <String>['GA','SH','IT','DL','SS','WTA']
-  //                           .map<DropdownMenuItem<String>>((String value) {
-  //                         return DropdownMenuItem<String>(
-  //                           value: value,
-  //                           child: Text(value),
-  //                         );
-  //                       }).toList(),
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 Container(
-  //                   padding: const EdgeInsets.all(20.0),
-  //                   child: TextFormField(
-  //                     decoration: const InputDecoration(hintText: 'file name'),
-  //                     controller: fileName,
-  //                   ),
-  //                 ),
-  //                 Container(
-  //                   padding: const EdgeInsets.all(20.0),
-  //                   child: TextFormField(
-  //                     keyboardType: TextInputType.number,
-  //                     decoration: const InputDecoration(hintText: 'Quotation no'),
-  //                     controller: quotNo,
-  //                   ),
-  //                 ),
-  //                 dropdownValue=="INVOICE"? Container(
-  //                   padding: const EdgeInsets.all(20.0),
-  //                   child: TextFormField(
-  //                     onChanged: (val){
-  //                       setState((){
-  //                         labCharge = int.parse(val);
-  //                         print(labCharge);
-  //                       });
-  //                     },
-  //                     keyboardType: TextInputType.number,
-  //                     decoration: const InputDecoration(hintText: 'Labour and Installation Amount'),
-  //                     controller: labAndInstall,
-  //                   ),
-  //                 ):Container(),
-  //                 dropdownValue=="INVOICE"? Container(
-  //                   padding: const EdgeInsets.all(20.0),
-  //                   child: TextFormField(
-  //                     onChanged: (val){
-  //                       setState(() {
-  //                         advanceAmt = int.parse(val);
-  //                         print(advanceAmt);
-  //                       });
-  //                     },
-  //                     keyboardType: TextInputType.number,
-  //                     decoration: const InputDecoration(hintText: 'Advance Paid'),
-  //                     controller: advancePaid,
-  //                   ),
-  //                 ):Container(),
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //         actions: [
-  //           okButton,
-  //           cancelButton,
-  //         ],
-  //       ));
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return alert;
-  //     },
-  //   );
-  // }
 }

@@ -71,8 +71,12 @@ class _ViewLeadsState extends State<ViewLeads> {
     return Scaffold(
       backgroundColor: Color(0xffF7F9FC),
       key: _scaffoldKey,
-      drawer: Drawer(
-        child: NavigationDrawer(),
+      drawer: const ClipRRect(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(60), bottomRight: Radius.circular(60)),
+        child: Drawer(
+          child: NavigationDrawer(),
+        ),
       ),
       body: Stack(
         children: [
@@ -116,14 +120,14 @@ class _ViewLeadsState extends State<ViewLeads> {
                     left: width * 0.0,
                     // right: 30,
                     child: IconButton(
-                      color: Colors.orange.shade800,
+                      color: Colors.white,
                       onPressed: () {
                         setState(() {
                           _scaffoldKey.currentState?.openDrawer();
                         });
                       },
                       iconSize: height * 0.04,
-                      icon: Container(child: Image.asset('assets/menu.png')),
+                      icon: Icon(Icons.menu),
                     ),
                   ),
                   Positioned(
@@ -185,6 +189,7 @@ class _ViewLeadsState extends State<ViewLeads> {
                         hoverThickness: 10,
                         thickness: 10,
                         child: GridView.builder(
+                          physics: BouncingScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: name.length,
                           scrollDirection: Axis.vertical,

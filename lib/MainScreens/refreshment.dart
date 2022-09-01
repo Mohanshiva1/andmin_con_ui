@@ -385,8 +385,12 @@ class _RefreshmentState extends State<Refreshment> {
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: Drawer(
-        child: NavigationDrawer(),
+      drawer: const ClipRRect(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(60), bottomRight: Radius.circular(60)),
+        child: Drawer(
+          child: NavigationDrawer(),
+        ),
       ),
       body: Stack(
         children: [
@@ -432,14 +436,14 @@ class _RefreshmentState extends State<Refreshment> {
                     left: width*0.0,
                     // right: 30,
                     child: IconButton(
-                      color: Colors.orange.shade800,
+                      color: Colors.white,
                       onPressed: () {
                         setState(() {
                           _scaffoldKey.currentState?.openDrawer();
                         });
                       },
                       iconSize: height * 0.04,
-                      icon: Container(child: Image.asset('assets/menu.png')),
+                      icon: Icon(Icons.menu),
                     ),
                   ),
                   Positioned(
@@ -492,6 +496,7 @@ class _RefreshmentState extends State<Refreshment> {
               child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
                     child: Column(
                       children: [
                         GestureDetector(

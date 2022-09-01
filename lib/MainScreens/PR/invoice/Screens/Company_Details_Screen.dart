@@ -197,12 +197,6 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                               controller: ownerWebsite,
                               textInputAction: TextInputAction.done,
                               keyboardType: TextInputType.emailAddress,
-                              // validator: (value) {
-                              //   if (value == null || value.isEmpty) {
-                              //     return 'Please enter Company Address';
-                              //   }
-                              //   return null;
-                              // },
                               decoration: InputDecoration(
                                   prefixIcon: Image.asset(
                                     'assets/web.png',

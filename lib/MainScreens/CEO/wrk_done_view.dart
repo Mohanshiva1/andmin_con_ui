@@ -49,11 +49,11 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
       firstDate: DateTime(2015),
       lastDate: DateTime(2050),
     );
-      if (newDate == null) return;
+    if (newDate == null) return;
     setState(() {
       selectedDate = formatterDate.format(newDate);
-      selectedMonth = newDate.toString().substring(5,7);
-      selectedYear = newDate.toString().substring(0,4);
+      selectedMonth = newDate.toString().substring(5, 7);
+      selectedYear = newDate.toString().substring(0, 4);
       // print(selectedYear);
       if (selectedDate != null) {
         loadData();
@@ -109,7 +109,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                             //   // }
                             // }
                             fbData = element6.value;
-                            if(fbData['name'] != null){
+                            if (fbData['name'] != null) {
                               name.remove(fbData['name']);
                               setState(() {
                                 allData.add(fbData);
@@ -174,16 +174,27 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
     loadData();
     super.initState();
   }
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
     return Scaffold(
       key: _scaffoldKey,
-      drawer: Drawer(
-        child: NavigationDrawer(),
+      drawer: const ClipRRect(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(60), bottomRight: Radius.circular(60)),
+        child: Drawer(
+          child: NavigationDrawer(),
+        ),
       ),
       body: Stack(
         children: [
@@ -217,14 +228,14 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                     left: width * 0.0,
                     // right: 30,
                     child: IconButton(
-                      color: Colors.orange.shade800,
+                      color: Colors.white,
                       onPressed: () {
                         setState(() {
                           _scaffoldKey.currentState?.openDrawer();
                         });
                       },
                       iconSize: height * 0.04,
-                      icon: Container(child: Image.asset('assets/menu.png')),
+                      icon: Icon(Icons.menu),
                     ),
                   ),
                 ],
@@ -255,13 +266,13 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
             ),
           ),
           Positioned(
-            top: height*0.13,
-              left:  width*0.60,
+              top: height * 0.13,
+              left: width * 0.60,
               right: 0,
-              child:   Row(
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('$selectedDate',style: TextStyle(
+                  Text('$selectedDate', style: TextStyle(
                       fontFamily: 'Nexa',
                       fontSize: 15,
                       color: Colors.white)),
@@ -280,7 +291,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
               )),
 
           Positioned(
-            top: height*0.2,
+            top: height * 0.2,
             left: 0,
             right: 0,
             bottom: 0,
@@ -294,18 +305,22 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                 ),
               ),
               child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
                       child: Column(
                         children: [
 
                           nameData.length == 0
-                              ? Text("${nameData.length == 0 ? 'Loading' : 'No Data'}",style: TextStyle(
-                                    fontFamily: 'Nexa',
-                                    fontSize: 20,
-                                    color: Colors.black),
+                              ? Text("${nameData.length == 0
+                              ? 'Loading'
+                              : 'No Data'}", style: TextStyle(
+                              fontFamily: 'Nexa',
+                              fontSize: 20,
+                              color: Colors.black),
                           )
                           // const Text("",
                           //         style: TextStyle(
@@ -362,7 +377,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
 
   Widget buildGridView(double height, double width) {
     return ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -422,6 +437,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                   // color: Colors.blue,
                   height: height * 0.20,
                   child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
                     child: nameData.length == 0
                         ? const Text("Select Date",
                         style: TextStyle(
@@ -430,7 +446,7 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                             color: Colors.black))
                         : ListView.builder(
                       scrollDirection: Axis.vertical,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: allData.length,
                       itemBuilder: (BuildContext context, int ind) {
@@ -460,8 +476,10 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
                               LinearPercentIndicator(
                                 animation: true,
                                 animationDuration: 1000,
-                                lineHeight: height*0.005,
-                                percent: percent = double.parse(allData[ind]['workPercentage'].replaceAll(RegExp(r'.$'), ""))/100,
+                                lineHeight: height * 0.005,
+                                percent: percent = double.parse(
+                                    allData[ind]['workPercentage'].replaceAll(
+                                        RegExp(r'.$'), "")) / 100,
                                 backgroundColor: Colors.black12,
                                 progressColor: Colors.orange.shade500,
                               ),
@@ -493,12 +511,13 @@ class _ViewWrkDoneState extends State<ViewWrkDone> {
         });
   }
 
-  Text subTitle(String name) => Text(
-    name,
-    style: const TextStyle(
-        fontFamily: 'Avenir',
-        fontWeight: FontWeight.w500,
-        fontSize: 15,
-        color: Colors.white),
-  );
+  Text subTitle(String name) =>
+      Text(
+        name,
+        style: const TextStyle(
+            fontFamily: 'Avenir',
+            fontWeight: FontWeight.w500,
+            fontSize: 15,
+            color: Colors.white),
+      );
 }

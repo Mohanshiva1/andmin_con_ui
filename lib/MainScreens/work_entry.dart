@@ -647,8 +647,12 @@ class _WorkEntryState extends State<WorkEntry>
     final GlobalKey<SlideActionState> _key = GlobalKey();
     return Scaffold(
       key: _scaffoldKey,
-      drawer: Drawer(
-        child: NavigationDrawer(),
+      drawer: const ClipRRect(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(60), bottomRight: Radius.circular(60)),
+        child: Drawer(
+          child: NavigationDrawer(),
+        ),
       ),
       body: Form(
         key: formKey,
@@ -695,14 +699,14 @@ class _WorkEntryState extends State<WorkEntry>
                       left: width * 0.0,
                       // right: 30,
                       child: IconButton(
-                        color: Colors.orange.shade800,
+                        color: Colors.white,
                         onPressed: () {
                           setState(() {
                             _scaffoldKey.currentState?.openDrawer();
                           });
                         },
                         iconSize: height * 0.04,
-                        icon: Container(child: Image.asset('assets/menu.png')),
+                        icon: Icon(Icons.menu),
                       ),
                     ),
                     Positioned(
@@ -750,6 +754,7 @@ class _WorkEntryState extends State<WorkEntry>
                           borderRadius: BorderRadius.circular(15.0)),
                       child: TabBar(
                         controller: _tabController,
+                        physics: BouncingScrollPhysics(),
                         indicator: BoxDecoration(
                             color: Colors.blue[300],
                             borderRadius: BorderRadius.circular(10.0)),
@@ -774,9 +779,11 @@ class _WorkEntryState extends State<WorkEntry>
                     Expanded(
                       child: fingerPrintStatus == true
                           ? TabBarView(
+                        physics: BouncingScrollPhysics(),
                               controller: _tabController,
                               children: [
                                 SingleChildScrollView(
+                                  physics: BouncingScrollPhysics(),
                                   child: Column(
                                     children: [
                                       pendingWrkStatus == false
@@ -871,8 +878,6 @@ class _WorkEntryState extends State<WorkEntry>
                                                   SlideAction(
                                                     sliderButtonIconSize:
                                                     height * 0.015,
-                                                    sliderButtonIcon:
-                                                        Icon(Icons.start),
                                                     key: _key,
                                                     child: const Text(
                                                         "Slide to Start",
@@ -1000,6 +1005,7 @@ class _WorkEntryState extends State<WorkEntry>
                                                                             child: Text(
                                                                           "Start Time :",
                                                                           style: TextStyle(
+                                                                              color: Colors.white,
                                                                               fontSize: height * 0.02,
                                                                               fontWeight: FontWeight.w900),
                                                                         )),
@@ -1009,6 +1015,7 @@ class _WorkEntryState extends State<WorkEntry>
                                                                             Text(
                                                                           '${temFromTime[index]}',
                                                                           style: TextStyle(
+                                                                            color: Colors.white,
                                                                               fontFamily: "Nexa",
                                                                               fontSize: height * 0.02),
                                                                         ),
@@ -1018,6 +1025,7 @@ class _WorkEntryState extends State<WorkEntry>
                                                                             Text(
                                                                           "Now Working  :",
                                                                           style: TextStyle(
+                                                                              color: Colors.white,
                                                                               fontSize: height * 0.02,
                                                                               fontWeight: FontWeight.w900),
                                                                         ),
@@ -1049,13 +1057,14 @@ class _WorkEntryState extends State<WorkEntry>
 
                                                                         child:
                                                                             SingleChildScrollView(
+
                                                                           child:
                                                                               Center(
                                                                             child: Text('${tempWrk[index]}',
-                                                                                style: TextStyle(fontFamily: 'Avenir', fontWeight: FontWeight.w500, fontSize: 18, color: Colors.black),
+                                                                                style: TextStyle(fontFamily: 'Avenir', fontWeight: FontWeight.w500, fontSize: 18, color: Colors.white),
                                                                                 maxLines: 5,
                                                                                 overflow: TextOverflow.ellipsis),
-                                                                          ),
+                                                                          ),physics: BouncingScrollPhysics(),
                                                                         ),
                                                                       ),
                                                                       Center(
@@ -1063,6 +1072,7 @@ class _WorkEntryState extends State<WorkEntry>
                                                                             Text(
                                                                           "Work Percent  :",
                                                                           style: TextStyle(
+                                                                              color: Colors.white,
                                                                               fontSize: height * 0.02,
                                                                               fontWeight: FontWeight.w900),
                                                                         ),
@@ -1096,7 +1106,7 @@ class _WorkEntryState extends State<WorkEntry>
                                                                               LengthLimitingTextInputFormatter(3),
                                                                             ],
                                                                             style:
-                                                                                const TextStyle(color: Colors.black, fontFamily: "Nexa"),
+                                                                                const TextStyle(color: Colors.white, fontFamily: "Nexa"),
                                                                             controller:
                                                                                 percentField,
                                                                             textInputAction:
@@ -1105,7 +1115,7 @@ class _WorkEntryState extends State<WorkEntry>
                                                                                 TextInputType.number,
                                                                             decoration:
                                                                                 InputDecoration(
-                                                                              hintStyle: const TextStyle(fontFamily: 'Nexa', fontSize: 15),
+                                                                              hintStyle: const TextStyle(color: Colors.white,fontFamily: 'Nexa', fontSize: 15),
                                                                               contentPadding: const EdgeInsets.all(20),
                                                                               hintText: 'Work Percent',
                                                                               filled: true,
@@ -1360,7 +1370,7 @@ class _WorkEntryState extends State<WorkEntry>
 
   Widget buildGridView(double height, double width) {
     return GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

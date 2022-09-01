@@ -52,7 +52,7 @@ class _AddNotesState extends State<AddNotes> {
             _auth
                 .child(fbData)
                 .child(
-                "notes/'${formattedDate.toString().trim()}_${formattedTime.toString().trim()}'")
+                    "notes/'${formattedDate.toString().trim()}_${formattedTime.toString().trim()}'")
                 .set({
               'date': formattedDate,
               'time': formattedTime,
@@ -101,7 +101,7 @@ class _AddNotesState extends State<AddNotes> {
 
   Future<void> getAddressFromLatLong(Position position) async {
     List<Placemark> placeMark =
-    await placemarkFromCoordinates(position.latitude, position.longitude);
+        await placemarkFromCoordinates(position.latitude, position.longitude);
 
     Placemark place = placeMark[0];
     lat = "${position.latitude.toDouble()}";
@@ -134,7 +134,7 @@ class _AddNotesState extends State<AddNotes> {
             _auth
                 .child(fbData)
                 .child(
-                "'Location'/'${formattedDate.toString().trim()}_${formattedTime.toString().trim()}'")
+                    "'Location'/'${formattedDate.toString().trim()}_${formattedTime.toString().trim()}'")
                 .set({
               'Lat val': latVal,
               'Log Val': logVal,
@@ -152,6 +152,7 @@ class _AddNotesState extends State<AddNotes> {
     todayDate();
     super.initState();
   }
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -159,13 +160,14 @@ class _AddNotesState extends State<AddNotes> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
-    Offset distance = button1 ? Offset(5, 5): Offset(-30,20);
+    Offset distance = button1 ? Offset(5, 5) : Offset(-30, 20);
     double blur = button1 ? 5.0 : 25;
 
-    Offset distance1 = button2 ? Offset(5, 5): Offset(-30,20);
+    Offset distance1 = button2 ? Offset(5, 5) : Offset(-30, 20);
     double blur1 = button2 ? 5.0 : 25;
 
     return Scaffold(
+      key: _scaffoldKey,
       body: Form(
         key: formKey,
         child: Stack(
@@ -177,7 +179,7 @@ class _AddNotesState extends State<AddNotes> {
               bottom: 0,
               child: Container(
                 width: double.infinity,
-                height: 600,
+                height: height * 0.1,
                 decoration: BoxDecoration(
                   // color: Colors.orange.shade400,
                   gradient: LinearGradient(
@@ -191,30 +193,19 @@ class _AddNotesState extends State<AddNotes> {
                       ],
                       begin: FractionalOffset.topLeft,
                       end: FractionalOffset.bottomRight,
-                      tileMode: TileMode.repeated),
+                      tileMode: TileMode.repeated,
+                  ),
                 ),
                 child: Stack(
                   children: [
                     Positioned(
-                      top: 0,
-                      left: 0,
+                        top: 0,
+                        left: 0,
                         right: 0,
-                        child: Image.asset('assets/cloud-storage - Copy.png',height: height*0.6,)),
-                    Positioned(
-                      top: 30,
-                      left: 20,
-                      // right: 30,
-
-                      child: IconButton(
-                        color: Colors.orange.shade800,
-                        onPressed: () {
-                          setState(() {
-                            _scaffoldKey.currentState?.openDrawer();
-                          });
-                        },
-                        iconSize: height * 0.04,
-                        icon: Container(child: Image.asset('assets/menu.png')),
-                      ),
+                        child: Image.asset(
+                          'assets/cloud-storage - Copy.png',
+                          height: height * 0.6,
+                        ),
                     ),
                     Positioned(
                       top: height * 0.09,
@@ -231,9 +222,8 @@ class _AddNotesState extends State<AddNotes> {
                         ),
                       ),
                     ),
-
                     Positioned(
-                      top: height*0.4,
+                      top: height * 0.4,
                       left: 0,
                       right: 0,
                       bottom: 0,
@@ -244,16 +234,15 @@ class _AddNotesState extends State<AddNotes> {
                           borderRadius: BorderRadius.only(
                             topRight: Radius.circular(30),
                             topLeft: Radius.circular(30),
-
                           ),
                         ),
                         child: Stack(
                           children: [
                             Positioned(
-                              top: height*0.08,
+                              top: height * 0.08,
                               left: 0,
                               right: 0,
-                              child:  Column(
+                              child: Column(
                                 children: [
                                   Container(
                                     margin: const EdgeInsets.only(top: 1),
@@ -274,7 +263,8 @@ class _AddNotesState extends State<AddNotes> {
                                     child: Center(
                                       child: TextFormField(
                                         style: const TextStyle(
-                                            color: Colors.black, fontFamily: "Nexa"),
+                                            color: Colors.black,
+                                            fontFamily: "Nexa"),
                                         controller: notesField,
                                         keyboardType: TextInputType.multiline,
                                         maxLines: 5,
@@ -286,14 +276,16 @@ class _AddNotesState extends State<AddNotes> {
                                               fontWeight: FontWeight.w900,
                                               fontSize: 16,
                                               color: Colors.black54
-                                            // (0xffFBF8FF)
-                                          ),
-                                          contentPadding: const EdgeInsets.all(20),
+                                              // (0xffFBF8FF)
+                                              ),
+                                          contentPadding:
+                                              const EdgeInsets.all(20),
                                           hintText:
-                                          '                Enter Notes',
+                                              '                Enter Notes',
                                           filled: true,
                                           border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(40),
+                                            borderRadius:
+                                                BorderRadius.circular(40),
                                             borderSide: BorderSide.none,
                                           ),
                                         ),
@@ -308,15 +300,17 @@ class _AddNotesState extends State<AddNotes> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: height*0.08,
+                                    height: height * 0.08,
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: [
                                       GestureDetector(
                                         onTap: () {
                                           setState(() {
-                                            final isValid = formKey.currentState?.validate();
+                                            final isValid = formKey.currentState
+                                                ?.validate();
                                             if (isValid!) {
                                               todayDate();
                                               createNotes();
@@ -325,26 +319,29 @@ class _AddNotesState extends State<AddNotes> {
                                           });
                                         },
                                         child: Listener(
-                                          onPointerUp: (_)=>setState(() {
+                                          onPointerUp: (_) => setState(() {
                                             button1 = true;
                                           }),
-                                          onPointerDown: (_)=> setState(() {
+                                          onPointerDown: (_) => setState(() {
                                             button1 = true;
                                           }),
                                           child: AnimatedContainer(
-                                            margin: const EdgeInsets.only(top: 1),
+                                            margin:
+                                                const EdgeInsets.only(top: 1),
                                             width: width * 0.3,
                                             height: height * 0.06,
                                             decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(20),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
                                               color: const Color(0xffF7F9FC),
                                               // Colors.white.withOpacity(0.3),
-                                              boxShadow:  [
+                                              boxShadow: [
                                                 BoxShadow(
-                                                  color: Colors.black.withOpacity(0.2),
+                                                  color: Colors.black
+                                                      .withOpacity(0.2),
                                                   offset: distance,
-                                                  blurRadius:blur ,
-                                                  inset : button1,
+                                                  blurRadius: blur,
+                                                  inset: button1,
                                                 ),
                                                 BoxShadow(
                                                   color: Colors.white,
@@ -354,18 +351,23 @@ class _AddNotesState extends State<AddNotes> {
                                                 ),
                                               ],
                                             ),
-                                            duration: Duration(milliseconds: 150),
+                                            duration:
+                                                Duration(milliseconds: 150),
                                             child: Center(
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 children: [
                                                   // Icon(Icons.search_rounded,size: height*0.02,color: Colors.blueGrey,),
                                                   Text(
                                                     'Add Notes',
                                                     style: TextStyle(
-                                                        fontWeight: FontWeight.w800,
+                                                        fontWeight:
+                                                            FontWeight.w800,
                                                         fontFamily: "Nexa",
-                                                        fontSize: height * 0.013,
+                                                        fontSize:
+                                                            height * 0.013,
                                                         color: Colors.black),
                                                   ),
                                                 ],
@@ -383,26 +385,29 @@ class _AddNotesState extends State<AddNotes> {
                                           });
                                         },
                                         child: Listener(
-                                          onPointerUp: (_)=>setState(() {
+                                          onPointerUp: (_) => setState(() {
                                             button2 = true;
                                           }),
-                                          onPointerDown: (_)=> setState(() {
+                                          onPointerDown: (_) => setState(() {
                                             button2 = true;
                                           }),
                                           child: AnimatedContainer(
-                                            margin: const EdgeInsets.only(top: 1),
+                                            margin:
+                                                const EdgeInsets.only(top: 1),
                                             width: width * 0.3,
                                             height: height * 0.06,
                                             decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(20),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
                                               color: const Color(0xffF7F9FC),
                                               // Colors.white.withOpacity(0.3),
-                                              boxShadow:  [
+                                              boxShadow: [
                                                 BoxShadow(
-                                                  color: Colors.black.withOpacity(0.2),
+                                                  color: Colors.black
+                                                      .withOpacity(0.2),
                                                   offset: distance1,
-                                                  blurRadius:blur1 ,
-                                                  inset : button2,
+                                                  blurRadius: blur1,
+                                                  inset: button2,
                                                 ),
                                                 BoxShadow(
                                                   color: Colors.white,
@@ -412,18 +417,23 @@ class _AddNotesState extends State<AddNotes> {
                                                 ),
                                               ],
                                             ),
-                                            duration: Duration(milliseconds: 150),
+                                            duration:
+                                                Duration(milliseconds: 150),
                                             child: Center(
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 children: [
                                                   // Icon(Icons.search_rounded,size: height*0.02,color: Colors.blueGrey,),
                                                   Text(
                                                     'Add Location',
                                                     style: TextStyle(
-                                                        fontWeight: FontWeight.w800,
+                                                        fontWeight:
+                                                            FontWeight.w800,
                                                         fontFamily: "Nexa",
-                                                        fontSize: height * 0.013,
+                                                        fontSize:
+                                                            height * 0.013,
                                                         color: Colors.black),
                                                   ),
                                                 ],
@@ -435,8 +445,8 @@ class _AddNotesState extends State<AddNotes> {
                                     ],
                                   ),
                                 ],
-                              ) ,),
-
+                              ),
+                            ),
                           ],
                         ),
                       ),

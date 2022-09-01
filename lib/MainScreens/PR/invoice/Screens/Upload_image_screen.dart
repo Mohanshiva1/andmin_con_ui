@@ -200,41 +200,6 @@ class _UploadDataState extends State<UploadData> {
                 ),
               ),
             ),
-            // GestureDetector(
-            //   onTap: () {
-            //     setState(() {
-            //       UserPreferences.setUser(user);
-            //       logData.setBool('login', true);
-            //       Navigator.push(context,
-            //           MaterialPageRoute(builder: (context) => const NewAndDraft()));
-            //     });
-            //   },
-            //   child: Container(
-            //     width: width * 0.28,
-            //     height: height * 0.05,
-            //     decoration: BoxDecoration(
-            //       color: Color(0xffFF7E44),
-            //       borderRadius: BorderRadius.circular(15),
-            //       boxShadow: [
-            //         BoxShadow(
-            //             color: Colors.black.withOpacity(0.3),
-            //             offset: Offset(8, 8),
-            //             blurRadius: 10,
-            //             spreadRadius: 0)
-            //       ],
-            //     ),
-            //     child: Center(
-            //       child: Text(
-            //         "Next",
-            //         style: TextStyle(
-            //             fontWeight: FontWeight.bold,
-            //             fontSize: height * 0.013,
-            //             fontFamily: 'Nexa',
-            //             color: Colors.white),
-            //       ),
-            //     ),
-            //   ),
-            // )
           ],
         ),
       ),

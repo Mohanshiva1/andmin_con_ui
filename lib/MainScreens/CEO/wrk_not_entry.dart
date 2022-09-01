@@ -168,8 +168,12 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       key: _scaffoldKey,
-      drawer: Drawer(
-        child: NavigationDrawer(),
+      drawer: const ClipRRect(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(60), bottomRight: Radius.circular(60)),
+        child: Drawer(
+          child: NavigationDrawer(),
+        ),
       ),
       body: Stack(
         children: [
@@ -203,14 +207,14 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
                     left: width * 0.0,
                     // right: 30,
                     child: IconButton(
-                      color: Colors.orange.shade800,
+                      color: Colors.white,
                       onPressed: () {
                         setState(() {
                           _scaffoldKey.currentState?.openDrawer();
                         });
                       },
                       iconSize: height * 0.04,
-                      icon: Container(child: Image.asset('assets/menu.png')),
+                      icon: Icon(Icons.menu),
                     ),
                   ),
                 ],
@@ -280,10 +284,12 @@ class _AbsentAndPresentState extends State<AbsentAndPresent> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
                         child: Column(
                           children: [
                             notEntry.length == 0

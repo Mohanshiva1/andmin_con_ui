@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:andmin_con_ui/MainScreens/CEO/announcement_screen.dart';
+import 'package:andmin_con_ui/MainScreens/PR/invoice/Screens/Customer_Details_Screen.dart';
 import 'package:andmin_con_ui/MainScreens/PR/search_leads.dart';
 import 'package:andmin_con_ui/MainScreens/PR/view_leads.dart';
 import 'package:andmin_con_ui/MainScreens/refreshment.dart';
@@ -11,9 +12,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'CEO/wrk_done_view.dart';
 import 'CEO/wrk_not_entry.dart';
 import 'Drawer.dart';
+import 'PR/invoice/Screens/Company_Details_Screen.dart';
+import 'PR/invoice/Screens/intro_Screen.dart';
 import 'PR/invoice/Screens/splash_screen.dart';
 
 class TeamMainPage extends StatefulWidget {
@@ -70,20 +74,24 @@ class _TeamMainPageState extends State<TeamMainPage> {
   // }
   //
   loadData() {
-    staff.child(user!.uid).once().then((value) => {
-          // print(value.snapshot.value),
-          fbData = value.snapshot.value,
-          if (fbData["email"] == nowUser)
-            {
-              // print(fbData),
-              setState(() {
-                userName = fbData['name'];
-                dep = fbData['department'];
-                // print(userName);
-                // print(dep);
-              }),
-            }
-        });
+    staff
+        .child(user!.uid)
+        .once()
+        .then((value) => {
+              // print(value.snapshot.value),
+              fbData = value.snapshot.value,
+              if (fbData["email"] == nowUser)
+                {
+                  // print(fbData),
+                  setState(() {
+                    userName = fbData['name'];
+                    dep = fbData['department'];
+                    // print(userName);
+                    // print(dep);
+                  }),
+                }
+            })
+        .then((value) => init());
   }
 
   late StreamSubscription subscription;
@@ -102,6 +110,18 @@ class _TeamMainPageState extends State<TeamMainPage> {
         });
       }
     });
+  }
+
+  String name = '';
+  String email = '';
+  SharedPreferences? preferences;
+
+  Future init() async {
+    preferences = await SharedPreferences.getInstance();
+    preferences?.setString('name', '${userName}');
+    preferences?.setString('email', '${nowUser}');
+    preferences?.setString('department', '${dep}');
+    // print(preferences?.getString('name'));
   }
 
   @override
@@ -127,8 +147,12 @@ class _TeamMainPageState extends State<TeamMainPage> {
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: Drawer(
-        child: NavigationDrawer(),
+      drawer: const ClipRRect(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(60), bottomRight: Radius.circular(60)),
+        child: Drawer(
+          child: NavigationDrawer(),
+        ),
       ),
       body: Stack(
         children: [
@@ -174,14 +198,14 @@ class _TeamMainPageState extends State<TeamMainPage> {
                     left: width * 0.0,
                     // right: 30,
                     child: IconButton(
-                      color: Colors.orange.shade800,
+                      color: Colors.white,
                       onPressed: () {
                         setState(() {
                           _scaffoldKey.currentState?.openDrawer();
                         });
                       },
                       iconSize: height * 0.04,
-                      icon: Container(child: Image.asset('assets/menu.png')),
+                      icon: Icon(Icons.menu),
                     ),
                   ),
                   Positioned(
@@ -227,6 +251,7 @@ class _TeamMainPageState extends State<TeamMainPage> {
                 ),
               ),
               child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -240,7 +265,7 @@ class _TeamMainPageState extends State<TeamMainPage> {
                               crossAxisCount: 2,
                             ),
                             children: [
-                              //...........REFRESHMENT....................
+                              //...........REFRESHMENT.....................
                               Container(
                                 child: Buttons(
                                   "Refreshment",
@@ -252,7 +277,7 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                   ),
                                 ),
                               ),
-                              //...........VIEW LEADS....................
+                              //...........VIEW LEADS......................
                               Container(
                                 child: Buttons(
                                   "View Leads",
@@ -264,11 +289,12 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                   ),
                                 ),
                               ),
-                              //...........INVOICE....................
+                              // ...........INVOICE.........................
                               Container(
                                 child: Buttons(
-                                  "Create invoice",
-                                  SplashScreenPage(),
+                                  "Invoice",
+                                  CustomerDetails(),
+                                  // CompanyDetails(),
                                   Icon(
                                     Icons.price_change_rounded,
                                     size: height * 0.05,
@@ -276,7 +302,7 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                   ),
                                 ),
                               ),
-                              //...........WORK MANAGER....................
+                              // ...........WORK MANAGER....................
                               Container(
                                 child: Buttons(
                                   "Work Manager",
@@ -618,7 +644,6 @@ class _TeamMainPageState extends State<TeamMainPage> {
               color: Colors.white12,
               offset: Offset(10, 10),
               blurRadius: 5,
-
             ),
           ],
           borderRadius: BorderRadius.only(
@@ -628,7 +653,6 @@ class _TeamMainPageState extends State<TeamMainPage> {
           ),
           gradient: LinearGradient(
             colors: [
-
               Color(0xff26D0CE),
               Color(0xff1A2980),
               // Color(0xffEFA41C),
