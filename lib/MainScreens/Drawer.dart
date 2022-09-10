@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -93,11 +94,15 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                           height: height*0.15,
                           width: width*0.9,
                           decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/account.png"),
-                            ),
-                        color: Colors.white24,
+                        // image: DecorationImage(
+                        //     image: AssetImage("assets/account.png"),
+                        //     ),
+                        color: Colors.cyanAccent.shade200,
                         shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                              FontAwesomeIcons.user,
+                            size: height*0.08,
                           ),
                         ),
                         SizedBox(
@@ -119,8 +124,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                     Text(
                       mailID,
                       style: GoogleFonts.poppins(
+
                           textStyle: TextStyle(
-                              color: Colors.white, fontSize: height * 0.02)),
+                              color: Colors.white, fontSize: height * 0.02,fontWeight: FontWeight.w600)),
                     ),
                     SizedBox(
                       height: height * 0.05,

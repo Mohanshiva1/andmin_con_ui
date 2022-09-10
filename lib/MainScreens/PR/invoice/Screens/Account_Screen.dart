@@ -52,7 +52,7 @@ class _AccountScreenState extends State<AccountScreen> {
     final image = user.imagePath.contains('assets/blank.png') ? AssetImage(user.imagePath) : FileImage(File(user.imagePath));
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xffF7F9FC),
         elevation: 0,
         leading:   GestureDetector(
           child: Image.asset(
@@ -76,7 +76,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
 
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xffF7F9FC),
       body: Form(
         key: formKey,
         child: SingleChildScrollView(
@@ -86,7 +86,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 margin: EdgeInsets.only(top: height * 0.09),
                 height: height * 0.8,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: Color(0xffF7F9FC),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
@@ -96,7 +96,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   children: [
                     ClipOval(
                       child: Material(
-                        color: Colors.transparent,
+                        color: Color(0xffF7F9FC),
                         child: Ink.image(
                           image: image as ImageProvider,
                           width: 200,

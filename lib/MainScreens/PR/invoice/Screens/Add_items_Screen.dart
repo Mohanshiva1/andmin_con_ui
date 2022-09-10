@@ -52,7 +52,7 @@ class _AddItemState extends State<AddItem> {
 
        return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Color(0xffF7F9FC),
           elevation: 0,
           title: Text(
             "Add Items",
@@ -94,13 +94,14 @@ class _AddItemState extends State<AddItem> {
 
           ],
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xffF7F9FC),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 height: height * 0.90,
+                color: Color(0xffF7F9FC),
                 margin: EdgeInsets.symmetric(
                     vertical: height * 0.01, horizontal: width * 0.05),
                 child: SingleChildScrollView(

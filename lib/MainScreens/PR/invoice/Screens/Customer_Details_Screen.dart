@@ -28,9 +28,9 @@ class _CustomerDetailsState extends State<CustomerDetails> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor : Color(0xffF7F9FC),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xffF7F9FC),
         elevation: 0,
         title:    Text(
           "Customer Details",
@@ -81,7 +81,14 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                 margin: EdgeInsets.only(top: height * 0.09),
                 height: height * 0.7,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: Color(0xffF7F9FC),
+                  image: DecorationImage(
+                    alignment: Alignment.bottomCenter,
+                    image: AssetImage(
+                      'assets/outdoor.png',
+                    ),
+                    fit: BoxFit.scaleDown,
+                  ),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
@@ -90,6 +97,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                 child: Column(
                   children: [
                     Container(
+
                       margin: EdgeInsets.symmetric(
                           horizontal: width * 0.08, vertical: height * 0.05),
                       height: height * 0.4,
@@ -198,7 +206,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                           boxShadow: [
                             BoxShadow(
                                 color: Colors.black.withOpacity(0.3),
-                                offset: const Offset(8,8),
+                                offset: const Offset(-8,8),
                                 blurRadius: 10,
                                 spreadRadius: 0)
                           ],

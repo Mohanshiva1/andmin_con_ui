@@ -66,6 +66,8 @@ dependencies:
   pdf:
   font_awesome_flutter:
   google_fonts:
+  font_awesome:
+  dropdown_button2: ^1.8.0
 
 
 

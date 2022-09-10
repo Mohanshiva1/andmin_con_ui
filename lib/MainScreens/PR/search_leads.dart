@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
@@ -33,6 +34,37 @@ class _SearchLeadsState extends State<SearchLeads> {
   List status = [];
   List fetched = [];
   var fbData;
+  var a;
+  String? selectedItem = 'Select';
+
+  // All() {
+  //   _auth.once().then((value) {
+  //     for (var lead in value.snapshot.children) {
+  //       fbData = lead.value;
+  //       print(fbData);
+  //       setState(() {
+  //         phoneNumber.add(fbData['phone_number']);
+  //         // print('step 1');
+  //         name.add(fbData['name']);
+  //         // print('step 2');
+  //         // location.add(fbData['city']);
+  //         // print('step 3');
+  //         location.add(fbData['customer_state']);
+  //         // print('step 4');
+  //         createdDate.add(fbData['created_date']);
+  //         // print('step 5');
+  //         rating.add(fbData['rating']);
+  //         // print('step 6');
+  //         enquiry.add(fbData['inquired_for']);
+  //         // print('step 7');
+  //         email.add(fbData['email_id']);
+  //         // print('step 8');
+  //         fetched.add(fbData['data_fetched_by']);
+  //         // print('step 9');
+  //       });
+  //     }
+  //   });
+  // }
 
   viewLeads() {
     name.clear();
@@ -62,14 +94,74 @@ class _SearchLeadsState extends State<SearchLeads> {
             enquiry.add(fbData['inquired_for']);
             email.add(fbData['email_id']);
             fetched.add(fbData['data_fetched_by']);
-            print(phoneNumber);
+            // print(phoneNumber);
           });
         }
       }
     });
   }
 
+
+
+  LeadInCharge() {
+    name.clear();
+    phoneNumber.clear();
+    location.clear();
+    email.clear();
+    rating.clear();
+    createdDate.clear();
+    enquiry.clear();
+    status.clear();
+    fetched.clear();
+
+    _auth.once().then((value) {
+      for (var element in value.snapshot.children) {
+        // print(element.key);
+        fbData = element.value;
+        // print(fbData['LeadIncharge']);
+        a = fbData['LeadIncharge'];
+        if(a == selectedItem){
+          if(a != null){
+            // print(element.value);
+            fbData = element.value;
+            setState(() {
+              phoneNumber.add(fbData['phone_number']);
+              name.add(fbData['name']);
+              location.add(fbData['city']);
+              status.add(fbData['customer_state']);
+              createdDate.add(fbData['created_date']);
+              rating.add(fbData['rating']);
+              enquiry.add(fbData['inquired_for']);
+              email.add(fbData['email_id']);
+              fetched.add(fbData['data_fetched_by']);
+              // print(phoneNumber);
+            });
+          }else{
+            setState(() {
+              // All();
+            });
+          }
+        }
+
+
+
+
+
+      }
+    });
+  }
+
+
+
+  List<String> items = ['Select','All','ONWORDS','Anitha','Jeevanandham','Bala Saravanan','Kavin Vetrivel'];
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +170,7 @@ class _SearchLeadsState extends State<SearchLeads> {
     Offset distance = isPressed ? Offset(5, 5) : Offset(10, 10);
     double blur = isPressed ? 5.0 : 25;
     return Scaffold(
+      key: _scaffoldKey,
       body: Form(
         key: formKey,
         child: Stack(
@@ -149,21 +242,109 @@ class _SearchLeadsState extends State<SearchLeads> {
                               top: height*0.03,
                               left: 0,
                               right: 0,
-                              child:   Column(
-                              children: [
-                                phoneNumber.length == 0
-                                    ? Text(
-                                  "Enter Number",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: 'Nexa',
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: height * 0.03),
-                                )
-                                    : buildGridView(width, height),
-                              ],
-                            ),),
+                              child:   Container(
+                                height: height*0.7,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                  children: [
+                                    phoneNumber.length == 0
+                                        ? Text(
+                                      "Enter Number",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: 'Nexa',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: height * 0.03),
+                                    )
+                                        : buildGridView(width, height),
+                                  ],
+                            ),
+                                ),
+                              ),),
+                            Positioned(
+                              top: height*0.0,
+                                left: width*0.2,
+                                right: width*0.2,
+                                child: DropdownButtonHideUnderline(
+                                      child: DropdownButton2(
+                                        isExpanded: true,
+                                        hint: Row(
+                                          children: const [
+                                            Icon(
+                                              Icons.list,
+                                              size: 16,
+                                              color: Colors.yellow,
+                                            ),
+                                          ],
+                                        ),
+                                        items: items
+                                            .map((item) =>
+                                            DropdownMenuItem<String>(
+                                              value: item,
+                                              child: Text(
+                                                item,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ))
+                                            .toList(),
+                                        value: selectedItem,
+                                        onChanged: (value) {
+                                          setState(() {
 
+                                            selectedItem = value as String;
+                                            a = selectedItem;
+                                            print(a);
+                                            LeadInCharge();
+
+                                          });
+                                        },
+                                        icon: const Icon(
+                                          Icons.arrow_forward_ios_outlined,
+                                        ),
+                                        iconSize: 14,
+                                        iconEnabledColor: Colors.yellow,
+                                        iconDisabledColor: Colors.grey,
+                                        buttonHeight: 50,
+                                        buttonWidth: 160,
+                                        buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+                                        buttonDecoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(14),
+                                          boxShadow: [
+                                            BoxShadow(color: Colors.black,offset: Offset(0,0))
+                                          ],
+                                          border: Border.all(
+                                            color: Colors.black26,
+                                          ),
+                                          color: Colors.cyan,
+                                        ),
+                                        buttonElevation: 2,
+                                        itemHeight: 40,
+                                        itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                                        dropdownMaxHeight: 100,
+                                        dropdownWidth: 250,
+
+                                        dropdownPadding: EdgeInsets.only(left: 30, right: 0),
+                                        dropdownDecoration: BoxDecoration(
+
+                                          borderRadius: BorderRadius.circular(14),
+                                          color: Colors.orange,
+                                          boxShadow: [
+                                            BoxShadow(color: Colors.black,offset: Offset(0,0))
+                                          ],
+                                        ),
+                                        dropdownElevation: 8,
+                                        scrollbarRadius: const Radius.circular(40),
+                                        scrollbarThickness: 6,
+                                        scrollbarAlwaysShow: true,
+                                        offset: const Offset(-20, 0),
+                                      ),
+                                )
+                            ),
                             Positioned(
                                 bottom: height * 0.03,
                                 left: width*0.05,
@@ -492,7 +673,7 @@ class _SearchLeadsState extends State<SearchLeads> {
             child: Container(
               height: height*0.5,
               // padding: EdgeInsets.all(10),
-              margin: EdgeInsets.symmetric(horizontal: width * 0.02),
+              margin: EdgeInsets.symmetric(horizontal: width * 0.02,vertical: height*0.03),
 
               decoration: BoxDecoration(
                 boxShadow: [
@@ -551,6 +732,7 @@ class _SearchLeadsState extends State<SearchLeads> {
                 ],
               ),
             ),
+
           );
         });
   }

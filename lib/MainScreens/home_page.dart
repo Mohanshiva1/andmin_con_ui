@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -234,6 +235,7 @@ class _TeamMainPageState extends State<TeamMainPage> {
             right: 0,
             bottom: 0,
             child: Container(
+
               width: double.infinity,
               decoration: BoxDecoration(
                 // color: Colors.black.withOpacity(0.9),
@@ -271,9 +273,10 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                   "Refreshment",
                                   const Refreshment(),
                                   Icon(
-                                    Icons.refresh,
+                                    FontAwesomeIcons.mugHot,
+                                    // Icons.refresh,
                                     size: height * 0.05,
-                                    color: Colors.amber,
+                                    color: Colors.white.withOpacity(0.9),
                                   ),
                                 ),
                               ),
@@ -283,9 +286,9 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                   "View Leads",
                                   const ViewLeads(),
                                   Icon(
-                                    Icons.view_day,
+                                    FontAwesomeIcons.usersViewfinder,
                                     size: height * 0.05,
-                                    color: Colors.amber,
+                                    color: Colors.white.withOpacity(0.9),
                                   ),
                                 ),
                               ),
@@ -296,9 +299,9 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                   CustomerDetails(),
                                   // CompanyDetails(),
                                   Icon(
-                                    Icons.price_change_rounded,
+                                    FontAwesomeIcons.fileInvoiceDollar,
                                     size: height * 0.05,
-                                    color: Colors.amber,
+                                    color: Colors.white.withOpacity(0.9),
                                   ),
                                 ),
                               ),
@@ -308,9 +311,9 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                   "Work Manager",
                                   WorkEntry(),
                                   Icon(
-                                    Icons.work_outline_rounded,
+                                    FontAwesomeIcons.briefcase,
                                     size: height * 0.05,
-                                    color: Colors.amber,
+                                    color: Colors.white.withOpacity(0.9),
                                   ),
                                 ),
                               ),
@@ -320,9 +323,9 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                   "Search Leads",
                                   SearchLeads(),
                                   Icon(
-                                    Icons.view_day,
+                                    FontAwesomeIcons.searchengin,
                                     size: height * 0.05,
-                                    color: Colors.amber,
+                                    color: Colors.white.withOpacity(0.9),
                                   ),
                                 ),
                               ),
@@ -348,7 +351,7 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                         Icon(
                                           Icons.announcement_outlined,
                                           size: height * 0.05,
-                                          color: Colors.amber,
+                                          color: Colors.white.withOpacity(0.9),
                                         ),
                                       ),
                                     ),
@@ -358,9 +361,9 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                         "Refreshment",
                                         const Refreshment(),
                                         Icon(
-                                          Icons.refresh,
+                                          FontAwesomeIcons.mugHot,
                                           size: height * 0.05,
-                                          color: Colors.amber,
+                                          color: Colors.white.withOpacity(0.9),
                                         ),
                                       ),
                                     ),
@@ -370,9 +373,9 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                         "Work Done",
                                         const ViewWrkDone(),
                                         Icon(
-                                          Icons.work_outline_rounded,
+                                          FontAwesomeIcons.briefcase,
                                           size: height * 0.05,
-                                          color: Colors.amber,
+                                          color: Colors.white.withOpacity(0.9),
                                         ),
                                       ),
                                     ),
@@ -384,7 +387,7 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                         Icon(
                                           Icons.work_off_outlined,
                                           size: height * 0.05,
-                                          color: Colors.amber,
+                                          color: Colors.white.withOpacity(0.9),
                                         ),
                                       ),
                                     ),
@@ -395,7 +398,7 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                     //       Icon(
                                     //         Icons.manage_accounts_outlined,
                                     //         size: height * 0.05,
-                                    //         color: Colors.amber,
+                                    //         color: Colors.white.withOpacity(0.9),
                                     //       )),
                                     // ),
                                     // Container(
@@ -405,7 +408,7 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                     //       Icon(
                                     //         Icons.view_day,
                                     //         size: height * 0.05,
-                                    //         color: Colors.amber,
+                                    //         color: Colors.white.withOpacity(0.9),
                                     //       )),
                                     // ),
                                   ],
@@ -431,9 +434,9 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                           "Refreshment",
                                           const Refreshment(),
                                           Icon(
-                                            Icons.refresh,
+                                            FontAwesomeIcons.mugHot,
                                             size: height * 0.05,
-                                            color: Colors.amber,
+                                            color: Colors.white.withOpacity(0.9),
                                           ),
                                         ),
                                       ),
@@ -443,9 +446,9 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                           "Work Manager",
                                           WorkEntry(),
                                           Icon(
-                                            Icons.work_outline_rounded,
+                                            FontAwesomeIcons.briefcase,
                                             size: height * 0.05,
-                                            color: Colors.amber,
+                                            color: Colors.white.withOpacity(0.9),
                                           ),
                                         ),
                                       ),
@@ -470,9 +473,9 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                               "Refreshment",
                                               const Refreshment(),
                                               Icon(
-                                                Icons.refresh,
+                                                FontAwesomeIcons.mugHot,
                                                 size: height * 0.05,
-                                                color: Colors.amber,
+                                                color: Colors.white.withOpacity(0.9),
                                               ),
                                             ),
                                           ),
@@ -482,9 +485,9 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                               "Work Manager",
                                               WorkEntry(),
                                               Icon(
-                                                Icons.work_outline_rounded,
+                                                FontAwesomeIcons.briefcase,
                                                 size: height * 0.05,
-                                                color: Colors.amber,
+                                                color: Colors.white.withOpacity(0.9),
                                               ),
                                             ),
                                           ),
@@ -509,9 +512,9 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                                   "Refreshment",
                                                   const Refreshment(),
                                                   Icon(
-                                                    Icons.refresh,
+                                                    FontAwesomeIcons.mugHot,
                                                     size: height * 0.05,
-                                                    color: Colors.amber,
+                                                    color: Colors.white.withOpacity(0.9),
                                                   ),
                                                 ),
                                               ),
@@ -521,9 +524,9 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                                   "Work Manager",
                                                   WorkEntry(),
                                                   Icon(
-                                                    Icons.work_outline_rounded,
+                                                    FontAwesomeIcons.briefcase,
                                                     size: height * 0.05,
-                                                    color: Colors.amber,
+                                                    color: Colors.white.withOpacity(0.9),
                                                   ),
                                                 ),
                                               ),
@@ -548,9 +551,10 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                                       "Refreshment",
                                                       const Refreshment(),
                                                       Icon(
-                                                        Icons.refresh,
+                                                        FontAwesomeIcons.mugHot,
                                                         size: height * 0.05,
-                                                        color: Colors.amber,
+                                                        color:
+                                                            Colors.white.withOpacity(0.9),
                                                       ),
                                                     ),
                                                   ),
@@ -563,7 +567,8 @@ class _TeamMainPageState extends State<TeamMainPage> {
                                                         Icons
                                                             .work_outline_rounded,
                                                         size: height * 0.05,
-                                                        color: Colors.amber,
+                                                        color:
+                                                            Colors.white.withOpacity(0.9),
                                                       ),
                                                     ),
                                                   ),
@@ -609,11 +614,6 @@ class _TeamMainPageState extends State<TeamMainPage> {
       ),
     );
   }
-
-  // addStringToSF() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setString('stringValue', dep);
-  // }
 
   GestureDetector Buttons(String name, Widget pageName, Icon icon) {
     final height = MediaQuery.of(context).size.height;
